@@ -1,12 +1,18 @@
+import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import Routes from './src/Routes';
+import { NativeBaseProvider } from 'native-base';
+import { Provider as PaperProvider } from 'react-native-paper';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NativeBaseProvider>
+      <PaperProvider>
+        <Routes />
+        <StatusBar style="light" backgroundColor='rgba(0, 0, 0, 1)' />
+      </PaperProvider>
+    </NativeBaseProvider>
   );
 }
 
