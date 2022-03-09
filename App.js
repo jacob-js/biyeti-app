@@ -4,8 +4,27 @@ import { StyleSheet, Text, View } from 'react-native';
 import Routes from './src/Routes';
 import { NativeBaseProvider } from 'native-base';
 import { Provider as PaperProvider } from 'react-native-paper';
+import { useState } from 'react';
+import useFonts from './hooks/useFonts';
+import AppLoading from 'expo-app-loading';
 
 export default function App() {
+  const [ isReady, setIsReady ] = useState();
+
+  const loadFonts = async () => {
+    await useFonts()
+  }
+
+  if (!isReady) {
+    return (
+      <AppLoading
+        startAsync={loadFonts}
+        onFinish={() => setIsReady(true)}
+        onError={() => {}}
+      />
+    );
+  }
+
   return (
     <NativeBaseProvider>
       <PaperProvider>
