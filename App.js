@@ -28,8 +28,8 @@ export default function App() {
   return (
     <NativeBaseProvider>
       <PaperProvider>
-        <Routes />
         <StatusBar style="light" backgroundColor='rgba(0, 0, 0, 1)' />
+        <Routes />
       </PaperProvider>
     </NativeBaseProvider>
   );

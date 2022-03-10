@@ -40,7 +40,7 @@ export default function Login({ navigation }) {
                         <Button isLoading={false} isLoadingText={<Text style={{ color: 'white' }}>Patientez...</Text>} style={styles.loginBtn} _text={{ fontWeight: 'bold', textTransform: 'uppercase' }} onPress={() =>navigation.navigate('Drawer')}>Connexion</Button>
                     </View>
                     <View>
-                        <Text style={styles.noAccountText}>N'avez-vous pas de compte? <Text style={styles.noAccountLink}>Inscrivez-vous</Text> </Text>
+                        <Text style={styles.noAccountText}>N'avez-vous pas de compte? <Text style={styles.noAccountLink} onPress={() =>navigation.navigate('Signup')}>Inscrivez-vous</Text> </Text>
                     </View>
                 </>
             )}
