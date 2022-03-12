@@ -23,7 +23,7 @@ const events = [
   }
 ]
 
-const Home = () => {
+const Home = ({navigation}) => {
   return (
     <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
       <View style={styles.container}>
@@ -42,9 +42,9 @@ const Home = () => {
           <ScrollView contentContainerStyle={styles.events}>
             {
               events.map((event, index) => (
-                <View style={styles.eventContainer}>
-                  <View style={styles.event} key={index}>
-                    <TouchableOpacity style={styles.touchableCover}>
+                <View style={styles.eventContainer} key={index}>
+                  <View style={styles.event}>
+                    <TouchableOpacity style={styles.touchableCover} onPress={() =>navigation.navigate('EventDetail', { eventId: index })}>
                       <Image source={{ uri: event.cover }} style={styles.eventCover} />
                     </TouchableOpacity>
                     <View style={styles.eventDetail}>

@@ -18,7 +18,7 @@ export default function Routes() {
                 {
                     routes.map((route, index) => (
                         <Stack.Screen name={route.name} component={route.component} options={{
-                            headerShown: route.withHeader
+                            headerShown: route.withHeader, title: route.title
                         }} key={index} />
                     ))
                 }
@@ -29,10 +29,10 @@ export default function Routes() {
                         <Drawer.Navigator initialRouteName='Home'
                             screenOptions={{
                                 header: ({navigation, route, options}) =>{
-                                    return <Header DrawerNavigation={navigation} options={options} {...stackProps} />
+                                    return <Header DrawerNavigation={navigation} drawerRoute={route} options={options} {...stackProps} />
                                 }
                             }}
-                            drawerContent={props => <DrawerContents {...props} { ...stackProps } />}
+                            drawerContent={props => <DrawerContents drawer={{...props}} stack={ {...stackProps} } />}
                         >
                             {
                                 drawerRoutes.map((route, index) =>(

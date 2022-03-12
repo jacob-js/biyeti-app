@@ -4,7 +4,7 @@ import AntIcon from 'react-native-vector-icons/AntDesign'
 import logo from '../../assets/logo.png'
 import { theme } from '../../assets/theme'
 
-export default function Header({DrawerNavigation, options}) {
+export default function Header({DrawerNavigation, options, drawerRoute: route}) {
   return (
     <View style={{ backgroundColor: 'white' }} >
       <View
@@ -24,10 +24,18 @@ export default function Header({DrawerNavigation, options}) {
             shadowOpacity: 1,
         }}
       >
-        <TouchableOpacity onPress={() => DrawerNavigation.toggleDrawer()}>
+        {
+          route.name === 'Home' ?
+          <TouchableOpacity onPress={() => DrawerNavigation.toggleDrawer()}>
             <AntIcon name='appstore-o' size={20} />
+          </TouchableOpacity>:
+          <TouchableOpacity onPress={() => DrawerNavigation.goBack()}>
+            <AntIcon name='arrowleft' size={20} />
+          </TouchableOpacity>
+        }
+        <TouchableOpacity onPress={() => DrawerNavigation.navigate('Home')}>
+          <Image source={logo} style={{width: 200, height: 100}} />
         </TouchableOpacity>
-        <Image source={logo} style={{width: 200, height: 100}} />
       </View>
     </View>
   )

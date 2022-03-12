@@ -33,7 +33,8 @@ const menus = [
     }
 ]
 
-export function DrawerContents({navigation}){
+export function DrawerContents({drawer, stack}){
+    const { navigation: stackNavigation } = stack;
 
     return(
         <View style={style.drawer}>
@@ -66,7 +67,7 @@ export function DrawerContents({navigation}){
             <Drawer.Section style={style.bottomDrawerSecion}>
                 <TouchableOpacity style={style.logout}>
                     <View><AntdIcon name='logout' color='#be123c' size={16} /></View>
-                    <Text style={{ paddingLeft: 20, color: '#be123c' }}>Deconexion</Text>
+                    <Text style={{ paddingLeft: 20, color: '#be123c' }} onPress={() =>stackNavigation.navigate('Login')}>Deconexion</Text>
                 </TouchableOpacity>
             </Drawer.Section>
         </View>

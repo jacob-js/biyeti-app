@@ -4,5 +4,6 @@ export const theme = {
         default100: 'rgb(88,194,98)',
         light: 'rgba(0, 0, 0,0.5)',
         light100: 'rgba(0, 0, 0,0.1)',
+        gold: '#d4af37'
     }
 }
