@@ -3,8 +3,8 @@ import React from 'react';
 import { theme } from '../../assets/theme';
 import EntyIcon from 'react-native-vector-icons/Entypo';
 import FaIcon from 'react-native-vector-icons/FontAwesome5';
+import AntIcon from 'react-native-vector-icons/AntDesign';
 import { Divider } from 'native-base';
-import { vip } from '../../assets/icons/vip.png';
 
 const event = {
     name: 'Lorem Ipsum',
@@ -36,9 +36,9 @@ export default function EventDetail({route, navigation}) {
         <Image source={{ uri: event.cover }} style={styles.cover} />
         <Text style={styles.eventName}>{event.name}</Text>
         <View style={styles.addressContainer}>
-            <Text style={styles.eventLocation}>Goma</Text>
-            <EntyIcon name='dot-single' style={styles.dot} />
-            <Text style={styles.eventDate}>03 Avril 2022</Text>
+            <Text style={styles.eventLocation}> <AntIcon name='enviromento' style={styles.icon} /> Goma</Text>
+            <Divider orientation='vertical' marginX={1} bg={theme.colors.light100} />
+            <Text style={styles.eventDate}><AntIcon name='calendar' style={styles.icon} /> 03 Avril 2022</Text>
         </View>
         <Divider my={2} />
         <Text style={styles.eventDescription}>{event.description}</Text>
@@ -48,10 +48,12 @@ export default function EventDetail({route, navigation}) {
         <View style={styles.tickets}>
             {
                 tickets.map((ticket, index) =>(
-                    <View>
+                    <View key={index}>
                         <TouchableOpacity style={styles.ticket} key={index}>
                             <View style={styles.ticketAvatar}>
-                                {ticket.name === 'vip' ? <Image source={vip} style={styles.vipIcon} /> :
+                                {ticket.name === 'vip' ? <Image source={{
+                                    uri: "https://img.icons8.com/external-flaticons-flat-flat-icons/64/000000/external-vip-music-festival-flaticons-flat-flat-icons.png"
+                                }} style={styles.vipIcon} /> :
                                     <FaIcon name='ticket-alt' style={styles.ticketIcon} />
                                 }
                             </View>
@@ -92,6 +94,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 5,
         alignItems: 'center',
+        justifyContent: 'space-between'
     },
     eventDate: {
         color: theme.colors.light
@@ -99,10 +102,9 @@ const styles = StyleSheet.create({
     eventLocation: {
         color: theme.colors.light
     },
-    dot: {
-        fontSize: 15,
-        marginTop: 3,
-        color: theme.colors.light
+    icon: {
+        fontWeight: 'bold',
+        fontSize: 16
     },
     eventDescription: {
         fontFamily: 'Barlow',
