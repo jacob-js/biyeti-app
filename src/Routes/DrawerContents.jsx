@@ -13,7 +13,7 @@ import {theme} from "../../assets/theme";
 const menus = [
     {
         name: 'Tableau de bord',
-        path: 'dashboard',
+        path: 'Dashboard',
         icon: 'dashboard'
     },
     {
@@ -35,6 +35,7 @@ const menus = [
 
 export function DrawerContents({drawer, stack}){
     const { navigation: stackNavigation } = stack;
+    const { navigation: drawerNavigation } = drawer;
 
     return(
         <View style={style.drawer}>
@@ -55,7 +56,7 @@ export function DrawerContents({drawer, stack}){
                     <View style={style.menus}>
                         {
                             menus.map(menu =>(
-                                <TouchableOpacity onPress={() => {navigation.navigate(menu.path); navigation.closeDrawer()}} key={menu.name} style={style.menu}>
+                                <TouchableOpacity onPress={() => {stackNavigation.navigate(menu.path); drawerNavigation.closeDrawer()}} key={menu.name} style={style.menu}>
                                     <AntdIcon name={menu.icon} size={16} />
                                     <Text style={style.menuName}> {menu.name}</Text>
                                 </TouchableOpacity>

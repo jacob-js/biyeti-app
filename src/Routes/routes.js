@@ -1,3 +1,4 @@
+import Dashboard from "../Components/Dashboard";
 import EventDetail from "../Components/EventDetail";
 import Home from "../Components/Home";
 import Login from "../Components/Login";
@@ -18,6 +19,11 @@ export const routes = [
         name: 'EventDetail',
         component: EventDetail,
         title: 'Detail de l\'événement',
+    },
+    {
+        name: 'Dashboard',
+        component: Dashboard,
+        withHeader: false
     }
 ]
 

@@ -67,6 +67,17 @@ const Home = ({navigation}) => {
           <Divider mb={3} width='90%' m='auto' />
           <EventsCarousel events={events} navigation={navigation} />
         </View>
+
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Conférences</Text>
+            <TouchableOpacity>
+              <Text style={styles.showAll}>Afficher tout</Text>
+            </TouchableOpacity>
+          </View>
+          <Divider mb={3} width='90%' m='auto' />
+          <EventsCarousel events={events} navigation={navigation} />
+        </View>
       </View>
     </ScrollView>
   )
