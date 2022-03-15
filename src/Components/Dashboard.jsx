@@ -6,11 +6,11 @@ import SIcon from 'react-native-vector-icons/SimpleLineIcons';
 import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import IoIcon from 'react-native-vector-icons/Ionicons';
 
-export default function Dashboard() {
+export default function Dashboard({navigation}) {
     const options = [
         {
             name: 'Mes evenenements',
-            path: 'events',
+            path: 'DashboardEvents',
             icon: <SIcon name='calendar' style={styles.icon} />,
             count: 2
         },
@@ -30,27 +30,26 @@ export default function Dashboard() {
     <ScrollView style={{  backgroundColor: 'white' }}>
         <View style={styles.container}>
             <View style={styles.header}>
-                <View style={styles.headerBg}>
-                </View>
+                <View style={styles.headerBg}></View>
                 <View style={styles.user}>
                     <Text style={styles.name}>Merci Jacob</Text>
                     <Text style={styles.email}>mercihabam@gmail.com</Text>
                     <Avatar bg="light.200" 
                         source={{
-                            uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                            uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
                         }}
+                        i
                         style={styles.avatar}
                         size='2xl'
                     >
-                        AJ
+                        <SIcon name='user' size={50} color="gray" />
                     </Avatar>
                 </View>
-                <Text style={styles.back}><IoIcon name='arrow-back' /></Text>
             </View>
             <View style={styles.content}>
                 {
                     options.map((option, index) =>(
-                        <TouchableOpacity key={index}>
+                        <TouchableOpacity key={index} onPress={() =>navigation.navigate(option.path)}>
                             <View style={styles.option}>
                                 <View style={styles.iconContainer}>
                                     {option.icon}
@@ -86,14 +85,6 @@ const styles = StyleSheet.create({
         height: 300,
         backgroundColor: theme.colors.default,
         borderBottomStartRadius: 100,
-    },
-    back: {
-        fontSize: 30,
-        // color: 'white',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        zIndex: 999
     },
     user: {
         display: 'flex',
@@ -147,7 +138,7 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         fontFamily: 'Barlow-Bold',
         color: 'white',
-        backgroundColor: theme.colors.default,
+        backgroundColor: theme.colors.default100,
         fontSize: 12,
         width: 20,
         height: 20,
