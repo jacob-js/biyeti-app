@@ -23,10 +23,10 @@ export default function Login({ navigation }) {
             {({ handleSubmit, errors, handleChange }) =>(
                 <>
                     
-                    <CommonInput required error={errors.username} label="Nom d'utilisateur" onChangeText={handleChange('username')} 
+                    <CommonInput required error={errors.username} onChangeText={handleChange('username')} 
                         placeholder='Email ou N° de tél' leftIcon={<SIcon name="user" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} />
                     <CommonInput required error={errors.password} onChangeText={handleChange('password')} placeholder='Mot de passe' 
-                        label='Mot de passe' leftIcon={<MIcon name="key-outline" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} 
+                        leftIcon={<MIcon name="key-outline" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} 
                         type={!visible && 'password'}
                         rightIcon={ <TouchableOpacity onPress={() =>setVisible(!visible)}>
                             <FIcon style={{ fontSize: 15, marginRight: 15 }} name={visible ? 'eye': 'eye-off'} />

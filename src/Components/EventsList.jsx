@@ -30,7 +30,7 @@ const events = [
     }
   ]
 
-export default function EventsList() {
+export default function EventsList({navigation}) {
   return (
       <SafeAreaView style={styles.container}>
           {
@@ -45,6 +45,7 @@ export default function EventsList() {
                     colorScheme={theme.colors.default}
                     w={100}
                     mt={3}
+                    onPress={() => navigation.navigate('AddEventForm')}
                 >
                     <Text style={{ color: "white" }}>Créer</Text>
                 </Button>
@@ -56,6 +57,7 @@ export default function EventsList() {
                         borderRadius="full"
                         height={38}
                         colorScheme={theme.colors.default}
+                        onPress={() => navigation.navigate('AddEventForm')}
                     >
                         <Text style={{ color: "white" }}>Ajouter</Text>
                     </Button>

@@ -1,3 +1,4 @@
+import AddEventForm from "../Components/AddEventForm";
 import Dashboard from "../Components/Dashboard";
 import EventDetail from "../Components/EventDetail";
 import EventsList from "../Components/EventsList";
@@ -31,6 +32,12 @@ export const routes = [
         component: EventsList,
         withHeader: true,
         title: 'Mes événements'
+    },
+    {
+        name: 'AddEventForm',
+        component: AddEventForm,
+        withHeader: true,
+        title: 'Ajouter un événement'
     }
 ]
 
