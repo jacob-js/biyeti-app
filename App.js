@@ -7,6 +7,8 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import { useState } from 'react';
 import useFonts from './hooks/useFonts';
 import AppLoading from 'expo-app-loading';
+import { Provider } from 'react-redux';
+import store from './src/Redux/store';
 
 export default function App() {
   const [ isReady, setIsReady ] = useState();
@@ -27,10 +29,12 @@ export default function App() {
 
   return (
     <NativeBaseProvider>
-      <PaperProvider>
-        <StatusBar style="light" backgroundColor='rgba(0, 0, 0, 1)' />
-        <Routes />
-      </PaperProvider>
+      <Provider store={store}>
+        <PaperProvider>
+          <StatusBar style="light" backgroundColor='rgba(0, 0, 0, 1)' />
+          <Routes />
+        </PaperProvider>
+      </Provider>
     </NativeBaseProvider>
   );
 }

@@ -21,6 +21,7 @@ export function CommonInput(props) {
                 borderBottomWidth={2}
                 maxLength={maxLength}
                 rounded={15}
+                {...props}
             />
             <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}> {error} </FormControl.ErrorMessage>
         </FormControl>

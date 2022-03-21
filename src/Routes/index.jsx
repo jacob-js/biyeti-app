@@ -18,12 +18,13 @@ export default function Routes() {
                 {
                     routes.map((route, index) => (
                         <Stack.Screen name={route.name} component={route.component} options={{
-                            headerShown: route.withHeader, title: route.title
+                            headerShown: route.withHeader, title: route.title, unmountOnBlur: true
                         }} key={index} />
                     ))
                 }
                 <Stack.Screen name="Drawer" options={{
-                    headerShown: false
+                    headerShown: false,
+                    unmountOnBlur: true
                 }} >
                     {stackProps => (
                         <Drawer.Navigator initialRouteName='Home'
