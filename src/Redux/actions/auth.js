@@ -30,7 +30,6 @@ export const loginAction = (data) => async (dispatch, navigation) => {
                 payload: 'Erreur de chargement, veuillez réessayer'
             })
         }
-        console.log(res)
     }
 }
 

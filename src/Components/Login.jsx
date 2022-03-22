@@ -14,7 +14,7 @@ import * as yup from 'yup';
 import { MessageAlert } from '../Utils/feedbacks'
 
 const validationSchema = yup.object({
-    email: yup.string().required('Ce champs est obligatoire'),
+    identifier: yup.string().required('Ce champs est obligatoire'),
     password: yup.string().required('Ce champs est obligatoire')
 })
 
@@ -38,17 +38,18 @@ export default function Login({ navigation }) {
     <View style={styles.container}>
       <Image source={logo} style={styles.logo} />
       {
-          typeof(apiError) === 'string' && <MessageAlert msg={error.toString()} onClose={() =>setError({})} status='error' />
+          typeof(apiError) === 'string' && typeof(error) === 'string'
+          && <MessageAlert msg={error.toString()} onClose={() =>setError({})} status='error' />
       }
       <Formik
-            initialValues={{ email: '', password: '' }}
+            initialValues={{ identifier: '', password: '' }}
             validationSchema={validationSchema}
             onSubmit={values => loginAction(values)(dispatch, navigation)}
         >
             {({ handleSubmit, errors, handleChange }) =>(
                 <>
                     
-                    <CommonInput required error={errors.email || getError('email')} onChangeText={handleChange('email')} 
+                    <CommonInput required error={errors.identifier || getError('identifier')} onChangeText={handleChange('identifier')} 
                         placeholder='Email ou N° de tél' leftIcon={<SIcon name="user" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} />
                     <CommonInput required error={errors.password} onChangeText={handleChange('password')} placeholder='Mot de passe' 
                         leftIcon={<MIcon name="key-outline" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} 
