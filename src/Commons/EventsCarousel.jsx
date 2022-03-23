@@ -6,6 +6,7 @@ import { theme } from '../../assets/theme';
 import IoIcon from 'react-native-vector-icons/Ionicons';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import { Divider } from 'native-base';
+import moment from 'moment';
 
 export default function EventsCarousel({events, navigation}) {
     const ref = useRef();
@@ -54,8 +55,8 @@ export default function EventsCarousel({events, navigation}) {
                     <Text style={styles.eventDescript}>{event.description.substring(0, 100)}{event.description.length > 100 && '...'}</Text>
                     <Divider my={2} bg='white' />
                     <View style={styles.addressContainer}>
-                        <Text style={styles.eventLocation}><AntIcon name='enviromento' style={styles.icon} /> Goma</Text>
-                        <Text style={styles.eventDate}><AntIcon name='calendar' style={styles.icon} /> 03 Avril 2022</Text>
+                        <Text style={styles.eventLocation}><AntIcon name='enviromento' style={styles.icon} /> {event.location}</Text>
+                        <Text style={styles.eventDate}><AntIcon name='clockcircleo' style={styles.icon} /> {moment(event.event_date).format('HH:mm')}</Text>
                     </View>
                     </View>
                 </View>

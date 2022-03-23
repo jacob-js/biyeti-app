@@ -10,6 +10,9 @@ import { theme } from '../../assets/theme';
 import { useRef } from 'react';
 import { useState } from 'react';
 import EventsCarousel from '../Commons/EventsCarousel';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { getEvents } from '../Redux/actions/events';
 
 const events = [
   {
@@ -36,6 +39,12 @@ const events = [
 ]
 
 const Home = ({navigation}) => {
+  const { data, count, rows, loading, error } = useSelector(({ events: { events } }) =>events);
+  const dispatch = useDispatch();
+
+  useEffect(() =>{
+    getEvents()(dispatch)
+  }, [])
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
@@ -49,12 +58,15 @@ const Home = ({navigation}) => {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Pour bientôt</Text>
+            {
+              loading ? <Text>Chargement...</Text>: null
+            }
             <TouchableOpacity>
               <Text style={styles.showAll}>Afficher tout</Text>
             </TouchableOpacity>
           </View>
           <Divider mb={3} width='90%' m='auto' />
-          <EventsCarousel events={events} navigation={navigation} />
+          <EventsCarousel events={rows} navigation={navigation} />
         </View>
 
         <View style={styles.section}>

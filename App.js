@@ -9,6 +9,9 @@ import useFonts from './hooks/useFonts';
 import AppLoading from 'expo-app-loading';
 import { Provider } from 'react-redux';
 import store from './src/Redux/store';
+import axios from 'axios';
+
+axios.defaults.baseURL = 'https://bookitbackend.herokuapp.com';
 
 export default function App() {
   const [ isReady, setIsReady ] = useState();

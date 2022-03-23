@@ -15,12 +15,13 @@ export function CommonInput(props) {
             <Input  onBlur={onBlur} _focus={{
                 borderBottomColor: theme.colors.default,
                 borderColor: theme.colors.default
-            }} value={value} defaultValue={value} onChangeText={onChangeText} style={{ paddingLeft: 20, borderWidth: 5 }} 
+            }} value={value} defaultValue={value} onChangeText={onChangeText}
                 type={type} keyboardType={kType} placeholder={placeholder || label} InputRightElement={rightIcon} InputLeftElement={leftIcon}
-                variant={uiType || 'underlined'}
+                variant={uiType || 'rounded'}
                 borderBottomWidth={2}
                 maxLength={maxLength}
                 rounded={15}
+                borderRadius={15}
                 {...props}
             />
             <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}> {error} </FormControl.ErrorMessage>

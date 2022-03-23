@@ -14,7 +14,7 @@ export default function Routes() {
     
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Login">
+            <Stack.Navigator initialRouteName="Drawer">
                 {
                     routes.map((route, index) => (
                         <Stack.Screen name={route.name} component={route.component} options={{
