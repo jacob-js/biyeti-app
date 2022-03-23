@@ -41,7 +41,6 @@ export const createEventAction = (data) => async(dispatch, navigation) =>{
         const res = await axios.post('https://bookitbackend.herokuapp.com/api/v1/events/', data, {
             headers: {
                 'authtoken': token,
-                // 'Content-Type': 'multipart/form-data; boundary=--------------------------349226184308215237745357',
             }
         });
         if(res.status === 201){
@@ -66,4 +65,4 @@ export const createEventAction = (data) => async(dispatch, navigation) =>{
         }
         console.log(res.data)
     }
-}
+};

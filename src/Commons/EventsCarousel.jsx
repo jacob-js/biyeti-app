@@ -11,34 +11,53 @@ import moment from 'moment';
 export default function EventsCarousel({events, navigation}) {
     const ref = useRef();
   const [ currentXOffset, setCurrentXOffset ] = useState(0);
+  const [ scrollXOffset, setscrollXOffset ] = useState(0);
   const [ scrollViewWidth, setScrollViewWidth ] = useState(0);
+  const [ backDisabled, setBackDisabled ] = useState(true);
+  const [ forwardDisabled, setForwardDisabled ] = useState(false);
 
   const _handleScroll = (e) => {
     setCurrentXOffset(e.nativeEvent.contentOffset.x);
+    const eachItemWidth = scrollViewWidth / events.length;
+    if(scrollXOffset <= 0){
+        setBackDisabled(true);
+        setForwardDisabled(false)
+    }else if(scrollXOffset >= (scrollViewWidth - eachItemWidth )){
+        setForwardDisabled(true);
+        setBackDisabled(false)
+    }else{
+        setBackDisabled(false);
+        setForwardDisabled(false)
+    }
   };
 
   const _scrollBack = () => {
     const eachItemWidth = scrollViewWidth / events.length;
     const xOffset = currentXOffset - eachItemWidth;
     ref.current.scrollTo({x: xOffset, y: 0, animated: true})
+    setscrollXOffset(xOffset);
   }
 
   const _scrollForward = () => {
     const eachItemWidth = scrollViewWidth / events.length;
     const xOffset = currentXOffset + eachItemWidth;
     ref.current.scrollTo({x: xOffset, y: 0, animated: true});
+    setscrollXOffset(xOffset);
   };
 
   return (
     <View style={styles.carousel}>
-        <View style={styles.arrows}>
-            <TouchableHighlight style={styles.arrowBtn} onPress={_scrollBack}>
-                <IoIcon name='arrow-back' style={styles.arrow} />
-            </TouchableHighlight>
-            <TouchableHighlight style={styles.arrowBtn} onPress={_scrollForward}>
-                <IoIcon name='arrow-forward' style={styles.arrow} />
-            </TouchableHighlight>
-        </View>
+        {
+            events.length > 1 ?
+            <View style={styles.arrows}>
+                <TouchableHighlight disabled={backDisabled} style={[styles.arrowBtn, backDisabled ? styles.disabledArrow: {}]} onPress={_scrollBack}>
+                    <IoIcon name='arrow-back' style={[styles.arrow, backDisabled ? styles.disabledArrow: {} ]} />
+                </TouchableHighlight>
+                <TouchableHighlight disabled={forwardDisabled} style={[styles.arrowBtn, forwardDisabled ? styles.disabledArrow: {}]} onPress={_scrollForward}>
+                    <IoIcon name='arrow-forward' style={[styles.arrow, forwardDisabled ? styles.disabledArrow: {}]} />
+                </TouchableHighlight>
+            </View>: null
+        }
         <ScrollView contentContainerStyle={styles.events} showsHorizontalScrollIndicator={false} horizontal
             ref={ref} pagingEnabled onScroll={_handleScroll}
             onContentSizeChange={(width) => setScrollViewWidth(width)}
@@ -97,6 +116,9 @@ const styles = StyleSheet.create({
         shadowColor: 'black',
         shadowOpacity: 1,
         elevation: 10
+    },
+    disabledArrow: {
+        backgroundColor: '#ccc',
     },
     events: {
         display: 'flex',

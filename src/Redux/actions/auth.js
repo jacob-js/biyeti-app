@@ -11,11 +11,11 @@ export const loginAction = (data) => async (dispatch, navigation) => {
         const res = await axios.post(`${baseUrl}/api/v1/users/login`, data)
         if(res.status === 200){
             await AsyncStorage.setItem('auth_token', res.data?.data.token)
-            navigation.navigate('Drawer');
             dispatch({
                 type: authActionsTypes.LOGIN_SUCCESS,
                 payload: res.data.data?.user
             })
+            navigation.navigate('Drawer');
         }
     } catch (error) {
         const res = error.response;
@@ -61,5 +61,40 @@ export const signupAction = (data) => async (dispatch, navigation) => {
                 payload: 'Erreur de chargement, veuillez réessayer'
             })
         }
+    }
+};
+
+export const getCurrentUser = async (dispatch, navigation) => {
+    dispatch({
+        type: authActionsTypes.GET_CURRENT_USER_REQUEST
+    })
+    const token = await AsyncStorage.getItem('auth_token')
+    try {
+        const res = await axios.get(`/api/v1/users/profile`, {
+            headers: {
+                'authtoken': token
+            }
+        })
+        if(res.status === 200){
+            dispatch({
+                type: authActionsTypes.GET_CURRENT_USER_SUCCESS,
+                payload: res.data.data
+            })
+            navigation.navigate('Drawer');
+        }
+    } catch (error) {
+        const res = error.response;
+        if(res){
+            dispatch({
+                type: authActionsTypes.GET_CURRENT_USER_FAILURE,
+                payload: res.data.error || res.data
+            })
+        }else{
+            dispatch({
+                type: authActionsTypes.GET_CURRENT_USER_FAILURE,
+                payload: 'Erreur de chargement, veuillez réessayer'
+            })
+        }
+        console.log(res);
     }
 }

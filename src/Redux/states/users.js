@@ -8,6 +8,12 @@ const users = {
         loading: false,
         error: {},
         data: {}
+    },
+    currentUser: {
+        loading: false,
+        error: null,
+        data: {},
+        auth: null
     }
 };
 

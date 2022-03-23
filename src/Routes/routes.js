@@ -11,33 +11,39 @@ export const routes = [
         name: 'Login',
         component: Login,
         withHeader: false,
+        secured: false
     },
     {
         name: 'Signup',
         component: Signup,
         withHeader: false,
+        secured: false
     },
     {
         name: 'EventDetail',
         component: EventDetail,
         title: 'Detail de l\'événement',
+        secured: true
     },
     {
         name: 'Dashboard',
         component: Dashboard,
-        withHeader: false
+        withHeader: false,
+        secured: true
     },
     {
         name: 'DashboardEvents',
         component: EventsList,
         withHeader: true,
-        title: 'Mes événements'
+        title: 'Mes événements',
+        secured: true
     },
     {
         name: 'AddEventForm',
         component: AddEventForm,
         withHeader: true,
-        title: 'Ajouter un événement'
+        title: 'Ajouter un événement',
+        secured: true
     }
 ]
 

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Dimensions, TouchableHighlight } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Dimensions, SafeAreaView } from 'react-native'
 import React from 'react'
 import { Divider, Icon, Input } from 'native-base';
 import AntIcon from 'react-native-vector-icons/AntDesign';
@@ -13,6 +13,7 @@ import EventsCarousel from '../Commons/EventsCarousel';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { getEvents } from '../Redux/actions/events';
+import ContentLoader from 'react-native-easy-content-loader';
 
 const events = [
   {
@@ -47,7 +48,8 @@ const Home = ({navigation}) => {
   }, [])
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+      <ScrollView>
       <View style={styles.container}>
         <View style={styles.searchView}>
           <Input variant="rounded" style={styles.search} bg='rgba(0,0,0,0.1)' paddingLeft={5} placeholder="Rechercher un événement" rightElement={
@@ -58,15 +60,21 @@ const Home = ({navigation}) => {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Pour bientôt</Text>
-            {
-              loading ? <Text>Chargement...</Text>: null
-            }
             <TouchableOpacity>
               <Text style={styles.showAll}>Afficher tout</Text>
             </TouchableOpacity>
           </View>
           <Divider mb={3} width='90%' m='auto' />
-          <EventsCarousel events={rows} navigation={navigation} />
+          {
+            loading ?
+            <ContentLoader pRows={0} pWidth={320} pHeight={200} 
+              active
+              tWidth={Dimensions.get('window').width - 80}
+              tHeight={250}
+              titleStyles={styles.skeleton}
+            />:
+            <EventsCarousel events={rows} navigation={navigation} />
+          }
         </View>
 
         <View style={styles.section}>
@@ -92,6 +100,7 @@ const Home = ({navigation}) => {
         </View>
       </View>
     </ScrollView>
+    </SafeAreaView>
   )
 };
 
@@ -136,6 +145,10 @@ const styles = StyleSheet.create({
     color: theme.colors.default,
     fontFamily: 'Barlow-Bold',
     fontSize: 16,
+  },
+  skeleton: {
+    marginLeft: 10,
+    borderRadius: 15
   }
 });
 
