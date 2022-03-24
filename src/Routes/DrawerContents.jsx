@@ -9,6 +9,8 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntdIcon from 'react-native-vector-icons/AntDesign';
 import {theme} from "../../assets/theme";
+import { useDispatch } from "react-redux";
+import { logoutAction } from "../Redux/actions/auth";
 
 const menus = [
     {
@@ -36,6 +38,7 @@ const menus = [
 export function DrawerContents({drawer, stack}){
     const { navigation: stackNavigation } = stack;
     const { navigation: drawerNavigation } = drawer;
+    const dispatch = useDispatch();
 
     return(
         <View style={style.drawer}>
@@ -66,9 +69,9 @@ export function DrawerContents({drawer, stack}){
                 </View>
 
             <Drawer.Section style={style.bottomDrawerSecion}>
-                <TouchableOpacity style={style.logout}>
+                <TouchableOpacity style={style.logout} onPress={() =>logoutAction(dispatch, stackNavigation)}>
                     <View><AntdIcon name='logout' color='#be123c' size={16} /></View>
-                    <Text style={{ paddingLeft: 20, color: '#be123c' }} onPress={() =>stackNavigation.navigate('Login')}>Deconexion</Text>
+                    <Text style={{ paddingLeft: 20, color: '#be123c' }}>Deconexion</Text>
                 </TouchableOpacity>
             </Drawer.Section>
         </View>

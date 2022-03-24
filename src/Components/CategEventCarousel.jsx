@@ -25,6 +25,7 @@ export default function CategEventCarousel({category, navigation}) {
                 setError(true);
             }
         })()
+        return () => {}
     }, [category, navigation])
   return (
       !loading && events.length <= 0 ? null :

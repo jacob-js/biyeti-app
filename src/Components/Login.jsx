@@ -46,12 +46,12 @@ export default function Login({ navigation }) {
             validationSchema={validationSchema}
             onSubmit={values => loginAction(values)(dispatch, navigation)}
         >
-            {({ handleSubmit, errors, handleChange }) =>(
+            {({ handleSubmit, errors, handleChange, touched }) =>(
                 <>
                     
-                    <CommonInput required error={errors.identifier || getError('identifier')} onChangeText={handleChange('identifier')} 
+                    <CommonInput required error={touched.identifier && errors.identifier || getError('identifier')} onChangeText={handleChange('identifier')} 
                         placeholder='Email ou N° de tél' leftIcon={<SIcon name="user" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} />
-                    <CommonInput required error={errors.password} onChangeText={handleChange('password')} placeholder='Mot de passe' 
+                    <CommonInput required error={touched.password && errors.password} onChangeText={handleChange('password')} placeholder='Mot de passe' 
                         leftIcon={<MIcon name="key-outline" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} 
                         type={!visible && 'password'}
                         rightIcon={ <TouchableOpacity onPress={() =>setVisible(!visible)}>

@@ -97,4 +97,12 @@ export const getCurrentUser = async (dispatch, navigation) => {
         }
         console.log(res);
     }
+};
+
+export const logoutAction = async (dispatch, navigation) => {
+    await AsyncStorage.removeItem('auth_token')
+    dispatch({
+        type: authActionsTypes.LOGOUT
+    })
+    navigation.navigate('Login');
 }

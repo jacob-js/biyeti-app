@@ -62,7 +62,7 @@ export default function Routes() {
                                 )}    
                             </Stack.Screen>
                         </>
-                        : auth === null &&
+                        : auth === false &&
                         notSecuredRoutes.map((route, index) => (
                             <Stack.Screen name={route.name} component={route.component} options={{
                                 headerShown: route.withHeader, title: route.title, unmountOnBlur: true
