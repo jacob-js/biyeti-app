@@ -12,8 +12,9 @@ import { useState } from 'react';
 import EventsCarousel from '../Commons/EventsCarousel';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { getEvents } from '../Redux/actions/events';
+import { getCategorys, getEvents } from '../Redux/actions/events';
 import ContentLoader from 'react-native-easy-content-loader';
+import CategEventCarousel from './CategEventCarousel';
 
 const events = [
   {
@@ -41,10 +42,12 @@ const events = [
 
 const Home = ({navigation}) => {
   const { data, count, rows, loading, error } = useSelector(({ events: { events } }) =>events);
+  const { data: categorys, loading: loadingCateg } = useSelector(({ events: { categorys } }) =>categorys);
   const dispatch = useDispatch();
 
   useEffect(() =>{
-    getEvents()(dispatch)
+    getEvents()(dispatch);
+    getCategorys(dispatch);
   }, [])
 
   return (
@@ -76,8 +79,33 @@ const Home = ({navigation}) => {
             <EventsCarousel events={rows} navigation={navigation} />
           }
         </View>
-
-        <View style={styles.section}>
+        {
+          loadingCateg ?
+          <>
+            <ContentLoader pRows={0} pWidth={320} pHeight={200} 
+              active
+              tWidth={Dimensions.get('window').width - 80}
+              tHeight={250}
+              titleStyles={styles.skeleton}
+            />
+            <ContentLoader pRows={0} pWidth={320} pHeight={200} 
+              active
+              tWidth={Dimensions.get('window').width - 80}
+              tHeight={250}
+              titleStyles={styles.skeleton}
+            />
+            <ContentLoader pRows={0} pWidth={320} pHeight={200} 
+              active
+              tWidth={Dimensions.get('window').width - 80}
+              tHeight={250}
+              titleStyles={styles.skeleton}
+            />
+          </>:
+          categorys.map((category, index) => (
+            <CategEventCarousel category={category} key={index} navigation={navigation} />
+          ))
+        }
+        {/* <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Humour</Text>
             <TouchableOpacity>
@@ -97,7 +125,7 @@ const Home = ({navigation}) => {
           </View>
           <Divider mb={3} width='90%' m='auto' />
           <EventsCarousel events={events} navigation={navigation} />
-        </View>
+        </View> */}
       </View>
     </ScrollView>
     </SafeAreaView>

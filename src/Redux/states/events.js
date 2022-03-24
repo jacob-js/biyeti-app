@@ -9,6 +9,11 @@ const events = {
         loading: false,
         error: null,
         data: {}
+    },
+    categorys: {
+        loading: false,
+        data: [],
+        error: null
     }
 };
 
