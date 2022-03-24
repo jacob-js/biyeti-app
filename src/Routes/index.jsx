@@ -18,56 +18,59 @@ export default function Routes() {
     
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Login" defaultScreenOptions={{
-                animationTypeForReplace: 'pop',
-                unmountOnBlur: true
-            }}>
-                <Stack.Screen name="Loading" component={LoadingPage} options={{ headerShown: false }} />
-                {
-                    auth === true ?
-                    <>
-                        {
-                            securedRoutes.map((route, index) => (
-                                <Stack.Screen name={route.name} component={route.component} options={{
-                                    headerShown: route.withHeader, title: route.title, unmountOnBlur: true
-                                }} key={index} />
-                            ))
-                        }
-                        <Stack.Screen name="Drawer" options={{
-                            headerShown: false,
-                            unmountOnBlur: true
-                        }} >
-                            {stackProps => (
-                                <Drawer.Navigator initialRouteName='Home'
-                                    screenOptions={{
-                                        header: ({navigation, route, options}) =>{
-                                            return <Header DrawerNavigation={navigation} drawerRoute={route} options={options} {...stackProps} />
+            {
+                loading ?
+                    <LoadingPage />:
+                <Stack.Navigator initialRouteName="Drawer" defaultScreenOptions={{
+                    animationTypeForReplace: 'pop',
+                    unmountOnBlur: true
+                }}>
+                    {
+                        auth === true ?
+                        <>
+                            {
+                                securedRoutes.map((route, index) => (
+                                    <Stack.Screen name={route.name} component={route.component} options={{
+                                        headerShown: route.withHeader, title: route.title, unmountOnBlur: true
+                                    }} key={index} />
+                                ))
+                            }
+                            <Stack.Screen name="Drawer" options={{
+                                headerShown: false,
+                                unmountOnBlur: true
+                            }} >
+                                {stackProps => (
+                                    <Drawer.Navigator initialRouteName='Home'
+                                        screenOptions={{
+                                            header: ({navigation, route, options}) =>{
+                                                return <Header DrawerNavigation={navigation} drawerRoute={route} options={options} {...stackProps} />
+                                            }
+                                        }}
+                                        
+                                        drawerContent={props => <DrawerContents drawer={{...props}} stack={ {...stackProps} } />}
+                                    >
+                                        {
+                                            drawerRoutes.map((route, index) =>(
+                                                <Drawer.Screen name={route.name} key={index} component={route.component} { ...stackProps }
+                                                    options={{
+                                                        unmountOnBlur: true
+                                                    }}
+                                                />
+                                            ))
                                         }
-                                    }}
-                                    
-                                    drawerContent={props => <DrawerContents drawer={{...props}} stack={ {...stackProps} } />}
-                                >
-                                    {
-                                        drawerRoutes.map((route, index) =>(
-                                            <Drawer.Screen name={route.name} key={index} component={route.component} { ...stackProps }
-                                                options={{
-                                                    unmountOnBlur: true
-                                                }}
-                                            />
-                                        ))
-                                    }
-                                </Drawer.Navigator>
-                            )}    
-                        </Stack.Screen>
-                    </>
-                    : auth === null &&
-                    notSecuredRoutes.map((route, index) => (
-                        <Stack.Screen name={route.name} component={route.component} options={{
-                            headerShown: route.withHeader, title: route.title, unmountOnBlur: true
-                        }} key={index} />
-                    ))
-                }
-            </Stack.Navigator>
+                                    </Drawer.Navigator>
+                                )}    
+                            </Stack.Screen>
+                        </>
+                        : auth === null &&
+                        notSecuredRoutes.map((route, index) => (
+                            <Stack.Screen name={route.name} component={route.component} options={{
+                                headerShown: route.withHeader, title: route.title, unmountOnBlur: true
+                            }} key={index} />
+                        ))
+                    }
+                </Stack.Navigator>
+            }
         </NavigationContainer>
     )
 }

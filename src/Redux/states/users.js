@@ -10,7 +10,7 @@ const users = {
         data: {}
     },
     currentUser: {
-        loading: false,
+        loading: true,
         error: null,
         data: {},
         auth: null

@@ -80,7 +80,7 @@ export const getCurrentUser = async (dispatch, navigation) => {
                 type: authActionsTypes.GET_CURRENT_USER_SUCCESS,
                 payload: res.data.data
             })
-            navigation.navigate('Drawer');
+            navigation?.navigate('Drawer');
         }
     } catch (error) {
         const res = error.response;

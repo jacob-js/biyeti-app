@@ -30,7 +30,7 @@ const tickets = [
 ]
 
 export default function EventDetail({route, navigation}) {
-    const { eventId } = route.params;
+    const eventId = route?.params?.eventId;
   return (
     <ScrollView contentContainerStyle={styles.container}>
         <Image source={{ uri: event.cover }} style={styles.cover} />

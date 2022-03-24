@@ -14,7 +14,6 @@ const getCurrentUser = (state, {type, payload}) =>{
             }
             
         case authActionsTypes.GET_CURRENT_USER_SUCCESS:
-            console.log('payload', payload);
             return{
                 ...state,
                 currentUser: {
