@@ -66,7 +66,7 @@ export default function EventsCarousel({events, navigation}) {
             events.map((event, index) => (
                 <View style={styles.eventContainer} key={index}>
                 <View style={styles.event}>
-                    <TouchableOpacity style={styles.touchableCover} onPress={() =>navigation.navigate('EventDetail', { eventId: index })}>
+                    <TouchableOpacity style={styles.touchableCover} onPress={() =>navigation.navigate('EventDetail', { eventId: event.id })}>
                     <Image source={{ uri: event.cover }} style={styles.eventCover} />
                     </TouchableOpacity>
                     <View style={styles.eventDetail}>

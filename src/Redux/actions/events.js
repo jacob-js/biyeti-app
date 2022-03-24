@@ -93,4 +93,32 @@ export const getCategorys = async (dispatch) =>{
             })
         }
     }
+};
+
+export const getEvent = (id) => async(dispatch) =>{
+    dispatch({
+        type: eventsActionsTypes.GET_EVENT_REQUEST
+    });
+    try {
+        const res = await axios.get(`/api/v1/events/id/${id}`);
+        if(res.status === 200){
+            dispatch({
+                type: eventsActionsTypes.GET_EVENT_SUCCESS,
+                payload: res.data.data
+            })
+        }
+    } catch (error) {
+        const res = error.response;
+        if(res){
+            dispatch({
+                type: eventsActionsTypes.GET_EVENT_ERROR,
+                payload: res.data?.error || res.data
+            })
+        }else{
+            dispatch({
+                type: eventsActionsTypes.GET_EVENT_ERROR,
+                payload: 'Echec de chargement'
+            })
+        }
+    }
 }

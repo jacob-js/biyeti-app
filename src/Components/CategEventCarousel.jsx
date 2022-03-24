@@ -18,7 +18,6 @@ export default function CategEventCarousel({category, navigation}) {
                 const res = await axios.get(`/api/v1/events?category_id=${category.id}&p=${1}&p_size=${5}`);
                 if(res.status === 200){
                     setEvents(res.data.data?.rows);
-                    console.log(res.data.data);
                     setLoading(false);
                 }
             } catch (error) {

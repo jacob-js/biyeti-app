@@ -1,18 +1,14 @@
-import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native'
-import React from 'react';
+import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
+import React, { useEffect } from 'react';
 import { theme } from '../../assets/theme';
 import EntyIcon from 'react-native-vector-icons/Entypo';
 import FaIcon from 'react-native-vector-icons/FontAwesome5';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import { Divider } from 'native-base';
-
-const event = {
-    name: 'Lorem Ipsum',
-    date: '20/10/2020',
-    time: '10:00',
-    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis cum error repellat odit provident, consectetur repudiandae eveniet? Quisquam repellat, minima voluptas error quam ullam neque repellendus maiores? Commodi, a repellendus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque molestias facilis alias excepturi? Unde, corrupti itaque consequuntur, debitis accusantium ratione qui deleniti molestias, quae quibusdam quisquam asperiores! Dolores, aperiam quas?',
-    cover: 'https://picsum.photos/600',
-};
+import { useDispatch, useSelector } from 'react-redux';
+import { getEvent } from '../Redux/actions/events';
+import ContentLoader from 'react-native-easy-content-loader';
+import moment from 'moment';
 
 const tickets = [
     {
@@ -31,20 +27,46 @@ const tickets = [
 
 export default function EventDetail({route, navigation}) {
     const eventId = route?.params?.eventId;
+    const { data: event, loading } = useSelector(({ events: { event } }) => event);
+    const dispatch = useDispatch();
+
+    useEffect(() =>{
+        getEvent(eventId)(dispatch);
+    }, [eventId, navigation]);
   return (
     <ScrollView contentContainerStyle={styles.container}>
-        <Image source={{ uri: event.cover }} style={styles.cover} />
+        {
+            loading ?
+            <ContentLoader pRows={0} pWidth={320} pHeight={200} 
+              active
+              tWidth={Dimensions.get('window').width - 80}
+              tHeight={250}
+              titleStyles={styles.skeleton}
+            />:
+            <Image source={{ uri: event.cover }} style={styles.cover} />
+        }
         <Text style={styles.eventName}>{event.name}</Text>
         <View style={styles.addressContainer}>
-            <Text style={styles.eventLocation}> <AntIcon name='enviromento' style={styles.icon} /> Goma</Text>
+            <Text style={styles.eventLocation}> <AntIcon name='enviromento' style={styles.icon} /> {event.location}</Text>
             <Divider orientation='vertical' marginX={1} bg={theme.colors.light100} />
-            <Text style={styles.eventDate}><AntIcon name='calendar' style={styles.icon} /> 03 Avril 2022</Text>
+            <Text style={styles.eventDate}><AntIcon name='calendar' style={styles.icon} /> {moment(event.event_date).format("DD-MM-YYYY | HH:mm")}</Text>
         </View>
         <Divider my={2} />
-        <Text style={styles.eventDescription}>{event.description}</Text>
-        <View style={styles.ticketsTitle}>
-            <Text style={styles.title}>Billets</Text><Divider />
-        </View>
+        {
+            loading ?
+            <ContentLoader pRows={2} pWidth={Dimensions.get('window').width * 80 / 100} pHeight={20} 
+              active
+              tWidth={Dimensions.get('window').width * 50 / 100}
+              tHeight={35}
+              titleStyles={styles.skeleton}
+            />:
+            <>
+            <Text style={styles.eventDescription}>{event.description}</Text>
+            <View style={styles.ticketsTitle}>
+                <Text style={styles.title}>Billets</Text><Divider />
+            </View>
+            </>
+        }
         <View style={styles.tickets}>
             {
                 tickets.map((ticket, index) =>(
@@ -171,5 +193,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         color: theme.colors.gold
+    },
+    skeleton: {
+        borderRadius: 15
     }
 })

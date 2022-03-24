@@ -16,30 +16,6 @@ import { getCategorys, getEvents } from '../Redux/actions/events';
 import ContentLoader from 'react-native-easy-content-loader';
 import CategEventCarousel from './CategEventCarousel';
 
-const events = [
-  {
-    name: 'Lorem Ipsum',
-    date: '20/10/2020',
-    time: '10:00',
-    description: 'lorem ipsum dolor sit amet',
-    cover: 'https://picsum.photos/600',
-  },
-  {
-    name: 'Lorem Ipsum',
-    date: '20/10/2020',
-    time: '10:00',
-    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis cum error repellat odit provident, consectetur repudiandae eveniet? Quisquam repellat, minima voluptas error quam ullam neque repellendus maiores? Commodi, a repellendus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque molestias facilis alias excepturi? Unde, corrupti itaque consequuntur, debitis accusantium ratione qui deleniti molestias, quae quibusdam quisquam asperiores! Dolores, aperiam quas?',
-    cover: 'https://picsum.photos/700',
-  },
-  {
-    name: 'Lorem Ipsum',
-    date: '20/10/2020',
-    time: '10:00',
-    description: 'lorem ipsum dolor sit amet',
-    cover: 'https://picsum.photos/600',
-  }
-]
-
 const Home = ({navigation}) => {
   const { data, count, rows, loading, error } = useSelector(({ events: { events } }) =>events);
   const { data: categorys, loading: loadingCateg } = useSelector(({ events: { categorys } }) =>categorys);
@@ -105,27 +81,6 @@ const Home = ({navigation}) => {
             <CategEventCarousel category={category} key={index} navigation={navigation} />
           ))
         }
-        {/* <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Humour</Text>
-            <TouchableOpacity>
-              <Text style={styles.showAll}>Afficher tout</Text>
-            </TouchableOpacity>
-          </View>
-          <Divider mb={3} width='90%' m='auto' />
-          <EventsCarousel events={events} navigation={navigation} />
-        </View>
-
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Conférences</Text>
-            <TouchableOpacity>
-              <Text style={styles.showAll}>Afficher tout</Text>
-            </TouchableOpacity>
-          </View>
-          <Divider mb={3} width='90%' m='auto' />
-          <EventsCarousel events={events} navigation={navigation} />
-        </View> */}
       </View>
     </ScrollView>
     </SafeAreaView>
