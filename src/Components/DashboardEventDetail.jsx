@@ -5,6 +5,7 @@ import { getEvent } from '../Redux/actions/events';
 import IoIcon from 'react-native-vector-icons/Ionicons';
 import { theme } from '../../assets/theme';
 import Tickets from './Tickets';
+import { getTicketsAction } from '../Redux/actions/tickets';
 
 const links = [
   {
@@ -33,6 +34,7 @@ export default function DashboardEventDetail({route, navigation}) {
 
     const getData = () =>{
         getEvent(eventId)(dispatch);
+        getTicketsAction(eventId)(dispatch);
     }
 
     useEffect(() =>{
@@ -65,7 +67,7 @@ export default function DashboardEventDetail({route, navigation}) {
         }
       >
           {
-            activeLink === 'Billets' && <Tickets />
+            activeLink === 'Billets' && <Tickets navigation={navigation} route={route} />
           }
       </ScrollView>
     </SafeAreaView>

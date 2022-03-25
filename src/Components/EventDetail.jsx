@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
+import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Dimensions, SafeAreaView } from 'react-native'
 import React, { useEffect } from 'react';
 import { theme } from '../../assets/theme';
 import EntyIcon from 'react-native-vector-icons/Entypo';
@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getEvent } from '../Redux/actions/events';
 import ContentLoader from 'react-native-easy-content-loader';
 import moment from 'moment';
+import { getTicketsAction } from '../Redux/actions/tickets';
 
 const tickets = [
     {
@@ -28,77 +29,103 @@ const tickets = [
 export default function EventDetail({route, navigation}) {
     const eventId = route?.params?.eventId;
     const { data: event, loading } = useSelector(({ events: { event } }) => event);
+    const { data: tickets, loading: loadingTickets } = useSelector(({ tickets: { tickets } }) => tickets);
     const dispatch = useDispatch();
+
+    const refreshTickets = () =>{
+        getTicketsAction(eventId)(dispatch);
+    };
 
     useEffect(() =>{
         getEvent(eventId)(dispatch);
     }, [eventId, navigation]);
-  return (
-    <ScrollView contentContainerStyle={styles.container}>
-        {
-            loading ?
-            <ContentLoader pRows={0} pWidth={320} pHeight={200} 
-              active
-              tWidth={Dimensions.get('window').width - 80}
-              tHeight={250}
-              titleStyles={styles.skeleton}
-            />:
-            <Image source={{ uri: event.cover }} style={styles.cover} />
-        }
-        <Text style={styles.eventName}>{event.name}</Text>
-        <View style={styles.addressContainer}>
-            <Text style={styles.eventLocation}> <AntIcon name='enviromento' style={styles.icon} /> {event.location}</Text>
-            <Divider orientation='vertical' marginX={1} bg={theme.colors.light100} />
-            <Text style={styles.eventDate}><AntIcon name='calendar' style={styles.icon} /> {moment(event.event_date).format("DD-MM-YYYY | HH:mm")}</Text>
-        </View>
-        <Divider my={2} />
-        {
-            loading ?
-            <ContentLoader pRows={2} pWidth={Dimensions.get('window').width * 80 / 100} pHeight={20} 
-              active
-              tWidth={Dimensions.get('window').width * 50 / 100}
-              tHeight={35}
-              titleStyles={styles.skeleton}
-            />:
-            <>
-            <Text style={styles.eventDescription}>{event.description}</Text>
-            <View style={styles.ticketsTitle}>
-                <Text style={styles.title}>Billets</Text><Divider />
-            </View>
-            </>
-        }
-        <View style={styles.tickets}>
-            {
-                tickets.map((ticket, index) =>(
-                    <View key={index}>
-                        <TouchableOpacity style={styles.ticket} key={index}>
-                            <View style={styles.ticketAvatar}>
-                                {ticket.name === 'vip' ? <Image source={{
-                                    uri: "https://img.icons8.com/external-flaticons-flat-flat-icons/64/000000/external-vip-music-festival-flaticons-flat-flat-icons.png"
-                                }} style={styles.vipIcon} /> :
-                                    <FaIcon name='ticket-alt' style={styles.ticketIcon} />
-                                }
-                            </View>
-                            <View style={styles.ticketInfo}>
-                                <Text style={styles.ticketName}>{ticket.name}</Text>
-                                <Text style={styles.ticketDesc}>{ticket.caption}</Text>
-                                <Text style={styles.ticketPrice}>{ticket.price} {ticket.currency === 'usd' ? '$': 'Fc'}</Text>
-                            </View>
-                        </TouchableOpacity>
-                        {
-                            index + 1 !== tickets.length && <Divider my={2} mb={-3} />
-                        }
-                    </View>
-                ))
+    useEffect(() =>{
+        (() =>{
+            if(event.name){
+                refreshTickets();
             }
-        </View>
-    </ScrollView>
+        })
+    }, [event, navigation]);
+  return (
+    <SafeAreaView style={styles.container}>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+            {
+                loading ?
+                <ContentLoader pRows={0} pWidth={320} pHeight={200} 
+                active
+                tWidth={Dimensions.get('window').width - 80}
+                tHeight={250}
+                titleStyles={styles.skeleton}
+                />:
+                <Image source={{ uri: event.cover }} style={styles.cover} />
+            }
+            <Text style={styles.eventName}>{event.name}</Text>
+            <View style={styles.addressContainer}>
+                <Text style={styles.eventLocation}> <AntIcon name='enviromento' style={styles.icon} /> {event.location}</Text>
+                <Divider orientation='vertical' marginX={1} bg={theme.colors.light100} />
+                <Text style={styles.eventDate}><AntIcon name='calendar' style={styles.icon} /> {moment(event.event_date).format("DD-MM-YYYY | HH:mm")}</Text>
+            </View>
+            <Divider my={2} />
+            {
+                loading ?
+                <ContentLoader pRows={2} pWidth={Dimensions.get('window').width * 80 / 100} pHeight={20} 
+                active
+                tWidth={Dimensions.get('window').width * 50 / 100}
+                tHeight={35}
+                titleStyles={styles.skeleton}
+                />:
+                <>
+                <Text style={styles.eventDescription}>{event.description}</Text>
+                <View style={styles.ticketsTitle}>
+                    <Text style={styles.title}>Billets</Text><Divider />
+                </View>
+                </>
+            }
+            <View style={styles.tickets}>
+                {
+                    loadingTickets ?
+                    <>
+                        <ContentLoader pRows={1} avatar
+                            tWidth={Dimensions.get('window').width * 50 / 100}
+                            tHeight={35}
+                            titleStyles={styles.skeleton}
+                        />
+                    </>:
+                    tickets.map((ticket, index) =>(
+                        <View key={index}>
+                            <TouchableOpacity style={styles.ticket} key={index}>
+                                <View style={styles.ticketAvatar}>
+                                    {ticket.name === 'vip' ? <Image source={{
+                                        uri: "https://img.icons8.com/external-flaticons-flat-flat-icons/64/000000/external-vip-music-festival-flaticons-flat-flat-icons.png"
+                                    }} style={styles.vipIcon} /> :
+                                        <FaIcon name='ticket-alt' style={styles.ticketIcon} />
+                                    }
+                                </View>
+                                <View style={styles.ticketInfo}>
+                                    <Text style={styles.ticketName}>{ticket.name}</Text>
+                                    <Text style={styles.ticketDesc}>{ticket.caption}</Text>
+                                    <Text style={styles.ticketPrice}>{ticket.price} {ticket.currency === 'usd' ? '$': 'Fc'}</Text>
+                                </View>
+                            </TouchableOpacity>
+                            {
+                                index + 1 !== tickets.length && <Divider my={2} mb={-3} />
+                            }
+                        </View>
+                    ))
+                }
+            </View>
+        </ScrollView>
+    </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
     container: {
-        padding: 30,
+        flex: 1,
+        backgroundColor: 'white',
+        padding: 20,
+    },
+    scrollContainer: {
         alignItems: 'center',
         backgroundColor: 'white'
     },

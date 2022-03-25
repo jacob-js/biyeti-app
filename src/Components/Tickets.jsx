@@ -1,31 +1,33 @@
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, TouchableOpacity, StyleSheet, Image, Dimensions } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { Button, Divider } from 'native-base'
 import FaIcon from 'react-native-vector-icons/FontAwesome5';
 import { theme } from '../../assets/theme';
 import AddTicketModal from './AddTicketModal';
-
-const tickets = [
-    {
-        name: 'vip',
-        price: 100,
-        currency: 'usd',
-        caption: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-    },
-    {
-        name: 'standard',
-        price: 50,
-        currency: 'usd',
-        caption: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-    }
-]
+import { useDispatch, useSelector } from 'react-redux';
+import { getTicketsAction } from '../Redux/actions/tickets';
+import ContentLoader from 'react-native-easy-content-loader';
 
 export default function Tickets() {
     const [showModal, setShowModal] = useState(false);
+    const { data: tickets, loading } = useSelector(({ tickets: { tickets } }) => tickets);
 
   return (
     <View style={styles.tickets}>
         {
+            loading ?
+            <>
+                <ContentLoader pRows={1} avatar
+                    tWidth={Dimensions.get('window').width * 50 / 100}
+                    tHeight={35}
+                    titleStyles={styles.skeleton}
+                />
+                <ContentLoader pRows={1} avatar
+                    tWidth={Dimensions.get('window').width * 50 / 100}
+                    tHeight={35}
+                    titleStyles={styles.skeleton}
+                />
+            </>:
             tickets.map((ticket, index) =>(
                 <View key={index}>
                     <TouchableOpacity style={styles.ticket} key={index}>
@@ -130,5 +132,8 @@ const styles = StyleSheet.create({
         elevation: 15,
         borderRadius: 15,
         marginTop: 10
+    },
+    skeleton: {
+        borderRadius: 15
     }
 })
