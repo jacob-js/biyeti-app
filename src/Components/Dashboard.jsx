@@ -1,18 +1,24 @@
 import { View, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Avatar } from 'native-base';
 import { theme } from '../../assets/theme';
 import SIcon from 'react-native-vector-icons/SimpleLineIcons';
 import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import IoIcon from 'react-native-vector-icons/Ionicons';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAgentsAction } from '../Redux/actions/agents';
 
 export default function Dashboard({navigation}) {
+    const dispatch = useDispatch();
+    const { data: user } = useSelector(({ users: {currentUser} }) =>currentUser); 
+    const { count: eventCount } = useSelector(({ agents: { agents }}) => agents);
+
     const options = [
         {
             name: 'Mes evenenements',
             path: 'DashboardEvents',
             icon: <SIcon name='calendar' style={styles.icon} />,
-            count: 2
+            count: eventCount
         },
         {
             name: 'Mes billets',
@@ -25,7 +31,12 @@ export default function Dashboard({navigation}) {
             path: 'Profile',
             icon: <SIcon name='user' style={styles.icon} />
         }
-    ]
+    ];
+
+    useEffect(() =>{
+        getAgentsAction(user.id)(dispatch, navigation);
+    }, [navigation, user]);
+
   return (
     <ScrollView style={{  backgroundColor: 'white' }}>
         <View style={styles.container}>

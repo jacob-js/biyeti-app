@@ -76,6 +76,7 @@ export const getCurrentUser = async (dispatch, navigation) => {
             }
         })
         if(res.status === 200){
+            axios.defaults.headers.common['authtoken'] = token
             dispatch({
                 type: authActionsTypes.GET_CURRENT_USER_SUCCESS,
                 payload: res.data.data

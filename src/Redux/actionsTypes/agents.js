@@ -1,0 +1,7 @@
+const agentsActionsTypes = {
+    GET_USER_AGENTS_REQUEST: 'GET_USER_AGENTS_REQUEST',
+    GET_USER_AGENTS_SUCCESS: 'GET_USER_AGENTS_SUCCESS',
+    GET_USER_AGENTS_FAILURE: 'GET_USER_AGENTS_FAILURE',
+};
+
+export default agentsActionsTypes;

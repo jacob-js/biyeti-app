@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Dimensions, SafeAreaView } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Dimensions, SafeAreaView, RefreshControl } from 'react-native'
 import React from 'react'
 import { Divider, Icon, Input } from 'native-base';
 import AntIcon from 'react-native-vector-icons/AntDesign';
@@ -24,11 +24,23 @@ const Home = ({navigation}) => {
   useEffect(() =>{
     getEvents()(dispatch);
     getCategorys(dispatch);
-  }, [])
+  }, [navigation]);
+
+  const refresh = () =>{
+    getEvents()(dispatch);
+    getCategorys(dispatch);
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={loading || loadingCateg}
+            onRefresh={refresh}
+          />
+        }
+      >
       <View style={styles.container}>
         <View style={styles.searchView}>
           <Input variant="rounded" style={styles.search} bg='rgba(0,0,0,0.1)' paddingLeft={5} placeholder="Rechercher un événement" rightElement={
