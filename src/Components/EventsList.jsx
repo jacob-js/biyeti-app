@@ -1,4 +1,4 @@
-import { View, Text, FlatList, StyleSheet, Image, SafeAreaView } from 'react-native'
+import { View, Text, FlatList, StyleSheet, Image, SafeAreaView, TouchableOpacity } from 'react-native'
 import React, { useEffect } from 'react';
 import FaIcon from 'react-native-vector-icons/FontAwesome5';
 import AntIcon from 'react-native-vector-icons/AntDesign';
@@ -56,7 +56,9 @@ export default function EventsList({navigation}) {
                 <FlatList
                     data={rows}
                     renderItem={({item: { event }}) =>(
-                        <View style={styles.item}>
+                        <TouchableOpacity style={styles.item} onPress={() =>navigation.navigate('DashboardEventDetail', {
+                            eventId: event.id
+                        })}>
                             <View style={styles.coverContainer}>
                                 <Image source={{ uri: event.cover }} style={styles.cover} />
                             </View>
@@ -69,7 +71,7 @@ export default function EventsList({navigation}) {
                                     <Text style={styles.eventDate}><AntIcon name='calendar' style={styles.icon} /> {moment(event.event_date).format("DD-MM-YYYY")}</Text>
                                 </View>
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     )}
                     keyExtractor={item => Math.random()}
                     refreshing={loading}

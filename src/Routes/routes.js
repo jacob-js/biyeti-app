@@ -1,5 +1,6 @@
 import AddEventForm from "../Components/AddEventForm";
 import Dashboard from "../Components/Dashboard";
+import DashboardEventDetail from "../Components/DashboardEventDetail";
 import EventDetail from "../Components/EventDetail";
 import EventsList from "../Components/EventsList";
 import Home from "../Components/Home";
@@ -43,6 +44,12 @@ export const routes = [
         component: AddEventForm,
         withHeader: true,
         title: 'Ajouter un événement',
+        secured: true
+    },
+    {
+        name: 'DashboardEventDetail',
+        component: DashboardEventDetail,
+        withHeader: false,
         secured: true
     }
 ]

@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
         bottom: 30,
         width: Dimensions.get('window').width,
         height: 300,
-        backgroundColor: theme.colors.default,
+        backgroundColor: theme.colors.light,
         borderBottomStartRadius: 100,
     },
     user: {
