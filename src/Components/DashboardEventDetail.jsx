@@ -3,9 +3,11 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getEvent } from '../Redux/actions/events';
 import IoIcon from 'react-native-vector-icons/Ionicons';
+import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { theme } from '../../assets/theme';
 import Tickets from './Tickets';
 import { getTicketsAction } from '../Redux/actions/tickets';
+import ScanQr from '../Commons/ScanQr';
 
 const links = [
   {
@@ -31,6 +33,7 @@ export default function DashboardEventDetail({route, navigation}) {
     const { data: event, loading } = useSelector(({ events: { event } }) => event);
     const dispatch = useDispatch();
     const [activeLink, setActiveLink] = useState(links[0].name)
+    const [viewScan, setViewScan] = useState(false);
 
     const getData = () =>{
         getEvent(eventId)(dispatch);
@@ -45,20 +48,30 @@ export default function DashboardEventDetail({route, navigation}) {
     <SafeAreaView style={styles.container}>
       <ImageBackground style={styles.header} source={{ uri: event.cover }}>
         <View style={styles.headerBg}></View>
-        <Text style={styles.title}>{event.name}</Text>
-        <Text style={styles.descript}>{event.description?.substring(0, 100)} {event?.description?.length > 100 ? '...': ''} </Text>
-        <View style={styles.links}>
-          {
-            links.map((link, index) => (
-              <TouchableOpacity key={index} 
-                style={[styles.link, activeLink === link.name && styles.activeLink]}
-                onPress={() => setActiveLink(link.name)}
-              >
-                <IoIcon name={link.icon} style={[styles.linkIcon, activeLink === link.name && styles.activeLink]} /> 
-                <Text style={[styles.linkName, activeLink === link.name && styles.activeLink]}>{link.name}</Text>
-              </TouchableOpacity>
-            ))
-          }
+        <View style={styles.headerTop}>
+          <TouchableOpacity style={styles.headerTopLeft} onPress={() => navigation.goBack()}>
+            <IoIcon name='arrow-back' color='white' size={24} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.headerTopRight} onPress={setViewScan}>
+            <MatIcon name='qrcode-scan' color='white' size={24} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.headerBottom}>
+          <Text style={styles.title}>{event.name}</Text>
+          <Text style={styles.descript}>{event.description?.substring(0, 100)} {event?.description?.length > 100 ? '...': ''} </Text>
+          <View style={styles.links}>
+            {
+              links.map((link, index) => (
+                <TouchableOpacity key={index} 
+                  style={[styles.link, activeLink === link.name && styles.activeLink]}
+                  onPress={() => setActiveLink(link.name)}
+                >
+                  <IoIcon name={link.icon} style={[styles.linkIcon, activeLink === link.name && styles.activeLink]} /> 
+                  <Text style={[styles.linkName, activeLink === link.name && styles.activeLink]}>{link.name}</Text>
+                </TouchableOpacity>
+              ))
+            }
+          </View>
         </View>
       </ImageBackground>
       <ScrollView
@@ -70,6 +83,9 @@ export default function DashboardEventDetail({route, navigation}) {
             activeLink === 'Billets' && <Tickets navigation={navigation} route={route} />
           }
       </ScrollView>
+      {
+        viewScan && <ScanQr setViewScan={setViewScan} />
+      }
     </SafeAreaView>
   )
 };
@@ -82,7 +98,11 @@ const styles = StyleSheet.create({
       width: Dimensions.get('window').width,
       height: 200,
       padding: 20,
-      justifyContent: 'flex-end',
+      justifyContent: 'space-between',
+    },
+    headerTop: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
     },
     headerBg: {
       backgroundColor: 'rgba(0,0,0,0.3)',
