@@ -32,7 +32,7 @@ export default function Tickets() {
                 <View key={index}>
                     <TouchableOpacity style={styles.ticket} key={index}>
                         <View style={styles.ticketAvatar}>
-                            {ticket.name === 'vip' ? <Image source={{
+                            {ticket.name.toLowerCase() === 'vip' ? <Image source={{
                                 uri: "https://img.icons8.com/external-flaticons-flat-flat-icons/64/000000/external-vip-music-festival-flaticons-flat-flat-icons.png"
                             }} style={styles.vipIcon} /> :
                                 <FaIcon name='ticket-alt' style={styles.ticketIcon} />
@@ -41,7 +41,7 @@ export default function Tickets() {
                         <View style={styles.ticketInfo}>
                             <Text style={styles.ticketName}>{ticket.name}</Text>
                             <Text style={styles.ticketDesc}>{ticket.caption}</Text>
-                            <Text style={styles.ticketPrice}>{ticket.price} {ticket.currency === 'usd' ? '$': 'Fc'}</Text>
+                            <Text style={styles.ticketPrice}>{ticket.price} {ticket.currency.toLowerCase() === 'usd' ? '$': 'Fc'}</Text>
                         </View>
                     </TouchableOpacity>
                     {

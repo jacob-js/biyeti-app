@@ -46,7 +46,7 @@ export default function DashboardEventDetail({route, navigation}) {
       <ImageBackground style={styles.header} source={{ uri: event.cover }}>
         <View style={styles.headerBg}></View>
         <Text style={styles.title}>{event.name}</Text>
-        <Text style={styles.descript}>{event.description.substring(0, 100)} {event.description.length > 100 ? '...': ''} </Text>
+        <Text style={styles.descript}>{event.description?.substring(0, 100)} {event?.description?.length > 100 ? '...': ''} </Text>
         <View style={styles.links}>
           {
             links.map((link, index) => (

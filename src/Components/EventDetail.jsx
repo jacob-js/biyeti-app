@@ -11,21 +11,6 @@ import ContentLoader from 'react-native-easy-content-loader';
 import moment from 'moment';
 import { getTicketsAction } from '../Redux/actions/tickets';
 
-const tickets = [
-    {
-        name: 'vip',
-        price: 100,
-        currency: 'usd',
-        caption: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis cum error repellat odit provident, consectetur repudiandae eveniet? Quisquam repellat, minima voluptas error quam ullam neque repellendus maiores? Commodi, a repellendus.',
-    },
-    {
-        name: 'standard',
-        price: 50,
-        currency: 'usd',
-        caption: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis cum error repellat odit provident, consectetur repudiandae eveniet? Quisquam repellat, minima voluptas error quam ullam neque repellendus maiores? Commodi, a repellendus.',
-    }
-]
-
 export default function EventDetail({route, navigation}) {
     const eventId = route?.params?.eventId;
     const { data: event, loading } = useSelector(({ events: { event } }) => event);
@@ -95,7 +80,7 @@ export default function EventDetail({route, navigation}) {
                         <View key={index}>
                             <TouchableOpacity style={styles.ticket} key={index}>
                                 <View style={styles.ticketAvatar}>
-                                    {ticket.name === 'vip' ? <Image source={{
+                                    {ticket.name.toLowerCase() === 'vip' ? <Image source={{
                                         uri: "https://img.icons8.com/external-flaticons-flat-flat-icons/64/000000/external-vip-music-festival-flaticons-flat-flat-icons.png"
                                     }} style={styles.vipIcon} /> :
                                         <FaIcon name='ticket-alt' style={styles.ticketIcon} />
@@ -104,11 +89,11 @@ export default function EventDetail({route, navigation}) {
                                 <View style={styles.ticketInfo}>
                                     <Text style={styles.ticketName}>{ticket.name}</Text>
                                     <Text style={styles.ticketDesc}>{ticket.caption}</Text>
-                                    <Text style={styles.ticketPrice}>{ticket.price} {ticket.currency === 'usd' ? '$': 'Fc'}</Text>
+                                    <Text style={styles.ticketPrice}>{ticket.price} {ticket.currency.toLowerCase() === 'usd' ? '$': 'Fc'}</Text>
                                 </View>
                             </TouchableOpacity>
                             {
-                                index + 1 !== tickets.length && <Divider my={2} mb={-3} />
+                                index + 1 !== tickets.length && <Divider my={2} mb={0} />
                             }
                         </View>
                     ))
@@ -123,11 +108,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white',
-        padding: 20,
     },
     scrollContainer: {
         alignItems: 'center',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        padding: 20
     },
     cover: {
         width: '100%',
@@ -184,8 +169,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20
     },
     ticketAvatar: {
-        width: 80,
-        height: 80,
+        width: 50,
+        height: 50,
         backgroundColor: theme.colors.light100,
         borderRadius: 100,
         overflow: 'hidden',
@@ -193,11 +178,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     vipIcon: {
-        width: 40,
-        height: 40
+        width: 30,
+        height: 30
     },
     ticketIcon: {
-        fontSize: 40,
+        fontSize: 25,
         color: theme.colors.light
     },
     ticketInfo: {
