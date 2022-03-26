@@ -1,29 +1,33 @@
 import { View, Text, StyleSheet, Dimensions , ToastAndroid } from 'react-native'
 import CameraRoll from '@react-native-community/cameraroll';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Modal } from 'native-base'
 import logo from '../../assets/logo.png'
 import SvgQRCode from 'react-native-qrcode-svg';
 import { MessageAlert } from '../Utils/feedbacks';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import { theme } from '../../assets/theme';
-import * as FileSystem from 'expo-file-system';
-import {StorageAccessFramework} from 'expo-file-system';
+import { StorageAccessFramework } from 'expo-file-system';
+import { useSelector } from 'react-redux';
 
 export default function PurChasedTicket({ isShown, setIsShown, ticket }) {
     const [svg, setSvg] = useState();
+    const { data: event } = useSelector(({ events: { event } }) => event);
 
     const saveQrToDisk = () => {
-        svg.toDataURL((data) => {
-            const img = `data:image/png;base64,${data}`;
-            CameraRoll.save("/some-name.png", {
-                type: 'photo',
-                album: 'Billets'
-            })
-        }).then(() => {
-        //   this.setState({ busy: false, imageSaved: true  })
-            ToastAndroid.show('Saved to gallery !!', ToastAndroid.SHORT)
-        })
+        svg.toDataURL(async(data) => {
+            const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
+            if(permissions.granted){
+                const dirUri = permissions.directoryUri;
+                let dir = StorageAccessFramework.getUriForDirectoryInRoot('Bookit');
+                if(!dir){
+                    dir = await StorageAccessFramework.makeDirectoryAsync(dirUri, 'Bookit');
+                }
+                const file = await StorageAccessFramework.createFileAsync(`${dirUri}/${dir}`, `${event.name.split(' ').join('-')}-${'vip'}.png`, 'image/png');
+                await StorageAccessFramework.writeAsStringAsync(file, data, { encoding: 'base64' });
+                ToastAndroid.show('QR Code enregistré dans votre galerie', ToastAndroid.SHORT);
+            }
+        });
    }
 
   return (
