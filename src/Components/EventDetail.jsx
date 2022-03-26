@@ -1,5 +1,5 @@
-import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Dimensions, SafeAreaView } from 'react-native'
-import React, { useEffect } from 'react';
+import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Dimensions, SafeAreaView, RefreshControl } from 'react-native'
+import React, { useEffect, useState } from 'react';
 import { theme } from '../../assets/theme';
 import EntyIcon from 'react-native-vector-icons/Entypo';
 import FaIcon from 'react-native-vector-icons/FontAwesome5';
@@ -10,30 +10,35 @@ import { getEvent } from '../Redux/actions/events';
 import ContentLoader from 'react-native-easy-content-loader';
 import moment from 'moment';
 import { getTicketsAction } from '../Redux/actions/tickets';
+import PurChasedTicket from './PurChasedTicket';
 
 export default function EventDetail({route, navigation}) {
     const eventId = route?.params?.eventId;
     const { data: event, loading } = useSelector(({ events: { event } }) => event);
     const { data: tickets, loading: loadingTickets } = useSelector(({ tickets: { tickets } }) => tickets);
     const dispatch = useDispatch();
+    const [ showPurchased, setShowPurchased ] = useState(false);
 
     const refreshTickets = () =>{
         getTicketsAction(eventId)(dispatch);
+        getEvent(eventId)(dispatch);
     };
 
     useEffect(() =>{
-        getEvent(eventId)(dispatch);
+        refreshTickets();
     }, [eventId, navigation]);
-    useEffect(() =>{
-        (() =>{
-            if(event.name){
-                refreshTickets();
-            }
-        })
-    }, [event, navigation]);
+
   return (
     <SafeAreaView style={styles.container}>
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <ScrollView 
+            contentContainerStyle={styles.scrollContainer}
+            refreshControl={
+                <RefreshControl
+                    refreshing={loading || loadingTickets}
+                    onRefresh={refreshTickets}
+                />
+            }
+        >
             {
                 loading ?
                 <ContentLoader pRows={0} pWidth={320} pHeight={200} 
@@ -78,7 +83,7 @@ export default function EventDetail({route, navigation}) {
                     </>:
                     tickets.map((ticket, index) =>(
                         <View key={index}>
-                            <TouchableOpacity style={styles.ticket} key={index}>
+                            <TouchableOpacity style={styles.ticket} key={index} onPress={() =>setShowPurchased(true)}>
                                 <View style={styles.ticketAvatar}>
                                     {ticket.name.toLowerCase() === 'vip' ? <Image source={{
                                         uri: "https://img.icons8.com/external-flaticons-flat-flat-icons/64/000000/external-vip-music-festival-flaticons-flat-flat-icons.png"
@@ -100,6 +105,7 @@ export default function EventDetail({route, navigation}) {
                 }
             </View>
         </ScrollView>
+        <PurChasedTicket isShown={showPurchased} setIsShown={setShowPurchased} />
     </SafeAreaView>
   )
 }
