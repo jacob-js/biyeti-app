@@ -25,7 +25,7 @@ const fields = [
         name: 'caption',
         label: 'Description',
         placeholder: 'Decrivez votre billet',
-        required: true
+        required: false
     },
     {
         name: 'place_number',
@@ -37,8 +37,8 @@ const fields = [
 const validationSchema = yup.object({
     name: yup.string().required('Ce champs est obligatoire'),
     price: yup.number().required('Ce champs est obligatoire'),
-    caption: yup.string().required('Ce champs est obligatoire'),
-    place_number: yup.number().required('Ce champs est obligatoire'),
+    caption: yup.string(),
+    place_number: yup.number(),
     currency: yup.string().required('Ce champs est obligatoire'),
 })
 
