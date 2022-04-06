@@ -9,15 +9,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getEvent } from '../Redux/actions/events';
 import ContentLoader from 'react-native-easy-content-loader';
 import moment from 'moment';
-import { getTicketsAction } from '../Redux/actions/tickets';
+import { getTicketsAction, purchaseAction } from '../Redux/actions/tickets';
 import PurChasedTicket from './PurChasedTicket';
+import { LoadIndicator } from '../Commons/loaders';
+import { MessageAlert } from '../Utils/feedbacks';
 
 export default function EventDetail({route, navigation}) {
     const eventId = route?.params?.eventId;
     const { data: event, loading } = useSelector(({ events: { event } }) => event);
     const { data: tickets, loading: loadingTickets } = useSelector(({ tickets: { tickets } }) => tickets);
+    const { loading: loadingPurchase, error: purchaseError } = useSelector(({ tickets: { purchase } }) => purchase);
     const dispatch = useDispatch();
     const [ showPurchased, setShowPurchased ] = useState(false);
+    const [ isError, setIsError ] = useState(false);
 
     const refreshTickets = () =>{
         getTicketsAction(eventId)(dispatch);
@@ -27,6 +31,19 @@ export default function EventDetail({route, navigation}) {
     useEffect(() =>{
         refreshTickets();
     }, [eventId, navigation]);
+
+    useEffect(() =>{
+        (() =>{
+            if(purchaseError) setIsError(true)
+        })();
+        return () => setIsError(false);
+    }, [purchaseError])
+
+    const onTicketClick = (ticket) =>{
+        purchaseAction(ticket)(dispatch, cb =>{
+            if(cb){ setShowPurchased(true) }
+        })
+    };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -66,6 +83,9 @@ export default function EventDetail({route, navigation}) {
                 />:
                 <>
                 <Text style={styles.eventDescription}>{event.description}</Text>
+                {
+                    isError && typeof(purchaseError) === 'string' && <MessageAlert msg={purchaseError} onClose={() =>setIsError(false)} />
+                }
                 <View style={styles.ticketsTitle}>
                     <Text style={styles.title}>Billets</Text><Divider />
                 </View>
@@ -83,7 +103,7 @@ export default function EventDetail({route, navigation}) {
                     </>:
                     tickets.map((ticket, index) =>(
                         <View key={index}>
-                            <TouchableOpacity style={styles.ticket} key={index} onPress={() =>setShowPurchased(true)}>
+                            <TouchableOpacity style={styles.ticket} key={index} onPress={() =>onTicketClick(ticket)}>
                                 <View style={styles.ticketAvatar}>
                                     {ticket.name.toLowerCase() === 'vip' ? <Image source={{
                                         uri: "https://img.icons8.com/external-flaticons-flat-flat-icons/64/000000/external-vip-music-festival-flaticons-flat-flat-icons.png"
@@ -105,6 +125,7 @@ export default function EventDetail({route, navigation}) {
                 }
             </View>
         </ScrollView>
+        {loadingPurchase ? <LoadIndicator />: null}
         <PurChasedTicket isShown={showPurchased} setIsShown={setShowPurchased} />
     </SafeAreaView>
   )

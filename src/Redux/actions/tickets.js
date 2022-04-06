@@ -58,3 +58,30 @@ export const createTicketAction = (data) => async(dispatch, cb) =>{
         }
     }
 }
+
+export const purchaseAction = (ticket) => async(dispatch, cb) =>{
+    dispatch({ type: ticketsActionsTypes.PURCHASE_TICKET_START });
+    try {
+        const res = await axios.post(`/api/v1/tickets/buy`, {ticket: ticket.id});
+        if(res.status === 201){
+            dispatch({
+                type: ticketsActionsTypes.PURCHASE_TICKET_SUCCESS,
+                payload: {data: res.data.data, ticket}
+            });
+            cb(true)
+        }
+    } catch (error) {
+        const res = error.response;
+        if(res){
+            dispatch({
+                type: ticketsActionsTypes.PURCHASE_TICKET_ERROR,
+                payload: res.data?.error || res.data
+            })
+        }else{
+            dispatch({
+                type: ticketsActionsTypes.PURCHASE_TICKET_ERROR,
+                payload: error.message || 'Echec de chargement'
+            })
+        }
+    }
+}

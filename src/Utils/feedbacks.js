@@ -3,7 +3,7 @@ import { Alert, CloseIcon, HStack, IconButton, Text, VStack } from "native-base"
 export const MessageAlert = ({status='error', msg, onClose}) =>{
 
     return(
-        <Alert w="100%" status={status} marginBottom={3} variant="left-accent">
+        <Alert w="100%" status={status} marginY={2} variant="left-accent">
             <VStack space={2} flexShrink={1} w="100%">
             <HStack flexShrink={1} space={2} justifyContent="space-between" alignItems="center">
                 <HStack space={2} flexShrink={1}>

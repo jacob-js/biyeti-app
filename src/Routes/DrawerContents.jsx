@@ -9,7 +9,7 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntdIcon from 'react-native-vector-icons/AntDesign';
 import {theme} from "../../assets/theme";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutAction } from "../Redux/actions/auth";
 
 const menus = [
@@ -39,6 +39,8 @@ export function DrawerContents({drawer, stack}){
     const { navigation: stackNavigation } = stack;
     const { navigation: drawerNavigation } = drawer;
     const dispatch = useDispatch();
+    const { data: user } = useSelector(({ users: {currentUser} }) =>currentUser); 
+    const userAcronym = user.firstname.charAt(0) + user.lastname.charAt(0);
 
     return(
         <View style={style.drawer}>
@@ -49,11 +51,11 @@ export function DrawerContents({drawer, stack}){
                         paddingHorizontal: 20
                     }}>
                         <View style={style.userInfo}>
-                            <Text style={style.userAvatar}>MJ</Text>
+                            <Text style={style.userAvatar}>{userAcronym}</Text>
                         </View>
                         <View style={style.userDetails}>
-                            <Text style={{ fontSize: 15 }}> Merci Jacob </Text>
-                            <Caption style={{ fontSize: 12 }}> mercihabam@gmail.com </Caption>
+                            <Text style={{ fontSize: 15 }}> {user.firstname} {user.lastname} </Text>
+                            <Caption style={{ fontSize: 12 }}> {user.email} </Caption>
                         </View>
                     </View>
                     <View style={style.menus}>

@@ -10,9 +10,10 @@ import { theme } from '../../assets/theme';
 import { StorageAccessFramework } from 'expo-file-system';
 import { useSelector } from 'react-redux';
 
-export default function PurChasedTicket({ isShown, setIsShown, ticket }) {
+export default function PurChasedTicket({ isShown, setIsShown }) {
     const [svg, setSvg] = useState();
     const { data: event } = useSelector(({ events: { event } }) => event);
+    const { data: purchased, ticket } = useSelector(({ tickets: { purchase } }) => purchase);
 
     const saveQrToDisk = () => {
         svg.toDataURL(async(data) => {
@@ -23,7 +24,7 @@ export default function PurChasedTicket({ isShown, setIsShown, ticket }) {
                 if(!dir){
                     dir = await StorageAccessFramework.makeDirectoryAsync(dirUri, 'Bookit');
                 }
-                const file = await StorageAccessFramework.createFileAsync(`${dirUri}/${dir}`, `${event.name.split(' ').join('-')}-${'vip'}.png`, 'image/png');
+                const file = await StorageAccessFramework.createFileAsync(`${dirUri}/${dir}`, `${event.name.split(' ').join('-')}-${ticket.name}.png`, 'image/png');
                 await StorageAccessFramework.writeAsStringAsync(file, data, { encoding: 'base64' });
                 ToastAndroid.show('QR Code enregistré dans votre galerie', ToastAndroid.SHORT);
             }
@@ -37,7 +38,7 @@ export default function PurChasedTicket({ isShown, setIsShown, ticket }) {
             <Modal.Body style={styles.body}>
                 <MessageAlert status='success' msg='Votre avez reservé votre billet avec succès' />
                 <View style={styles.qrContainer}>
-                    <SvgQRCode value="Just some string value" 
+                    <SvgQRCode value={purchased.id} 
                         size={232}
                         getRef={(c) => setSvg(c)}
                     />

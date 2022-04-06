@@ -8,6 +8,12 @@ const tickets = {
         loading: false,
         error: null,
         data: {}
+    },
+    purchase: {
+        loading: false,
+        error: null,
+        data: {},
+        ticket: {}
     }
 };
 
