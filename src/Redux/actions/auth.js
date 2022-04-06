@@ -14,7 +14,8 @@ export const loginAction = (data) => async (dispatch, navigation) => {
             dispatch({
                 type: authActionsTypes.LOGIN_SUCCESS,
                 payload: res.data.data?.user
-            })
+            });
+            axios.defaults.headers.common['authtoken'] = res.data?.data.token
             navigation.navigate('Drawer');
         }
     } catch (error) {
@@ -96,7 +97,6 @@ export const getCurrentUser = async (dispatch, navigation) => {
                 payload: 'Erreur de chargement, veuillez réessayer'
             })
         }
-        console.log(res);
     }
 };
 

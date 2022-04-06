@@ -19,6 +19,13 @@ const signup = (state, { type, payload }) =>{
                     loading: false,
                     error: {},
                     data: payload
+                },
+                currentUser: {
+                    ...state.currentUser,
+                    loading: false,
+                    error: null,
+                    data: payload,
+                    auth: true
                 }
             } 
 

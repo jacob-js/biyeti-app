@@ -13,7 +13,8 @@ import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux'
 import { signupAction } from '../Redux/actions/auth'
 import { MessageAlert } from '../Utils/feedbacks'
-import DatePicker from 'react-native-datepicker'
+import moment from 'moment';
+import DatePicker from '@react-native-community/datetimepicker'
 
 const schema = yup.object({
     firstname: yup.string().required('Ce champ est obligatoire'),
@@ -35,11 +36,13 @@ export default function Signup({navigation}) {
     const [visible, setVisible] = useState(false)
     const [visibleConfirm, setVisibleConfirm] = useState(false);
     const [ apiError, setError ] = useState({});
+    const [shownPicker, setShownPicker] = useState(false);
     const { data, loading, error } = useSelector(({ users: { signup } }) => signup);
     const dispatch = useDispatch();
 
     const submit = (values) => {
-        signupAction(values)(dispatch, navigation)
+        const date_of_birth = moment(values.date_of_birth).format('YYYY-MM-DD')
+        signupAction({...values, date_of_birth})(dispatch, navigation)
     }
 
     useEffect(() =>{
@@ -52,6 +55,14 @@ export default function Signup({navigation}) {
         return apiError[field]
     }
 
+    const onDateChange = (event, date, setField) =>{
+        setShownPicker(false);
+        if(date){
+            setField('date_of_birth', date);
+            console.log(date);
+        }
+    };
+
   return (
     <ScrollView style={{ backgroundColor: 'white' }}>
       <View style={styles.container}>
@@ -61,7 +72,7 @@ export default function Signup({navigation}) {
           <MessageAlert msg={error.toString()} onClose={() =>setError({})} status='error' />
         }
         <Formik
-            initialValues={{ firstname: '', lastname: '', email: '', phone_number: '', password: '', confirmPwd: '', date_of_birth: '' }}
+            initialValues={{ firstname: '', lastname: '', email: '', phone_number: '', password: '', confirmPwd: '', date_of_birth: new Date() }}
             validationSchema={schema}
             onSubmit={values => submit(values)}
         >
@@ -76,42 +87,26 @@ export default function Signup({navigation}) {
                         placeholder='Email' leftIcon={<FIcon name="mail" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} />
                     <CommonInput required error={touched.phone_number && errors.phone_number} kType='phone-pad' onChangeText={handleChange('phone_number')} 
                         placeholder='Téléphone' leftIcon={<FIcon name="phone" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} />
-                    <FormControl style={{ marginBottom: 10 }}>
+                    <CommonInput 
+                        onPressIn={setShownPicker}
+                        placeholder="Date de naissance" uiType='rounded'
+                        leftIcon={<AntIcon name="calendar" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />}
+                        value={moment(values.date_of_birth).format('DD/MM/YYYY')}
+                        error={touched.date_of_birth && errors.date_of_birth || getError('date_of_birth')}
+                    />
+                    {
+                        shownPicker &&
                         <DatePicker
-                            style={{width: '100%', borderBottomWidth: 2, borderColor: 'rgba(0, 0, 0, 0.2)'}}
-                            date={values.date_of_birth}
-                            mode="date"
-                            placeholder="Date de  naissance"
+                            value={values.date_of_birth || new Date()}
+                            mode="datetime"
                             format="YYYY-MM-DD"
-                            minDate="1950-01-01"
-                            maxDate={new Date()}
-                            confirmBtnText="Confirm"
-                            cancelBtnText="Cancel"
-                            iconComponent={<AntIcon name="calendar" size={15} color='rgba(0, 0, 0, 0.6)' style={{ 
-                                position: 'absolute',
-                                left: 15,
-                                bottom: 10,
-                                marginLeft: 0
-                             }} />}
-                            customStyles={{
-                            dateIcon: {
-                                position: 'absolute',
-                                left: 0,
-                                top: 4,
-                                marginLeft: 0
-                            },
-                            dateInput: {
-                                position: 'absolute',
-                                bottom: -3,
-                                left: 40,
-                                borderWidth: 0
-                            }
-                            }}
-                            onDateChange={(date) => {setFieldValue('date_of_birth', date)}}
+                            minDate={new Date()}
+                            is24Hour={true}
+                            onChange={(event, date) =>onDateChange(event, date, setFieldValue)}
                         />
-                    </FormControl>
-                    <CommonInput required maxLength={6}
-                        error={errors.password || getError('password')} 
+                    }
+                    <CommonInput required maxLength={4}
+                        error={touched.password && errors.password || getError('password')} 
                         onChangeText={handleChange('password')} placeholder='Mot de passe' 
                         leftIcon={<MIcon name="key-outline" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} 
                         type={!visible && 'password'}

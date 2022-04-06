@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Formik } from 'formik';
 import { CommonInput, CommonSelect, CommonTextArea } from '../Commons/commons';
 import { Button, FormControl, Select, WarningOutlineIcon } from 'native-base';
@@ -11,7 +11,7 @@ import {theme} from '../../assets/theme';
 import * as yup from 'yup';
 import DatePicker from '@react-native-community/datetimepicker'
 import { useDispatch, useSelector } from 'react-redux';
-import { createEventAction } from '../Redux/actions/events';
+import { createEventAction, getCategorys } from '../Redux/actions/events';
 import moment from 'moment';
 // import FormData from 'form-data';
 
@@ -23,7 +23,8 @@ const fields = [
     {
         name: 'category',
         label: 'Catégorie',
-        type: 'select'
+        type: 'select',
+        value: 3
     },
     {
         name: 'location',
@@ -58,8 +59,13 @@ export default function AddEventForm({navigation}) {
     const [shownPicker, setShownPicker] = useState(false);
     const [shownPickerTime, setShownPickerTime] = useState(false);
     const { loading, error } = useSelector(({ events: { createEvent } }) =>createEvent);
+    const { data: categorys, loading: loadingCateg } = useSelector(({ events: { categorys } }) =>categorys);
     const dispatch = useDispatch();
     const date = new Date()
+
+    useEffect(() =>{
+        getCategorys(dispatch);
+    }, [navigation])
 
     const pickImage = async(setField) => {
         const res = await ImagePicker.launchImageLibraryAsync({
@@ -118,10 +124,15 @@ export default function AddEventForm({navigation}) {
                     {fields.map((field, index) => (
                         field.name === 'category' ?
                         <CommonSelect key={field.name} error={errors.category}
-                            label={field.label} onValueChange={handleChange(field.name)}
+                            label={field.label} onValueChange={value => setFieldValue(field.name, value)}
                             uiType='rounded'
+                            value={values[field.name]}
                         >
-                            <Select.Item label="Sport" value="1" />
+                            {
+                                categorys.map((category, index) =>(
+                                    <Select.Item label={category.name} value={category.id} key={index} />
+                                ))
+                            }
                         </CommonSelect>:
                         field.type === 'text' ?
                         <CommonTextArea key={field.name} required 
