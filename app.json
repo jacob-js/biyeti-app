@@ -11,14 +11,6 @@
         {
           "photosPermission": "Autoriser l'application à accéder à vos photos"
         }
-      ],
-      [
-        "expo-media-library",
-        {
-          "photosPermission": "Autoriser l'application à accéder à vos photos",
-          "savePhotosPermission": "Autoriser l'application à enregistrer des photos dans votre galerie",
-          "isAccessMediaLocationEnabled": true
-        }
       ]
     ],
     "splash": {

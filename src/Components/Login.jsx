@@ -84,8 +84,8 @@ const styles = StyleSheet.create({
         padding: 40
     },
     logo: {
-        width: 400,
-        height: 200
+        width: 300,
+        height: 150
     },
     loginBtn: {
         height: 50,
