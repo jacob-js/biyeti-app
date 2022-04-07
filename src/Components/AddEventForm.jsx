@@ -82,7 +82,7 @@ export default function AddEventForm({navigation}) {
 
     const onDateChange = (event, date, setField) =>{
         setShownPicker(false);
-        setField('event_date', date)
+        if(date) setField('event_date', date);
     };
     const onTimeChange = (event, date, setField) =>{
         setShownPickerTime(false);

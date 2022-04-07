@@ -22,7 +22,7 @@ export default function Dashboard({navigation}) {
         },
         {
             name: 'Mes billets',
-            path: 'Tickets',
+            path: 'UserBookings',
             icon: <MatIcon name='ticket' style={styles.icon} />,
             count: 0
         },

@@ -14,6 +14,11 @@ const tickets = {
         error: null,
         data: {},
         ticket: {}
+    },
+    userTickets: {
+        loading: false,
+        error: null,
+        data: []
     }
 };
 

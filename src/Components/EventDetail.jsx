@@ -26,6 +26,7 @@ export default function EventDetail({route, navigation}) {
     const refreshTickets = () =>{
         getTicketsAction(eventId)(dispatch);
         getEvent(eventId)(dispatch);
+        setIsError(false);
     };
 
     useEffect(() =>{
@@ -34,10 +35,12 @@ export default function EventDetail({route, navigation}) {
 
     useEffect(() =>{
         (() =>{
-            if(purchaseError) setIsError(true)
+            if(purchaseError) {setIsError(true)}else{
+                setIsError(false);
+            }
         })();
         return () => setIsError(false);
-    }, [purchaseError])
+    }, [purchaseError, navigation])
 
     const onTicketClick = (ticket) =>{
         purchaseAction(ticket)(dispatch, cb =>{
@@ -84,7 +87,9 @@ export default function EventDetail({route, navigation}) {
                 <>
                 <Text style={styles.eventDescription}>{event.description}</Text>
                 {
-                    isError && typeof(purchaseError) === 'string' && <MessageAlert msg={purchaseError} onClose={() =>setIsError(false)} />
+                    isError && 
+                    typeof(purchaseError) === 'string' ? <MessageAlert msg={purchaseError} onClose={() =>setIsError(false)} />:
+                    isError && purchaseError?.length && <MessageAlert msg={purchaseError[0]} onClose={() =>setIsError(false)} />
                 }
                 <View style={styles.ticketsTitle}>
                     <Text style={styles.title}>Billets</Text><Divider />

@@ -85,3 +85,30 @@ export const purchaseAction = (ticket) => async(dispatch, cb) =>{
         }
     }
 }
+
+export const getUserTicketsAction = (userId) => async(dispatch) =>{
+    dispatch({ type: ticketsActionsTypes.GET_USER_TICKETS_START });
+    try {
+        const res = await axios.get(`/api/v1/tickets/user/${userId}`);
+        if(res.status === 200){
+            dispatch({
+                type: ticketsActionsTypes.GET_USER_TICKETS_SUCCESS,
+                payload: res.data.data
+            })
+        }
+    } catch (error) {
+        const res = error.response;
+        if(res){
+            dispatch({
+                type: ticketsActionsTypes.GET_USER_TICKETS_ERROR,
+                payload: res.data?.error || res.data
+            })
+        }else{
+            dispatch({
+                type: ticketsActionsTypes.GET_USER_TICKETS_ERROR,
+                payload: error.message || 'Echec de chargement'
+            })
+        }
+        console.log(error);
+    }
+}

@@ -6,6 +6,7 @@ import EventsList from "../Components/EventsList";
 import Home from "../Components/Home";
 import Login from "../Components/Login";
 import Signup from "../Components/Signup";
+import UserBookings from "../Components/UserBookings";
 
 export const routes = [
     {
@@ -51,6 +52,13 @@ export const routes = [
         component: DashboardEventDetail,
         withHeader: false,
         secured: true
+    },
+    {
+        name: 'UserBookings',
+        component: UserBookings,
+        withHeader: true,
+        secured: true,
+        title: 'Mes réservations'
     }
 ]
 
