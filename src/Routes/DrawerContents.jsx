@@ -54,8 +54,8 @@ export function DrawerContents({drawer, stack}){
                             <Text style={style.userAvatar}>{userAcronym}</Text>
                         </View>
                         <View style={style.userDetails}>
-                            <Text style={{ fontSize: 15 }}> {user.firstname} {user.lastname} </Text>
-                            <Caption style={{ fontSize: 12 }}> {user.email} </Caption>
+                            <Text style={{ fontSize: 15, fontFamily: 'Barlow-Bold' }}> {user.firstname} {user.lastname} </Text>
+                            <Text style={{ fontSize: 12, fontFamily: 'Barlow' }}> {user.email} </Text>
                         </View>
                     </View>
                     <View style={style.menus}>
@@ -116,7 +116,8 @@ const style = StyleSheet.create({
         fontSize: 14,
         fontWeight: 'normal',
         marginTop: 10,
-        marginLeft: 10
+        marginLeft: 10,
+        paddingRight: 15
     },
     logout: {
         display: 'flex',

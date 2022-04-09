@@ -83,9 +83,9 @@ export default function Signup({navigation}) {
                         placeholder='Nom' leftIcon={<SIcon name="user" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} />
                     <CommonInput required error={touched.lastname && errors.lastname} onChangeText={handleChange('lastname')} 
                         placeholder='Post-nom' leftIcon={<SIcon name="user" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} />
-                    <CommonInput required error={touched.email && errors.email} kType='email-address' onChangeText={handleChange('email')} 
+                    <CommonInput required error={touched.email && errors.email || getError('email')} kType='email-address' onChangeText={handleChange('email')} 
                         placeholder='Email' leftIcon={<FIcon name="mail" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} />
-                    <CommonInput required error={touched.phone_number && errors.phone_number} kType='phone-pad' onChangeText={handleChange('phone_number')} 
+                    <CommonInput required error={touched.phone_number && errors.phone_number || getError('phone_number')} kType='phone-pad' onChangeText={handleChange('phone_number')} 
                         placeholder='Téléphone' leftIcon={<FIcon name="phone" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} />
                     <CommonInput 
                         onPressIn={setShownPicker}
