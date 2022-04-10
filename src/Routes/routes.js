@@ -1,6 +1,7 @@
 import AddEventForm from "../Components/AddEventForm";
 import Dashboard from "../Components/Dashboard";
 import DashboardEventDetail from "../Components/DashboardEventDetail";
+import EditProfile from "../Components/EditProfile";
 import EventDetail from "../Components/EventDetail";
 import EventsList from "../Components/EventsList";
 import Home from "../Components/Home";
@@ -30,6 +31,12 @@ export const routes = [
     {
         name: 'Dashboard',
         component: Dashboard,
+        withHeader: false,
+        secured: true
+    },
+    {
+        name: 'EditProfile',
+        component: EditProfile,
         withHeader: false,
         secured: true
     },
