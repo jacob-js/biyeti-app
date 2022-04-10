@@ -119,7 +119,6 @@ const styles = StyleSheet.create({
     },
     ticket: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 20,
         paddingVertical: 20,
@@ -144,9 +143,8 @@ const styles = StyleSheet.create({
         fontSize: 25,
         color: theme.colors.light
     },
-    ticketInfo: {
-        marginLeft: 10,
-        paddingTop: 10
+    eventInfo: {
+        marginLeft: 10
     },
     ticketName: {
         color: theme.colors.light,
@@ -167,10 +165,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     eventDate: {
-        color: theme.colors.light
+        color: theme.colors.light,
+        fontFamily: 'Barlow'
     },
     eventLocation: {
-        color: theme.colors.light
+        color: theme.colors.light,
+        fontFamily: 'Barlow'
     },
     icon: {
         fontWeight: 'bold',

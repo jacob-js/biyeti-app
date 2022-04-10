@@ -5,5 +5,8 @@ export const theme = {
         light: 'rgba(0, 0, 0,0.5)',
         light100: 'rgba(0, 0, 0,0.1)',
         gold: '#d4af37'
+    },
+    textDefault: {
+        fontFamily: 'Barlow',
     }
 }

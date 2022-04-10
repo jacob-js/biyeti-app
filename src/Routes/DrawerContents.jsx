@@ -14,9 +14,9 @@ import { logoutAction } from "../Redux/actions/auth";
 
 const menus = [
     {
-        name: 'Tableau de bord',
+        name: 'Profile',
         path: 'Dashboard',
-        icon: 'dashboard'
+        icon: 'user'
     },
     {
         name: 'Notifications',
