@@ -1,7 +1,5 @@
 import React from "react";
 import {
-    Avatar,
-    Caption,
     Drawer,
     Text,
 } from 'react-native-paper';
@@ -11,6 +9,8 @@ import AntdIcon from 'react-native-vector-icons/AntDesign';
 import {theme} from "../../assets/theme";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutAction } from "../Redux/actions/auth";
+import { Avatar } from "native-base";
+import SIcon from 'react-native-vector-icons/SimpleLineIcons'
 
 const menus = [
     {
@@ -51,10 +51,19 @@ export function DrawerContents({drawer, stack}){
                         paddingHorizontal: 20
                     }}>
                         <View style={style.userInfo}>
-                            <Text style={style.userAvatar}>{userAcronym}</Text>
+                            <Avatar bg="light.200" 
+                                source={user.avatar &&{
+                                    uri: user.avatar
+                                }}
+                                size='24'
+                                borderColor='#fff'
+                                borderWidth={2}
+                            >
+                                <SIcon name='user' size={50} color="gray" />
+                            </Avatar>
                         </View>
                         <View style={style.userDetails}>
-                            <Text style={{ fontSize: 15, fontFamily: 'Barlow-Bold' }}> {user.firstname} {user.lastname} </Text>
+                            <Text style={{ fontSize: 15, fontFamily: 'Barlow', fontWeight: 'bold' }}> {user.firstname} {user.lastname} </Text>
                             <Text style={{ fontSize: 12, fontFamily: 'Barlow' }}> {user.email} </Text>
                         </View>
                     </View>
@@ -98,25 +107,15 @@ const style = StyleSheet.create({
         marginRight: 20
     },
     userInfo: {
-        width: 80,
-        height: 80,
-        borderRadius: 80,
-        backgroundColor: 'black',
         justifyContent: 'center',
         textAlign: 'center'
-    },
-    userAvatar: {
-        fontSize: 30,
-        textAlign: 'center',
-        fontWeight: 'bold',
-        color: theme.colors.default
     },
     userDetails: {
         display: 'flex',
         fontSize: 14,
         fontWeight: 'normal',
         marginTop: 10,
-        marginLeft: 10,
+        marginLeft: 5,
         paddingRight: 15
     },
     logout: {

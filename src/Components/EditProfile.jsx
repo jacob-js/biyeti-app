@@ -1,18 +1,20 @@
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, StatusBar, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AntIcon from 'react-native-vector-icons/AntDesign'
 import FIcon from 'react-native-vector-icons/Feather'
 import SIcon from 'react-native-vector-icons/SimpleLineIcons'
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { theme } from '../../assets/theme'
 import { Formik } from 'formik'
-import { Avatar, Button } from 'native-base'
-import { CommonInput } from '../Commons/commons'
+import { Avatar, Button, Select } from 'native-base'
+import { CommonInput, CommonSelect } from '../Commons/commons'
 import moment from 'moment'
 import DatePicker from '@react-native-community/datetimepicker'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import * as ImagePicker from 'expo-image-picker';
 import * as yup from 'yup';
+import { updateProfileAction } from '../Redux/actions/auth'
+import { MessageAlert } from '../Utils/feedbacks'
 
 const schema = yup.object({
   firstname: yup.string().required('Ce champ est obligatoire'),
@@ -24,10 +26,17 @@ const schema = yup.object({
 })
 
 export default function EditProfile({navigation}) {
-  const error = {};
   const { data: user } = useSelector(({ users: {currentUser} }) =>currentUser);
+  const { loading, error } = useSelector(({ users: {updateProfile} }) =>updateProfile);
   const [ apiError, setError ] = useState({});
   const [shownPicker, setShownPicker] = useState(false);
+  const dispatch = useDispatch();
+
+  useEffect(() =>{
+    (() =>{
+        setError(error)
+    })()
+  }, [error]);
 
   const getError = (field) =>{
     return apiError[field]
@@ -48,8 +57,7 @@ export default function EditProfile({navigation}) {
   const onDateChange = (event, date, setField) =>{
     setShownPicker(false);
     if(date){
-        setField('date_of_birth', date);
-        console.log(date);
+        setField('date_of_birth', moment(date).format('YYYY-MM-DD'));
     }
   };
 
@@ -63,20 +71,23 @@ export default function EditProfile({navigation}) {
       </View>
 
       <ScrollView contentContainerStyle={styles.form}>
+        {
+          typeof(apiError) === 'string' && typeof(error) === 'string' &&
+          <MessageAlert msg={error.toString()} onClose={() =>setError({})} status='error' />
+        }
       <Formik
         initialValues={{
           firstname: user.firstname, lastname: user.lastname, email: user.email, phone_number: user.phone_number,
-          date_of_birth: user.date_of_birth, avatar: user.avatar
+          date_of_birth: user.date_of_birth, avatar: user.avatar, gender: user.gender, city: user.city
         }}
+        validationSchema={schema}
+        onSubmit={values => updateProfileAction(values)(dispatch, navigation)}
       >
         {
           ({handleSubmit, errors, handleChange, touched, setFieldValue, values}) =>(
             <>
               <View style={styles.avatarContainer}>
-                <Avatar bg="light.200" 
-                    // source={{
-                    //     uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-                    // }}
+                <Avatar bg="light.200"
                     source={values.avatar &&{
                       uri: values.avatar
                     }}
@@ -106,18 +117,38 @@ export default function EditProfile({navigation}) {
               <CommonInput error={touched.phone_number && errors.phone_number || getError('phone_number')} kType='phone-pad' 
                 onChangeText={handleChange('phone_number')} value={values.phone_number} label="Téléphone"
                 placeholder='Téléphone' leftIcon={<FIcon name="phone" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} />
+              <CommonSelect
+                  label="Sexe" onValueChange={value => setFieldValue('gender', value)}
+                  uiType='rounded'
+                  value={values.gender}
+                  leftIcon={
+                    <MIcon name='human-male-female' size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />
+                  }
+              >
+                <Select.Item label="Masculin" value="Masculin" key="Masculin" />
+                <Select.Item label="Feminin" value="Feminin" key="F" />
+                <Select.Item label="Autre" value="Autre" key="a" />
+              </CommonSelect>
+              <CommonInput
+                label="Ville"
+                placeholder="Ville" uiType='rounded'
+                leftIcon={<SIcon name="location-pin" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />}
+                value={values.city}
+                error={touched.city && errors.city || getError('city')}
+                onChangeText={handleChange('city')}
+              />
               <CommonInput
                 label="Date de naissance"
                 onPressIn={() =>setShownPicker(true)}
                 placeholder="Date de naissance" uiType='rounded'
                 leftIcon={<AntIcon name="calendar" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />}
-                value={moment(values.date_of_birth).format('DD/MM/YYYY')}
+                value={moment(values.date_of_birth).format('DD-MM-YYYY')}
                 error={touched.date_of_birth && errors.date_of_birth || getError('date_of_birth')}
               />
               {
                   shownPicker === true &&
                   <DatePicker
-                      value={values.date_of_birth || new Date().setFullYear(new Date().getFullYear() - 18)}
+                      value={new Date(values.date_of_birth) || new Date(new Date().getFullYear() - 18, 1, 1)}
                       mode="datetime"
                       format="YYYY-MM-DD"
                       minDate={new Date()}
@@ -132,7 +163,7 @@ export default function EditProfile({navigation}) {
                     alignItems: 'center',
                     width: '100%'
               }}>
-                  <Button isLoading={false} 
+                  <Button isLoading={loading} 
                     isLoadingText={<Text style={{ color: theme.colors.default100 }}>Patientez...</Text>}
                     style={styles.saveBtn} _text={{ fontWeight: 'bold', textTransform: 'uppercase', color: theme.colors.default }} 
                     onPress={() =>handleSubmit()}>

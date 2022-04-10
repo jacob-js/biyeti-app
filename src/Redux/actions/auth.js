@@ -1,5 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import axios from "axios"
+import { Toast } from "native-base"
+import { showToast } from "../../Utils/feedbacks"
 import { authActionsTypes } from "../actionsTypes/auth"
 
 const baseUrl = 'https://bookitbackend.herokuapp.com'
@@ -104,6 +106,38 @@ export const logoutAction = async (dispatch, navigation) => {
     await AsyncStorage.removeItem('auth_token')
     dispatch({
         type: authActionsTypes.LOGOUT
-    })
+    });
+    axios.defaults.headers.common['authtoken'] = null
     navigation.navigate('Login');
+}
+
+export const updateProfileAction = (data) => async (dispatch, navigation) => {
+    dispatch({
+        type: authActionsTypes.UPDATE_PROFILE_REQUEST
+    })
+    const token = await AsyncStorage.getItem('auth_token')
+    try {
+        const res = await axios.put(`/api/v1/users/profile`, data)
+        if(res.status === 200){
+            dispatch({
+                type: authActionsTypes.UPDATE_PROFILE_SUCCESS,
+                payload: res.data.data
+            });
+            showToast('Profil mis à jour avec succès', 'success')
+            navigation.goBack();
+        }
+    } catch (error) {
+        const res = error.response;
+        if(res){
+            dispatch({
+                type: authActionsTypes.UPDATE_PROFILE_FAILURE,
+                payload: res.data.error || res.data
+            })
+        }else{
+            dispatch({
+                type: authActionsTypes.UPDATE_PROFILE_FAILURE,
+                payload: 'Erreur de chargement, veuillez réessayer'
+            })
+        }
+    }
 }

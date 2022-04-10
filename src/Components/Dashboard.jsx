@@ -10,6 +10,7 @@ import FIcon from 'react-native-vector-icons/FontAwesome'
 import { useDispatch, useSelector } from 'react-redux';
 import { getAgentsAction } from '../Redux/actions/agents';
 import { getUserTicketsAction } from '../Redux/actions/tickets';
+import moment from 'moment';
 
 export default function Dashboard({navigation}) {
     const dispatch = useDispatch();
@@ -33,8 +34,8 @@ export default function Dashboard({navigation}) {
                 </View>
                 <View style={styles.user}>
                     <Avatar bg="light.200" 
-                        source={{
-                            uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+                        source={user.avatar &&{
+                            uri: user.avatar
                         }}
                         style={styles.avatar}
                         size='24'
@@ -85,10 +86,21 @@ export default function Dashboard({navigation}) {
 
                 <View style={styles.field}>
                     <View style={styles.fieldTitle}>
+                        <SIcon name='location-pin' style={styles.fieldIcon} />
+                        <Text style={[styles.fieldLabel, theme.textDefault]}>Ville</Text>
+                    </View>
+                    <Text style={[styles.fieldValue, theme.textDefault]}>{user.city || 'Non définie'}</Text>
+                </View>
+                <Divider my={5} />
+
+                <View style={styles.field}>
+                    <View style={styles.fieldTitle}>
                         <SIcon name='calendar' style={styles.fieldIcon} />
                         <Text style={[styles.fieldLabel, theme.textDefault]}>Date de naissance</Text>
                     </View>
-                    <Text style={[styles.fieldValue, theme.textDefault]}>{user.date_of_birth || 'Non définie'}</Text>
+                    <Text style={[styles.fieldValue, theme.textDefault]}>
+                        {user.date_of_birth ? moment(user.date_of_birth).format('DD-MM-YYYY') : 'Non définie'}
+                    </Text>
                 </View>
             </View>
         </View>

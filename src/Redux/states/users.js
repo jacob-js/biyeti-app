@@ -14,6 +14,11 @@ const users = {
         error: null,
         data: {},
         auth: null
+    },
+    updateProfile: {
+        loading: false,
+        error: {},
+        data: {}
     }
 };
 

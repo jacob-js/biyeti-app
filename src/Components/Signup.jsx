@@ -4,7 +4,6 @@ import { Formik } from 'formik'
 import FIcon from 'react-native-vector-icons/Feather'
 import SIcon from 'react-native-vector-icons/SimpleLineIcons'
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import AntIcon from 'react-native-vector-icons/AntDesign'
 import { CommonInput } from '../Commons/commons'
 import { Button, FormControl } from 'native-base'
 import { theme } from '../../assets/theme'
@@ -14,7 +13,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { signupAction } from '../Redux/actions/auth'
 import { MessageAlert } from '../Utils/feedbacks'
 import moment from 'moment';
-import DatePicker from '@react-native-community/datetimepicker'
 
 const schema = yup.object({
     firstname: yup.string().required('Ce champ est obligatoire'),
@@ -36,7 +34,6 @@ export default function Signup({navigation}) {
     const [visible, setVisible] = useState(false)
     const [visibleConfirm, setVisibleConfirm] = useState(false);
     const [ apiError, setError ] = useState({});
-    const [shownPicker, setShownPicker] = useState(false);
     const { data, loading, error } = useSelector(({ users: { signup } }) => signup);
     const dispatch = useDispatch();
 
@@ -55,14 +52,6 @@ export default function Signup({navigation}) {
         return apiError[field]
     }
 
-    const onDateChange = (event, date, setField) =>{
-        setShownPicker(false);
-        if(date){
-            setField('date_of_birth', date);
-            console.log(date);
-        }
-    };
-
   return (
     <ScrollView style={{ backgroundColor: 'white' }}>
       <View style={styles.container}>
@@ -72,7 +61,7 @@ export default function Signup({navigation}) {
           <MessageAlert msg={error.toString()} onClose={() =>setError({})} status='error' />
         }
         <Formik
-            initialValues={{ firstname: '', lastname: '', email: '', phone_number: '', password: '', confirmPwd: '', date_of_birth: new Date() }}
+            initialValues={{ firstname: '', lastname: '', email: '', phone_number: '', password: '', confirmPwd: '' }}
             validationSchema={schema}
             onSubmit={values => submit(values)}
         >
@@ -87,24 +76,6 @@ export default function Signup({navigation}) {
                         placeholder='Email' leftIcon={<FIcon name="mail" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} />
                     <CommonInput required error={touched.phone_number && errors.phone_number || getError('phone_number')} kType='phone-pad' onChangeText={handleChange('phone_number')} 
                         placeholder='Téléphone' leftIcon={<FIcon name="phone" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} />
-                    <CommonInput 
-                        onPressIn={setShownPicker}
-                        placeholder="Date de naissance" uiType='rounded'
-                        leftIcon={<AntIcon name="calendar" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />}
-                        value={moment(values.date_of_birth).format('DD/MM/YYYY')}
-                        error={touched.date_of_birth && errors.date_of_birth || getError('date_of_birth')}
-                    />
-                    {
-                        shownPicker &&
-                        <DatePicker
-                            value={values.date_of_birth || new Date()}
-                            mode="datetime"
-                            format="YYYY-MM-DD"
-                            minDate={new Date()}
-                            is24Hour={true}
-                            onChange={(event, date) =>onDateChange(event, date, setFieldValue)}
-                        />
-                    }
                     <CommonInput required maxLength={4}
                         error={touched.password && errors.password || getError('password')} 
                         onChangeText={handleChange('password')} placeholder='Mot de passe' 

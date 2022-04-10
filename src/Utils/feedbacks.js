@@ -1,4 +1,4 @@
-import { Alert, CloseIcon, HStack, IconButton, Text, VStack } from "native-base"
+import { Alert, CloseIcon, HStack, IconButton, Text, Toast, VStack } from "native-base"
 
 export const MessageAlert = ({status='error', msg, onClose}) =>{
 
@@ -19,4 +19,15 @@ export const MessageAlert = ({status='error', msg, onClose}) =>{
             </VStack>
         </Alert>
     )
+}
+
+export const showToast = (msg, type='success') =>{
+    Toast.show({
+        title: type === 'success' ? 'Succès' : type === 'error' ? 'Erreur': 'Alert',
+        description: msg,
+        duration: 3000,
+        status: type,
+        width: '80%',
+        borderRadius: 15
+    })
 }
