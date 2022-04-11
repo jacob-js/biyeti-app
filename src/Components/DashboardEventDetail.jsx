@@ -8,6 +8,7 @@ import { theme } from '../../assets/theme';
 import Tickets from './Tickets';
 import { getTicketsAction } from '../Redux/actions/tickets';
 import ScanQr from '../Commons/ScanQr';
+import EventAgents from './EventAgents';
 
 const links = [
   {
@@ -80,9 +81,13 @@ export default function DashboardEventDetail({route, navigation}) {
         }
       >
           {
-            activeLink === 'Billets' && <Tickets navigation={navigation} route={route} />
+            activeLink === 'Billets' ? <Tickets navigation={navigation} route={route} />:null
           }
       </ScrollView>
+      {
+        
+        activeLink === 'Agents' ? <EventAgents navigation={navigation} eventId={eventId} route={route} />:null
+      }
       {
         viewScan && <ScanQr setViewScan={setViewScan} />
       }
