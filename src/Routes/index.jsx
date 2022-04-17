@@ -51,11 +51,15 @@ export default function Routes() {
                                     >
                                         {
                                             drawerRoutes.map((route, index) =>(
-                                                <Drawer.Screen name={route.name} key={index} component={route.component} { ...stackProps }
+                                                <Drawer.Screen name={route.name} key={index}
                                                     options={{
                                                         unmountOnBlur: true
                                                     }}
-                                                />
+                                                >
+                                                    {
+                                                        (props) => <route.component {...props} stackProps={stackProps} />
+                                                    }
+                                                </Drawer.Screen>
                                             ))
                                         }
                                     </Drawer.Navigator>

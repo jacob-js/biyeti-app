@@ -15,11 +15,13 @@ import { useEffect } from 'react';
 import { getCategorys, getEvents } from '../Redux/actions/events';
 import ContentLoader from 'react-native-easy-content-loader';
 import CategEventCarousel from '../Components/CategEventCarousel';
+import SearchBar from '../Components/SearchBar';
 
-const Home = ({navigation}) => {
+const Home = ({stackProps, navigation: drawerNav}) => {
   const { data, count, rows, loading, error } = useSelector(({ events: { events } }) =>events);
   const { data: categorys, loading: loadingCateg } = useSelector(({ events: { categorys } }) =>categorys);
   const dispatch = useDispatch();
+  const navigation = stackProps?.navigation;
 
   useEffect(() =>{
     getEvents()(dispatch);
@@ -42,16 +44,12 @@ const Home = ({navigation}) => {
         }
       >
       <View style={styles.container}>
-        <View style={styles.searchView}>
-          <Input variant="rounded" style={styles.search} bg='rgba(0,0,0,0.1)' paddingLeft={5} placeholder="Rechercher un événement" rightElement={
-            <Icon as={EvilIcon} name='search' style={{ marginRight: 10 }} size="8" color='light.300' />
-          } _focus={{ borderColor: theme.colors.default100 }} />
-        </View>
+        <SearchBar />
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Pour bientôt</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() =>navigation.navigate('AllEvents', { title: "Evenements a venir" })}>
               <Text style={styles.showAll}>Afficher tout</Text>
             </TouchableOpacity>
           </View>

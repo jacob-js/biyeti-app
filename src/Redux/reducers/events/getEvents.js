@@ -8,7 +8,8 @@ const getEvents = (state, {type, payload}) =>{
                 events: {
                     ...state.events,
                     loading: true,
-                    error: null
+                    error: null,
+                    rows: []
                 }
             }
             

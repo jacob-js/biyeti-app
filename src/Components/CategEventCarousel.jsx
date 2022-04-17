@@ -32,7 +32,7 @@ export default function CategEventCarousel({category, navigation}) {
     <View style={styles.section}>
         <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>{category.name}</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() =>navigation.navigate('AllEvents', { title: category.name, categId: category.id })}>
             <Text style={styles.showAll}>Afficher tout</Text>
         </TouchableOpacity>
         </View>

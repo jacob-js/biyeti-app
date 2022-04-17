@@ -1,4 +1,5 @@
 import AddEventForm from "../Screens/AddEventForm";
+import AllEvents from "../Screens/AllEvents";
 import Dashboard from "../Screens/Dashboard";
 import DashboardEventDetail from "../Screens/DashboardEventDetail";
 import EditProfile from "../Screens/EditProfile";
@@ -73,5 +74,9 @@ export const drawerRoutes = [
     {
         name: 'Home',
         component: Home
+    },
+    {
+        name: 'AllEvents',
+        component: AllEvents
     }
 ]
