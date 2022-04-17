@@ -10,7 +10,7 @@ import { getEvent } from '../Redux/actions/events';
 import ContentLoader from 'react-native-easy-content-loader';
 import moment from 'moment';
 import { getTicketsAction, purchaseAction } from '../Redux/actions/tickets';
-import PurChasedTicket from './PurChasedTicket';
+import PurChasedTicket from '../Components/PurChasedTicket';
 import { LoadIndicator } from '../Commons/loaders';
 import { MessageAlert } from '../Utils/feedbacks';
 

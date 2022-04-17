@@ -27,14 +27,14 @@ export default function Header({DrawerNavigation, options, drawerRoute: route}) 
         {
           route.name === 'Home' ?
           <TouchableOpacity onPress={() => DrawerNavigation.toggleDrawer()}>
-            <AntIcon name='appstore-o' size={20} />
+            <AntIcon name='appstore-o' size={18} />
           </TouchableOpacity>:
           <TouchableOpacity onPress={() => DrawerNavigation.goBack()}>
             <AntIcon name='arrowleft' size={20} />
           </TouchableOpacity>
         }
         <TouchableOpacity onPress={() => DrawerNavigation.navigate('Home')}>
-          <Image source={logo} style={{width: 200, height: 100}} />
+          <Image source={logo} style={{width: 100, height: 100}} />
         </TouchableOpacity>
       </View>
     </View>

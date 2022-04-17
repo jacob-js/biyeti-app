@@ -1,13 +1,13 @@
-import AddEventForm from "../Components/AddEventForm";
-import Dashboard from "../Components/Dashboard";
-import DashboardEventDetail from "../Components/DashboardEventDetail";
-import EditProfile from "../Components/EditProfile";
-import EventDetail from "../Components/EventDetail";
-import EventsList from "../Components/EventsList";
-import Home from "../Components/Home";
-import Login from "../Components/Login";
-import Signup from "../Components/Signup";
-import UserBookings from "../Components/UserBookings";
+import AddEventForm from "../Screens/AddEventForm";
+import Dashboard from "../Screens/Dashboard";
+import DashboardEventDetail from "../Screens/DashboardEventDetail";
+import EditProfile from "../Screens/EditProfile";
+import EventDetail from "../Screens/EventDetail";
+import EventsList from "../Screens/EventsList";
+import Home from "../Screens/Home";
+import Login from "../Screens/Login";
+import Signup from "../Screens/Signup";
+import UserBookings from "../Screens/UserBookings";
 
 export const routes = [
     {

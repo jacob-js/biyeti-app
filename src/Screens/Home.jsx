@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { getCategorys, getEvents } from '../Redux/actions/events';
 import ContentLoader from 'react-native-easy-content-loader';
-import CategEventCarousel from './CategEventCarousel';
+import CategEventCarousel from '../Components/CategEventCarousel';
 
 const Home = ({navigation}) => {
   const { data, count, rows, loading, error } = useSelector(({ events: { events } }) =>events);
@@ -122,9 +122,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: 'Barlow-Bold',
-    textTransform: 'capitalize',
+    textTransform: 'uppercase',
     color: theme.colors.light
   },
   showAll: {

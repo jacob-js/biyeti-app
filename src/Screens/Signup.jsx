@@ -1,10 +1,10 @@
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ScrollView } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Formik } from 'formik'
 import FIcon from 'react-native-vector-icons/Feather'
 import SIcon from 'react-native-vector-icons/SimpleLineIcons'
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { CommonInput } from '../Commons/commons'
+import { CommonInput, CommonPhoneInput } from '../Commons/commons'
 import { Button, FormControl } from 'native-base'
 import { theme } from '../../assets/theme'
 import { Title } from 'react-native-paper'
@@ -74,8 +74,11 @@ export default function Signup({navigation}) {
                         placeholder='Post-nom' leftIcon={<SIcon name="user" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} />
                     <CommonInput required error={touched.email && errors.email || getError('email')} kType='email-address' onChangeText={handleChange('email')} 
                         placeholder='Email' leftIcon={<FIcon name="mail" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} />
-                    <CommonInput required error={touched.phone_number && errors.phone_number || getError('phone_number')} kType='phone-pad' onChangeText={handleChange('phone_number')} 
-                        placeholder='Téléphone' leftIcon={<FIcon name="phone" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} />
+                    <CommonPhoneInput required 
+                        error={touched.phone_number && errors.phone_number || getError('phone_number')}
+                        setFieldValue={setFieldValue}
+                        value={values.phone_number}
+                    />
                     <CommonInput required maxLength={4}
                         error={touched.password && errors.password || getError('password')} 
                         onChangeText={handleChange('password')} placeholder='Mot de passe' 
@@ -135,7 +138,8 @@ const styles = StyleSheet.create({
         backgroundColor: theme.colors.default100,
         shadowOpacity: 0.4,
         shadowColor: theme.colors.default, 
-        elevation: 15
+        elevation: 15,
+        borderRadius: 15
     },
     noAccountText: {
         fontWeight: '100',

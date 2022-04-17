@@ -6,7 +6,7 @@ import { Avatar, Box, FlatList, Heading, HStack, Spacer, VStack, Text, Flex, But
 import SIcon from 'react-native-vector-icons/SimpleLineIcons';
 import AntIcon from 'react-native-vector-icons/AntDesign'
 import { theme } from '../../assets/theme';
-import AddAgentModal from './AddAgentModal';
+import AddAgentModal from '../Components/AddAgentModal';
 
 export default function EventAgents({navigation, eventId}) {
     const dispatch = useDispatch();

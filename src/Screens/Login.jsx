@@ -49,7 +49,9 @@ export default function Login({ navigation }) {
             {({ handleSubmit, errors, handleChange, touched }) =>(
                 <>
                     
-                    <CommonInput required error={touched.identifier && errors.identifier || getError('identifier')} onChangeText={handleChange('identifier')} 
+                    <CommonInput required 
+                        error={touched.identifier && errors.identifier || getError('identifier')}
+                        onChangeText={handleChange('identifier')}
                         placeholder='Email ou N° de tél' leftIcon={<SIcon name="user" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} />
                     <CommonInput required error={touched.password && errors.password} onChangeText={handleChange('password')} placeholder='Mot de passe' 
                         leftIcon={<MIcon name="key-outline" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} 
@@ -63,7 +65,11 @@ export default function Login({ navigation }) {
                         justifyContent: 'center',
                         alignItems: 'center'
                     }}>
-                        <Button isLoading={loading} isLoadingText={<Text style={{ color: 'white' }}>Patientez...</Text>} style={styles.loginBtn} _text={{ fontWeight: 'bold', textTransform: 'uppercase' }} onPress={handleSubmit}>Connexion</Button>
+                        <Button isLoading={loading} 
+                            isLoadingText={<Text style={{ color: 'white' }}>Patientez...</Text>}
+                            style={styles.loginBtn} _text={{ fontWeight: 'bold', textTransform: 'uppercase' }}
+                            onPress={handleSubmit}>Connexion
+                        </Button>
                     </View>
                     <View>
                         <Text style={styles.noAccountText}>N'avez-vous pas de compte? <Text style={styles.noAccountLink} onPress={() =>navigation.navigate('Signup')}>Inscrivez-vous</Text> </Text>
@@ -84,7 +90,7 @@ const styles = StyleSheet.create({
         padding: 40
     },
     logo: {
-        width: 300,
+        width: 200,
         height: 150
     },
     loginBtn: {
@@ -93,7 +99,8 @@ const styles = StyleSheet.create({
         backgroundColor: theme.colors.default100,
         shadowOpacity: 0.4,
         shadowColor: theme.colors.default, 
-        elevation: 15
+        elevation: 15,
+        borderRadius: 15
     },
     noAccountText: {
         fontWeight: '100',

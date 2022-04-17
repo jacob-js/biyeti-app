@@ -116,6 +116,7 @@ export default function EditProfile({navigation}) {
               />
               <CommonInput error={touched.phone_number && errors.phone_number || getError('phone_number')} kType='phone-pad' 
                 onChangeText={handleChange('phone_number')} value={values.phone_number} label="Téléphone"
+                required
                 placeholder='Téléphone' leftIcon={<FIcon name="phone" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} />
               <CommonSelect
                   label="Sexe" onValueChange={value => setFieldValue('gender', value)}

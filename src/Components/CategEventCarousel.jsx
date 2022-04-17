@@ -60,10 +60,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20
       },
       sectionTitle: {
-        fontSize: 18,
-        fontFamily: 'Barlow-Bold',
-        textTransform: 'capitalize',
-        color: theme.colors.light
+        fontSize: 16,
+        fontFamily: 'Barlow',
+        textTransform: 'uppercase',
+        color: theme.colors.light,
+        fontWeight: 'bold'
       },
       showAll: {
         color: theme.colors.default100,

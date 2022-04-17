@@ -1,6 +1,8 @@
 import { FormControl, Input, Select, TextArea, WarningOutlineIcon } from 'native-base'
-import React from 'react'
+import React, { useRef } from 'react'
 import { theme } from '../../assets/theme'
+import PhoneInput from 'react-native-phone-number-input';
+import { theme as nbTheme } from 'native-base';
 
 export function CommonInput(props) {
     const { label, onChangeText, value, error, type, kType,
@@ -78,6 +80,37 @@ export const CommonTextArea = (props) => {
                 borderRadius={15}
             />
             <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}> {error} </FormControl.ErrorMessage>
+        </FormControl>
+    )
+}
+
+export const CommonPhoneInput = ({ value, setFieldValue, error, required }) => {
+    const phoneInput = useRef(null);
+    return(
+        <FormControl style={{ marginBottom: 10 }} isRequired={required} isInvalid={error}>
+            <PhoneInput
+                ref={phoneInput}
+                value={value}
+                defaultCode="CD"
+                onChangeFormattedText={(phone_number) => setFieldValue('phone_number', phone_number)}
+                containerStyle={{
+                    borderWidth: 1, borderRadius: 15, borderColor: nbTheme.colors.gray[300],
+                    height: 45,
+                    width: '100%',
+                    borderBottomWidth: 2
+                }}
+                textContainerStyle={{ backgroundColor: null,
+                    padding: 0,
+                    paddingTop: 10,
+                    paddingLeft: 0
+                }}
+                textInputStyle={{
+                    marginBottom: -3,
+                    fontFamily: 'Barlow'
+                }}
+                codeTextStyle={{ marginBottom: -3, fontFamily: 'Barlow' }}
+                placeholder="Numéro de téléphone"
+            />
         </FormControl>
     )
 }

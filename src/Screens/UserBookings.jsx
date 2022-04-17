@@ -8,7 +8,7 @@ import { theme } from '../../assets/theme';
 import { Divider } from 'native-base';
 import moment from 'moment';
 import ContentLoader from 'react-native-easy-content-loader';
-import BookingDetail from './BookingDetail';
+import BookingDetail from '../Components/BookingDetail';
 import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function UserBookings({navigation}) {
