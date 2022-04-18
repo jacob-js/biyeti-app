@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Dimensions, SafeAreaView, RefreshControl } from 'react-native'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Divider, Icon, Input } from 'native-base';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
@@ -12,10 +12,11 @@ import { useState } from 'react';
 import EventsCarousel from '../Commons/EventsCarousel';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { getCategorys, getEvents } from '../Redux/actions/events';
+import { clearEventsState, getCategorys, getEvents } from '../Redux/actions/events';
 import ContentLoader from 'react-native-easy-content-loader';
 import CategEventCarousel from '../Components/CategEventCarousel';
 import SearchBar from '../Components/SearchBar';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Home = ({stackProps, navigation: drawerNav}) => {
   const { data, count, rows, loading, error } = useSelector(({ events: { events } }) =>events);
@@ -23,15 +24,21 @@ const Home = ({stackProps, navigation: drawerNav}) => {
   const dispatch = useDispatch();
   const navigation = stackProps?.navigation;
 
-  useEffect(() =>{
-    getEvents()(dispatch);
-    getCategorys(dispatch);
-  }, [navigation]);
-
   const refresh = () =>{
     getEvents()(dispatch);
     getCategorys(dispatch);
   }
+
+  useFocusEffect(
+    useCallback(() =>{
+      refresh()
+
+      return () =>{
+        clearEventsState(dispatch)
+      }
+    }, [])
+  );
+
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>

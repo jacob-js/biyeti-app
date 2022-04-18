@@ -9,7 +9,8 @@ const getEvents = (state, {type, payload}) =>{
                     ...state.events,
                     loading: true,
                     error: null,
-                    rows: []
+                    rows: [],
+                    count: 0
                 }
             }
             
@@ -33,6 +34,16 @@ const getEvents = (state, {type, payload}) =>{
                     ...state.events,
                     loading: false,
                     error: payload
+                }
+            }
+
+        case eventsActionsTypes.DESTROY_EVENTS_STATE:
+            return{
+                ...state,
+                events: {
+                    ...state.events,
+                    rows: [],
+                    count: 0
                 }
             }
     

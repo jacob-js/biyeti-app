@@ -1,12 +1,13 @@
 import { ScrollView, View, Text, SafeAreaView, StyleSheet, Dimensions, RefreshControl, FlatList } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import SearchBar from '../Components/SearchBar'
 import { Divider } from 'native-base'
 import { useDispatch, useSelector } from 'react-redux';
-import { getEvents } from '../Redux/actions/events';
+import { clearEventsState, getEvents } from '../Redux/actions/events';
 import ContentLoader from 'react-native-easy-content-loader';
 import EventCard from '../Components/EventCard';
 import { theme } from '../../assets/theme';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function AllEvents({ route }) {
     const { data, count, rows, loading, error } = useSelector(({ events: { events } }) =>events);
@@ -18,37 +19,40 @@ export default function AllEvents({ route }) {
 
     const getData = () =>{
         if(categId){
-            console.log('categId', categId);
             getEvents(categId, offset, limit)(dispatch);
         }else{
             getEvents(null, offset, limit)(dispatch);
         }
     }
 
+    useFocusEffect(
+        useCallback(() => {
+            setEvents([]);
+          return () => {
+            clearEventsState(dispatch);
+            setOffet(1);
+          };
+        }, [])
+    );
+
     useEffect(() =>{
-        getData()
-    }, [categId, offset, limit, dispatch]);
+        getData();
+    }, [categId, offset, limit]);
 
     useEffect(() =>{
         (() =>{
-            let eventsArray = [];
-            if(!loading && rows.length > 0){
-                rows.map((event) => {
-                    const available = events.find(ev => ev.id === event.id);
-                    if(!available){
-                        eventsArray.push(event);
-                    }
-                })
-                setEvents([...events, ...eventsArray]);
+            if(!loading){
+                setEvents(rows)
             }
-        })();
-    }, [rows]);
+        })()
+    }, [rows])
 
     const onEndReached = () =>{
         const activeSize = offset * limit;
         if(activeSize < count){
             if(!loading){
                 setOffet(offset + 1);
+                setEvents([...events, ...rows]);
             }
         }
     }
@@ -73,6 +77,7 @@ export default function AllEvents({ route }) {
             renderItem={({ item }) => <EventCard event={item} />}
             onEndReached={onEndReached}
             onEndReachedThreshold={0}
+            keyExtractor={(item) => item.id}
         />
     </SafeAreaView>
   )

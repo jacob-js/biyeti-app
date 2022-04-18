@@ -14,7 +14,7 @@ export const getEvents = (categId, offset=1, limit=5) => async(dispatch) =>{
             dispatch({
                 type: eventsActionsTypes.GET_EVENTS_SUCCESS,
                 payload: res.data.data
-            })
+            });
         }
     } catch (error) {
         const res = error.response;
@@ -31,6 +31,10 @@ export const getEvents = (categId, offset=1, limit=5) => async(dispatch) =>{
         }
     }
 };
+
+export const clearEventsState = (dispatch) =>{
+    dispatch({ type: eventsActionsTypes.DESTROY_EVENTS_STATE });
+}
 
 export const createEventAction = (data) => async(dispatch, navigation) =>{
     dispatch({
