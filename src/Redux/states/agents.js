@@ -5,6 +5,11 @@ const agents = {
         data: {},
         count: 0,
         rows: []
+    },
+    createAgent: {
+        isLoading: false,
+        data: {},
+        error: null
     }
 };
 

@@ -16,7 +16,7 @@ const links = [
     icon: 'list-outline' 
   },
   {
-    name: 'Agents',
+    name: 'Membres',
     icon: 'people-outline' 
   },
   {
@@ -86,7 +86,7 @@ export default function DashboardEventDetail({route, navigation}) {
       </ScrollView>
       {
         
-        activeLink === 'Agents' ? <EventAgents navigation={navigation} eventId={eventId} route={route} />:null
+        activeLink === 'Membres' ? <EventAgents navigation={navigation} eventId={eventId} route={route} />:null
       }
       {
         viewScan && <ScanQr setViewScan={setViewScan} />
