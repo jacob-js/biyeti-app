@@ -2,13 +2,13 @@ import { View, Text } from 'react-native'
 import React, { useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createDrawerNavigator } from '@react-navigation/drawer'
-import { drawerRoutes, routes } from './routes';
+import { drawerRoutes, routes, notSecuredRoutes, securedRoutes } from './routes';
 import Header from './Header';
 import { DrawerContents } from './DrawerContents';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useDispatch, useSelector } from 'react-redux';
 import LoadingPage from '../Components/LoadingPage';
-import { notSecuredRoutes, securedRoutes } from '../Utils/helpers';
+// import { notSecuredRoutes, securedRoutes } from '../Utils/helpers';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -31,7 +31,8 @@ export default function Routes() {
                             {
                                 securedRoutes.map((route, index) => (
                                     <Stack.Screen name={route.name} component={route.component} options={{
-                                        headerShown: route.withHeader, title: route.title, unmountOnBlur: true
+                                        headerShown: route.withHeader, title: route.title, unmountOnBlur: true,
+                                        ...route.headerOptions
                                     }} key={index} />
                                 ))
                             }

@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
-    marginTop: StatusBar.currentHeight
+    paddingTop: StatusBar.currentHeight
   },
   header: {
       position: 'relative',

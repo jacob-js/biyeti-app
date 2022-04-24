@@ -60,7 +60,7 @@ export default function AddTicketModal({setShowModal, showModal, eventId}) {
     }
   return (
     <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-        <Modal.Content maxWidth="400px">
+        <Modal.Content w="full">
           <Modal.CloseButton />
           <Modal.Header>Ajouter un billet</Modal.Header>
         <Formik

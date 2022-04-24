@@ -1,3 +1,4 @@
+import DashboardEventHeader from "../Components/DashboardEventHeader";
 import AddEventForm from "../Screens/AddEventForm";
 import AllEvents from "../Screens/AllEvents";
 import Dashboard from "../Screens/Dashboard";
@@ -27,7 +28,8 @@ export const routes = [
         name: 'EventDetail',
         component: EventDetail,
         title: 'Detail de l\'événement',
-        secured: true
+        secured: true,
+        headerOptions: {}
     },
     {
         name: 'Dashboard',
@@ -46,27 +48,38 @@ export const routes = [
         component: EventsList,
         withHeader: true,
         title: 'Mes événements',
-        secured: true
+        secured: true,
+        headerOptions: {}
     },
     {
         name: 'AddEventForm',
         component: AddEventForm,
         withHeader: true,
         title: 'Ajouter un événement',
-        secured: true
+        secured: true,
+        headerOptions: {}
     },
     {
         name: 'DashboardEventDetail',
         component: DashboardEventDetail,
-        withHeader: false,
-        secured: true
+        withHeader: true,
+        secured: true,
+        headerOptions: {
+            // header: props => <DashboardEventHeader {...props} />,
+            headerBackTitleVisible: false,
+            headerTitle: false,
+            headerTransparent: true,
+            headerTintColor: 'white',
+            title: ""
+        }
     },
     {
         name: 'UserBookings',
         component: UserBookings,
         withHeader: true,
         secured: true,
-        title: 'Mes réservations'
+        title: 'Mes réservations',
+        headerOptions: {}
     }
 ]
 
@@ -80,3 +93,6 @@ export const drawerRoutes = [
         component: AllEvents
     }
 ]
+
+export const securedRoutes = routes.filter(route => route.secured);
+export const notSecuredRoutes = routes.filter(route => !route.secured);

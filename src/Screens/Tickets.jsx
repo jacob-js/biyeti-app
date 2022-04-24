@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         marginBottom: 5
     },
     tickets: {
-        padding: 20
+        paddingHorizontal: 20
     },
     ticket: {
         flexDirection: 'row',

@@ -34,7 +34,7 @@ export default function App() {
     <NativeBaseProvider>
       <Provider store={store}>
         <PaperProvider>
-          <StatusBar style="light" backgroundColor='rgba(0, 0, 0, 1)' />
+          <StatusBar translucent />
           <Routes />
         </PaperProvider>
       </Provider>

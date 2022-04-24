@@ -1,5 +1,5 @@
 import { View, Text, FlatList, StyleSheet, Image, SafeAreaView, TouchableOpacity } from 'react-native'
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import FaIcon from 'react-native-vector-icons/FontAwesome5';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -8,19 +8,25 @@ import { theme } from '../../assets/theme';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAgentsAction } from '../Redux/actions/agents';
 import moment from 'moment';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function EventsList({navigation}) {
     const dispatch = useDispatch();
     const { data: user } = useSelector(({ users: {currentUser} }) =>currentUser); 
     const { data, loading, count, rows } = useSelector(({ agents: { agents }}) => agents);
 
-    useEffect(() =>{
-        getAgentsAction(user.id)(dispatch, navigation);
-    }, [navigation, user]);
-
     const refresh = () => {
         getAgentsAction(user.id)(dispatch, navigation);
     }
+
+    useFocusEffect(
+        useCallback(
+            () => {
+                refresh();
+            },
+            [navigation, user],
+        )
+    )
 
   return (
       <SafeAreaView style={styles.container}>

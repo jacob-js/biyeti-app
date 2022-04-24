@@ -33,7 +33,7 @@ export default function Dashboard({navigation}) {
                     <MatIcon name='account-edit-outline' style={styles.topIcon} onPress={() => navigation.navigate('EditProfile')} />
                 </View>
                 <View style={styles.user}>
-                    <Avatar bg="light.200" 
+                    <Avatar bg="white" 
                         source={user.avatar &&{
                             uri: user.avatar
                         }}
@@ -111,15 +111,15 @@ export default function Dashboard({navigation}) {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        flex: 1,
-        marginTop: StatusBar.currentHeight
+        flex: 1
     },
     header: {
         height: 320,
         position: 'relative',
         backgroundColor: theme.colors.light,
         borderBottomStartRadius: 20,
-        borderBottomEndRadius: 20
+        borderBottomEndRadius: 20,
+        paddingTop: 10
     },
     headerTop: {
         width: '100%',
