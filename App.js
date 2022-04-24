@@ -10,6 +10,7 @@ import AppLoading from 'expo-app-loading';
 import { Provider } from 'react-redux';
 import store from './src/Redux/store';
 import axios from 'axios';
+import { LinearGradient } from 'expo-linear-gradient';
 
 axios.defaults.baseURL = 'https://bookitbackend.herokuapp.com';
 
@@ -29,9 +30,14 @@ export default function App() {
       />
     );
   }
+  const config = {
+    dependencies: {
+      "linear-gradient": LinearGradient
+    }
+  };
 
   return (
-    <NativeBaseProvider>
+    <NativeBaseProvider config={config}>
       <Provider store={store}>
         <PaperProvider>
           <StatusBar translucent />

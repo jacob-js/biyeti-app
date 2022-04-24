@@ -10,6 +10,7 @@ import EventAgents from './EventAgents';
 import { ImageHeaderScrollView, TriggeringView } from 'react-native-image-header-scroll-view';
 import * as Animatable from 'react-native-animatable';
 import { getAgentsAction } from '../Redux/actions/agents';
+import EventBookings from '../Components/EventBookings';
 
 const links = [
   {
@@ -109,7 +110,8 @@ export default function DashboardEventDetail({route, navigation}) {
               }
               {
           
-                activeLink === 'Membres' ? <EventAgents navigation={navigation} eventId={eventId} route={route} />:null
+                activeLink === 'Membres' ? <EventAgents navigation={navigation} eventId={eventId} route={route} />:
+                activeLink === 'Réservations' ? <EventBookings route={route} />:null
               }
               {
                 viewScan && <ScanQr setViewScan={setViewScan} />

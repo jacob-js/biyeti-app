@@ -2,11 +2,9 @@ import { View, Text, StyleSheet, ScrollView, Image, RefreshControl, Dimensions, 
 import React, { useEffect, useState } from 'react'
 import { getUserTicketsAction } from '../Redux/actions/tickets'
 import { useDispatch, useSelector } from 'react-redux';
-import FaIcon from 'react-native-vector-icons/FontAwesome5';
 import AntIcon from 'react-native-vector-icons/AntDesign'
 import { theme } from '../../assets/theme';
-import { Divider } from 'native-base';
-import moment from 'moment';
+import { Divider, HStack, VStack } from 'native-base';
 import ContentLoader from 'react-native-easy-content-loader';
 import BookingDetail from '../Components/BookingDetail';
 import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -70,25 +68,14 @@ export default function UserBookings({navigation}) {
                         key={index} style={styles.ticket}
                         onPress={() =>{setShowDetail(true); setToshow(reser)}}
                     >
-                        <View style={styles.ticketAvatar}>
-                            {reser.ticket?.name.toLowerCase() === 'vip' ? <Image source={{
-                                uri: "https://img.icons8.com/external-flaticons-flat-flat-icons/64/000000/external-vip-music-festival-flaticons-flat-flat-icons.png"
-                            }} style={styles.vipIcon} /> :
-                                <FaIcon name='ticket-alt' style={styles.ticketIcon} />
-                            }
-                        </View>
-                        <View style={styles.eventInfo}>
-                            <Text style={styles.eventName}> {reser?.ticket?.event.name} </Text>
-                            <View style={styles.addressContainer}>
-                                <Text style={styles.eventLocation}> <AntIcon name='enviromento' style={styles.icon} />
-                                    {reser?.ticket?.event.location}
-                                </Text>
-                                <Divider orientation='vertical' marginX={1} bg={theme.colors.light100} />
-                                <Text style={styles.eventDate}><AntIcon name='calendar' style={styles.icon} />
-                                    {moment(reser?.ticket?.event.event_date).format("DD-MM-YYYY | HH:mm")}
-                                </Text>
-                            </View>
-                        </View>
+                        <AntIcon name="qrcode" size={35} />
+                        <HStack justifyContent="space-between" w="5/6" alignItems="center">
+                            <VStack marginLeft="10px">
+                                <Text style={styles.name}>{reser?.ticket?.event.name}</Text>
+                                <Text style={styles.price}>{reser.ticket?.price}{reser.ticket?.currency?.toLowerCase() === 'usd' ? '$': 'FC'}</Text>
+                            </VStack>
+                            <Text style={styles.type} numberOfLines={1}>{reser.ticket?.name}</Text>
+                        </HStack>
                     </TouchableOpacity>
                 ))
             }
@@ -120,11 +107,10 @@ const styles = StyleSheet.create({
     ticket: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: 20,
-        paddingVertical: 20,
+        padding: 15,
         marginBottom: 10,
         backgroundColor: 'white',
-        borderRadius: 10
+        borderRadius: 7
     },
     ticketAvatar: {
         width: 50,
@@ -135,45 +121,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    vipIcon: {
-        width: 30,
-        height: 30
-    },
-    ticketIcon: {
-        fontSize: 25,
-        color: theme.colors.light
-    },
-    eventInfo: {
-        marginLeft: 10
-    },
-    ticketName: {
+    name: {
         color: theme.colors.light,
-        fontFamily: 'Barlow-Bold',
-        fontWeight: 'bold',
-        fontSize: 15,
-        textTransform: 'uppercase'
+        fontFamily: 'Barlow',
+        textTransform: 'capitalize'
     },
-    ticketPrice: {
+    price: {
         fontSize: 16,
         fontWeight: 'bold',
         color: theme.colors.gold
     },
-    addressContainer: {
-        flexDirection: 'row',
-        marginTop: 5,
-        alignItems: 'center',
-        justifyContent: 'space-between'
-    },
-    eventDate: {
-        color: theme.colors.light,
-        fontFamily: 'Barlow'
-    },
-    eventLocation: {
-        color: theme.colors.light,
-        fontFamily: 'Barlow'
-    },
-    icon: {
+    type: {
+        fontFamily: 'Barlow',
         fontWeight: 'bold',
-        fontSize: 16
-    },
+        textTransform: 'uppercase'
+    }
 })
