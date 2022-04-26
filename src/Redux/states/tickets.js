@@ -19,6 +19,13 @@ const tickets = {
         loading: false,
         error: null,
         data: []
+    },
+    purchases: {
+        loading: false,
+        data: {},
+        error: null,
+        rows: [],
+        count: 0
     }
 };
 

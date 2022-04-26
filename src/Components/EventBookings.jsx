@@ -1,10 +1,26 @@
 import { View, Text, StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import { Center, Divider, Flex, HStack, theme, VStack } from 'native-base'
 import SIcon from 'react-native-vector-icons/SimpleLineIcons'
 import AntIcon from 'react-native-vector-icons/AntDesign'
+import { useDispatch, useSelector } from 'react-redux'
+import { useFocusEffect } from '@react-navigation/native'
+import { getPurchasesAction } from '../Redux/actions/tickets'
+import { DashboardContext } from '../Screens/DashboardEventDetail'
 
 const EventBookings = () => {
+    const [page, setPage] = useState(1);
+    const pageSize = 10;
+    const dispatch = useDispatch();
+    const { event } = useContext(DashboardContext);
+    const { data, rows, count, loading, error } = useSelector(({ tickets: { purchases } }) => purchases);
+
+    useFocusEffect(
+        useCallback(() =>{
+            getPurchasesAction(event.id, page, pageSize)(dispatch);
+        }, [event.id, page, pageSize, dispatch])
+    )
+
   return (
     <View style={styles.container}>
         <HStack space={3} justifyContent="space-between">
@@ -18,7 +34,7 @@ const EventBookings = () => {
                 <SIcon name='user' size={50} color="white" />
                 <Divider my={2} bg="white" />
                 <View>
-                    <Text style={styles.count}>200 Participants</Text>
+                    <Text style={styles.count}>{count} Participant{count > 1 ? 's': ''}</Text>
                 </View>
             </Center>
             <Center h="130px" w="45%" bg={{
@@ -37,16 +53,22 @@ const EventBookings = () => {
         </HStack>
         <Divider my={3} />
         <Flex direction='column'>
-            <HStack p="15px" bg="gray.200" rounded="md" alignItems="center">
-                <AntIcon name="qrcode" size={35} />
-                <HStack justifyContent="space-between" w="5/6" alignItems="center">
-                    <VStack marginLeft="10px">
-                        <Text style={styles.user}>Merci Jacob</Text>
-                        <Text style={styles.price}>10$</Text>
-                    </VStack>
-                    <Text style={styles.type}>Vip</Text>
-                </HStack>
-            </HStack>
+            {
+                rows?.map((item, index) => (
+                    <HStack p="15px" bg="gray.200" rounded="md" mb="3" alignItems="center" key={index}>
+                        <AntIcon name="qrcode" size={35} />
+                        <HStack justifyContent="space-between" w="5/6" alignItems="center">
+                            <VStack marginLeft="10px">
+                                <Text style={styles.user}>{item?.user.firstname} {item?.user.lastname}</Text>
+                                <Text style={styles.price}>
+                                    {item.ticket?.price}{item.ticket?.currency?.toLowerCase() === 'usd' ? '$': 'FC'}
+                                </Text>
+                            </VStack>
+                            <Text style={styles.type}>{item?.ticket.name}</Text>
+                        </HStack>
+                    </HStack>
+                ))
+            }
         </Flex>
     </View>
   )

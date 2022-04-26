@@ -41,6 +41,7 @@ export default function DashboardEventDetail({route, navigation}) {
     const [viewScan, setViewScan] = useState(false);
     const MIN_HEIGHT = Platform.OS === 'ios' ? 90 : 70;
     const fixedContentView = useRef(null);
+    const [fixedVisible, setFixedVsisble] = useState();
 
     const getData = () =>{
         getEvent(eventId)(dispatch);
@@ -51,6 +52,16 @@ export default function DashboardEventDetail({route, navigation}) {
     useEffect(() =>{
         getData();
     }, [eventId, navigation]);
+
+    useEffect(() =>{
+      (() =>{
+        if(fixedVisible){
+          fixedContentView.current.fadeInUp(200);
+        }else{
+          fixedContentView.current.fadeOut(100);
+        }
+      })()
+    }, [fixedVisible]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -65,9 +76,9 @@ export default function DashboardEventDetail({route, navigation}) {
         onScroll={(event) => {
           const offsetY = event.nativeEvent.contentOffset.y;
           if (offsetY > 250) {
-            fixedContentView.current.fadeInUp(200);
+            setFixedVsisble(true)
           } else {
-            fixedContentView.current.fadeOut(100);
+            setFixedVsisble(false)
           }
         } }
         refreshControl={
@@ -104,7 +115,9 @@ export default function DashboardEventDetail({route, navigation}) {
             onDisplay={() => {fixedContentView.current.fadeOut(200); console.log('display')}}
             onBeginHidden={() => {console.log('begin hidden')}}
           >
-            <DashboardContext.Provider value={{}}>
+            <DashboardContext.Provider value={{
+              event: event
+            }}>
               {
                 activeLink === 'Billets' ? <Tickets navigation={navigation} route={route} />:null
               }

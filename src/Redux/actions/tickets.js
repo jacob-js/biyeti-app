@@ -112,3 +112,21 @@ export const getUserTicketsAction = (userId) => async(dispatch) =>{
         console.log(error);
     }
 }
+
+export const getPurchasesAction = (eventId, page, pageSize) => async(dispatch) =>{
+    dispatch({ type: ticketsActionsTypes.GET_PURCHASES_REQUEST });
+    try {
+        const res = await axios.get(`/api/v1/tickets/purchases/${eventId}?p=${page}&p_size=${pageSize}`);
+        if(res.status === 200){
+            dispatch({
+                type: ticketsActionsTypes.GET_PURCHASES_SUCCESS,
+                payload: res.data.data
+            })
+        }
+    } catch (error) {
+        dispatch({
+            type: ticketsActionsTypes.GET_PURCHASES_ERROR,
+            payload: error.message || 'Echec de chargement'
+        })
+    }
+}

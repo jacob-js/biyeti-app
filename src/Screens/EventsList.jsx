@@ -50,10 +50,8 @@ export default function EventsList({navigation}) {
               <>
                 <View style={styles.header}>
                     <Button bg={theme.colors.default} 
-                        startIcon={<AntIcon name='pluscircleo' color="white" />}
-                        borderRadius="full"
-                        height={38}
-                        colorScheme={theme.colors.default}
+                        startIcon={<FaIcon name='plus' style={{ color: 'white' }} />}
+                        style={styles.addBtn} _text={{ fontWeight: 'bold', textTransform: 'uppercase' }}
                         onPress={() => navigation.navigate('AddEventForm')}
                     >
                         <Text style={{ color: "white" }}>Ajouter</Text>
@@ -94,6 +92,14 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingVertical: 20,
         paddingHorizontal: 15
+    },
+    addBtn: {
+        height: 50,
+        backgroundColor: theme.colors.default100,
+        shadowOpacity: 0.4,
+        shadowColor: theme.colors.default, 
+        elevation: 15,
+        borderRadius: 15
     },
     header: {
         marginBottom: 15
