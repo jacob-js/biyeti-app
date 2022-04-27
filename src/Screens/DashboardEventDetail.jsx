@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, StatusBar, Platform, RefreshControl, Dimensions, TouchableOpacity } from 'react-native'
-import React, { createContext, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getEvent } from '../Redux/actions/events';
 import IoIcon from 'react-native-vector-icons/Ionicons';
@@ -11,6 +11,8 @@ import { ImageHeaderScrollView, TriggeringView } from 'react-native-image-header
 import * as Animatable from 'react-native-animatable';
 import { getAgentsAction } from '../Redux/actions/agents';
 import EventBookings from '../Components/EventBookings';
+import { DashboardEventContext } from '../Utils/contexts';
+import EditEvent from '../Components/EditEvent';
 
 const links = [
   {
@@ -30,8 +32,6 @@ const links = [
     icon: 'settings-outline' 
   }
 ];
-
-export const DashboardContext = createContext({});
 
 export default function DashboardEventDetail({route, navigation}) {
     const eventId = route?.params?.eventId;
@@ -115,7 +115,7 @@ export default function DashboardEventDetail({route, navigation}) {
             onDisplay={() => {fixedContentView.current.fadeOut(200); console.log('display')}}
             onBeginHidden={() => {console.log('begin hidden')}}
           >
-            <DashboardContext.Provider value={{
+            <DashboardEventContext.Provider value={{
               event: event
             }}>
               {
@@ -124,12 +124,13 @@ export default function DashboardEventDetail({route, navigation}) {
               {
           
                 activeLink === 'Membres' ? <EventAgents navigation={navigation} eventId={eventId} route={route} />:
-                activeLink === 'Réservations' ? <EventBookings route={route} />:null
+                activeLink === 'Réservations' ? <EventBookings route={route} />:
+                activeLink === 'Paramètres' ? <EditEvent />:null
               }
               {
                 viewScan && <ScanQr setViewScan={setViewScan} />
               }
-            </DashboardContext.Provider>
+            </DashboardEventContext.Provider>
           </TriggeringView>
       </ImageHeaderScrollView>
      </View> 

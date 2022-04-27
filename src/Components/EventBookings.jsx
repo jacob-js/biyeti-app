@@ -1,25 +1,42 @@
 import { View, Text, StyleSheet } from 'react-native'
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Center, Divider, Flex, HStack, theme, VStack } from 'native-base'
 import SIcon from 'react-native-vector-icons/SimpleLineIcons'
 import AntIcon from 'react-native-vector-icons/AntDesign'
 import { useDispatch, useSelector } from 'react-redux'
 import { useFocusEffect } from '@react-navigation/native'
 import { getPurchasesAction } from '../Redux/actions/tickets'
-import { DashboardContext } from '../Screens/DashboardEventDetail'
+import { DashboardEventContext } from '../Utils/contexts'
+import useAxios from 'axios-hooks'
 
-const EventBookings = () => {
+function EventBookings() {
     const [page, setPage] = useState(1);
     const pageSize = 10;
     const dispatch = useDispatch();
-    const { event } = useContext(DashboardContext);
+    const { event } = useContext(DashboardEventContext);
     const { data, rows, count, loading, error } = useSelector(({ tickets: { purchases } }) => purchases);
+    const [{data: sumData, loading: loaingSum}, getSum] = useAxios({ url: `/api/v1/tickets/sum?event_id=${event.id}` });
+    const [ totalCdf, setTotalCdf ] = useState(0);
+    const [ totalUsd, setTotalUsd ] = useState(0);
 
     useFocusEffect(
         useCallback(() =>{
             getPurchasesAction(event.id, page, pageSize)(dispatch);
         }, [event.id, page, pageSize, dispatch])
-    )
+    );
+
+    useFocusEffect(
+        useCallback(() =>{
+            getSum()
+        }, [])
+    );
+
+    useEffect(() =>{
+        (() =>{
+            setTotalCdf(sumData?.data?.cdf);
+            setTotalUsd(sumData?.data?.usd);
+        })()
+    }, [sumData]);
 
   return (
     <View style={styles.container}>
@@ -47,7 +64,8 @@ const EventBookings = () => {
                 <SIcon name='wallet' size={50} color="white" />
                 <Divider my={2} bg="white" />
                 <View>
-                    <Text style={styles.count}>200$</Text>
+                    { totalUsd ? <Text style={styles.count}>{totalUsd}$</Text>: null}
+                    { totalCdf ? <Text style={styles.count}>{totalCdf}FC</Text>: null}
                 </View>
             </Center>
         </HStack>
@@ -76,7 +94,7 @@ const EventBookings = () => {
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: 20
+        padding: 20
     },
     count: {
         fontFamily: 'Barlow',

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { eventsActionsTypes } from "../actionsTypes/events"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { showToast } from "../../Utils/feedbacks";
 
 export const getEvents = (categId, offset=1, limit=5) => async(dispatch) =>{
     dispatch({
@@ -122,6 +123,35 @@ export const getEvent = (id) => async(dispatch) =>{
             dispatch({
                 type: eventsActionsTypes.GET_EVENT_ERROR,
                 payload: 'Echec de chargement'
+            })
+        }
+    }
+}
+
+export const updateEventAction = (id, data) => async(dispatch) =>{
+    dispatch({
+        type: eventsActionsTypes.UPDATE_EVENT_REQUEST
+    });
+    try {
+        const res = await axios.put(`/api/v1/events/id/${id}?event_id=${id}`, data);
+        if(res.status === 200){
+            dispatch({
+                type: eventsActionsTypes.UPDATE_EVENT_SUCCESS,
+                payload: res.data.data
+            });
+            showToast("Modifications enregistrées", 'success')
+        }
+    } catch (error) {
+        const res = error.response;
+        if(res){
+            dispatch({
+                type: eventsActionsTypes.UPDATE_EVENT_ERROR,
+                payload: res.data.error || error.message
+            })
+        }else{
+            dispatch({
+                type: eventsActionsTypes.UPDATE_EVENT_ERROR,
+                payload: error.message
             })
         }
     }

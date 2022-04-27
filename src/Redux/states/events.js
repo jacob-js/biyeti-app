@@ -19,6 +19,11 @@ const events = {
         loading: false,
         error: null,
         data: {}
+    },
+    updateEvent: {
+        loading: false,
+        error: null,
+        data: {}
     }
 };
 
