@@ -28,6 +28,7 @@ export const showToast = (msg, type='success') =>{
         duration: 3000,
         status: type,
         width: '80%',
-        borderRadius: 15
+        borderRadius: 15,
+        zIndex: 99999
     })
 }

@@ -155,4 +155,36 @@ export const updateEventAction = (id, data) => async(dispatch) =>{
             })
         }
     }
+};
+
+export const deleteEventAction = (id) => async(dispatch, navigation) =>{
+    dispatch({
+        type: eventsActionsTypes.DELETE_EVENT_REQUEST,
+        payload: { id: id }
+    });
+    try {
+        const res = await axios.delete(`/api/v1/events/id/${id}?event_id=${id}`);
+        if(res){
+            dispatch({
+                type: eventsActionsTypes.DELETE_EVENT_SUCCESS,
+                payload: {msg: res.data.msg, id: id}
+            });
+            showToast("Evénement supprimé", 'success');
+            navigation.navigate('DashboardEvents');
+        }
+    } catch (error) {
+        const res = error.response;
+        if(res){
+            dispatch({
+                type: eventsActionsTypes.DELETE_EVENT_ERROR,
+                payload: res.data?.error || res.data
+            });
+        }else{
+            dispatch({
+                type: eventsActionsTypes.DELETE_EVENT_ERROR,
+                payload: 'Echec de chargement'
+            })
+        };
+        showToast("Echec de la suppression", 'error');
+    }
 }

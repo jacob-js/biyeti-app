@@ -11,10 +11,14 @@ import {theme} from '../../assets/theme';
 import * as yup from 'yup';
 import DatePicker from '@react-native-community/datetimepicker'
 import { useDispatch, useSelector } from 'react-redux';
-import { getCategorys, updateEventAction } from '../Redux/actions/events';
+import { deleteEventAction, getCategorys, updateEventAction } from '../Redux/actions/events';
 import moment from 'moment';
 import { DashboardEventContext } from '../Utils/contexts';
 import { MessageAlert } from '../Utils/feedbacks';
+import AlertModal from './AlertModal';
+import { useNavigation } from '@react-navigation/native';
+import { getAgentsAction } from '../Redux/actions/agents';
+import { isEventAdmin } from '../Utils/helpers';
 
 const fields = [
     {
@@ -57,6 +61,7 @@ const schema = yup.object({
 
 const EditEvent = () => {
     const { event } = useContext(DashboardEventContext);
+    const [deleteAlertVisible, setDeleteAlertVisible] = useState(false);
     const [image, setImage] = useState(event.cover);
     const [shownPicker, setShownPicker] = useState(false);
     const [shownPickerTime, setShownPickerTime] = useState(false);
@@ -71,9 +76,14 @@ const EditEvent = () => {
         validateOnBlur: true
     });
     const { values, handleChange, touched, errors, setFieldValue, handleSubmit } = formik;
+    const navigation = useNavigation();
+    const { loading: loadingDelete } = useSelector(({ events: { deleteEvent } }) =>deleteEvent);
+    const { rows: eventMembers } = useSelector(({ agents: { agents }}) => agents);
+    const { data: user } = useSelector(({ users: {currentUser} }) =>currentUser); 
 
     useEffect(() =>{
         getCategorys(dispatch);
+        getAgentsAction(null, event.id)(dispatch, navigation);
     }, []);
 
     useEffect(() =>{
@@ -218,19 +228,33 @@ const EditEvent = () => {
                     value={values[field.name]}
                 />
             ))}                    
-            <Button isLoading={loading} 
-                isLoadingText={<Text style={{ color: 'white' }}>Enregistrement...</Text>} 
-                style={[styles.submitBtn, !availableChange() && styles.disabledBtn]} _text={{ fontWeight: 'bold', textTransform: 'uppercase' }} 
-                onPress={handleSubmit}
-                disabled={!availableChange()}
-            >Enregistrer les modifications</Button>
+            {
+                isEventAdmin(user, eventMembers) &&
+                <>
+                    <Button isLoading={loading} 
+                        isLoadingText={<Text style={{ color: 'white' }}>Enregistrement...</Text>} 
+                        style={[styles.submitBtn, !availableChange() && styles.disabledBtn]} _text={{ fontWeight: 'bold', textTransform: 'uppercase' }} 
+                        onPress={handleSubmit}
+                        disabled={!availableChange()}
+                    >Enregistrer les modifications</Button>
+                    <Button isLoading={false} 
+                        isLoadingText={<Text>Suppression...</Text>} 
+                        style={styles.deleteBtn} _text={{ fontWeight: 'bold', textTransform: 'uppercase', color: "danger.700" }} 
+                        borderColor="danger.700" bgColor="white" borderWidth={1}
+                        onPress={() => setDeleteAlertVisible(true)}
+                    >Supprimer cet evenement</Button>
+                </>
+            }
         </>
-
-          <Button isLoading={false} 
-                isLoadingText={<Text>Suppression...</Text>} 
-                style={styles.deleteBtn} _text={{ fontWeight: 'bold', textTransform: 'uppercase', color: "danger.700" }} 
-                borderColor="danger.700" bgColor="white" borderWidth={1}
-            >Supprimer cet evenement</Button>
+        
+        <AlertModal
+            title="Attention"
+            alertBody="Vous êtes sur le point de supprimer cet événement. Cette action est irréversible."
+            setIsOpen={setDeleteAlertVisible}
+            isOpen={deleteAlertVisible}
+            onDelete={() => deleteEventAction(event.id)(dispatch, navigation)}
+            loading={loadingDelete}
+        />
     </View>
   )
 };

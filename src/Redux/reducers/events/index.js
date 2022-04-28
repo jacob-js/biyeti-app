@@ -1,5 +1,6 @@
 import initialStates from "../../states";
 import createEvent from "./createEvent";
+import deleteEvent from "./deleteEvent";
 import getCategorys from "./getCategorys";
 import getEvent from "./getEvent";
 import getEvents from "./getEvents";
@@ -11,6 +12,7 @@ const events = (state=initialStates.events, action={}) =>({
     ...createEvent(state, action),
     ...getCategorys(state, action),
     ...getEvent(state, action),
-    ...updateEvent(state, action)
+    ...updateEvent(state, action),
+    ...deleteEvent(state, action)
 });
 export default events;

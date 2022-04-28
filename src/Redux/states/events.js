@@ -24,6 +24,12 @@ const events = {
         loading: false,
         error: null,
         data: {}
+    },
+    deleteEvent: {
+        loading: false,
+        error: null,
+        msg: null,
+        id: null
     }
 };
 
