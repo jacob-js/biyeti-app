@@ -15,7 +15,7 @@ export default function Header({DrawerNavigation, options, drawerRoute: route}) 
             alignItems: 'center',
             justifyContent: 'space-between',
             paddingLeft: 40,
-            paddingTop: 30,
+            paddingTop: 15,
             backgroundColor: 'white',
             borderBottomStartRadius: 30,
             borderBottomEndRadius: 30,

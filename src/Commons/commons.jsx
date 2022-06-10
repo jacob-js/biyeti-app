@@ -24,6 +24,7 @@ export function CommonInput(props) {
                 maxLength={maxLength}
                 rounded={15}
                 borderRadius={15}
+                height="45px"
                 {...props}
             />
             <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}> {error} </FormControl.ErrorMessage>
@@ -49,6 +50,7 @@ export function CommonSelect(props) {
                 variant={uiType || 'underlined'}
                 borderBottomWidth={2}
                 borderRadius={15}
+                height="45px"
             >
                 {props.children}
             </Select>

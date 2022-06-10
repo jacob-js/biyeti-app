@@ -29,7 +29,8 @@ export const routes = [
         component: EventDetail,
         title: 'Detail de l\'événement',
         secured: true,
-        headerOptions: {}
+        headerOptions: {
+        }
     },
     {
         name: 'Dashboard',
