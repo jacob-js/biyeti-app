@@ -27,7 +27,7 @@ const EmailOrPhoneInput = () => {
             <Button isLoading={false} 
                 isLoadingText={<Text style={{ color: 'white' }}>Patientez...</Text>}
                 style={styles.submitBtn} _text={{ fontWeight: 'bold', textTransform: 'uppercase' }}
-                // onPress={handleSubmit}
+                onPress={() =>navigation.navigate('ResetPwdForm')}
             >Soumettre
             </Button>
         </View>
@@ -54,11 +54,12 @@ const styles = StyleSheet.create({
     subtitle: {
         fontSize: 14,
         fontFamily: 'Barlow',
-        textAlign: 'center',
+        textAlign: 'left',
         color: nbTheme.colors.light[500],
-        marginTop: 10,
+        marginTop: 15,
         marginBottom: 30,
-        width: '60%'
+        width: '100%',
+        paddingRight: 70
     },
     submitBtn: {
         height: 50,

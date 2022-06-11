@@ -9,6 +9,7 @@ import EventDetail from "../Screens/EventDetail";
 import EventsList from "../Screens/EventsList";
 import Home from "../Screens/Home";
 import Login from "../Screens/Login";
+import PwdForm from "../Screens/PwdForm";
 import Signup from "../Screens/Signup";
 import UserBookings from "../Screens/UserBookings";
 import VerificationCode from "../Screens/VerificationCode";
@@ -29,6 +30,12 @@ export const routes = [
     {
         name: 'ResetPwdEmailForm',
         component: EmailOrPhoneInput,
+        withHeader: false,
+        secured: false
+    },
+    {
+        name: 'ResetPwdForm',
+        component: PwdForm,
         withHeader: false,
         secured: false
     },

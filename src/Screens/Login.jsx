@@ -6,7 +6,7 @@ import FIcon from 'react-native-vector-icons/Feather'
 import SIcon from 'react-native-vector-icons/SimpleLineIcons'
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { CommonInput } from '../Commons/commons'
-import { Button } from 'native-base'
+import { Button, theme as nbTheme } from 'native-base'
 import { theme } from '../../assets/theme'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginAction } from '../Redux/actions/auth'
@@ -112,8 +112,11 @@ const styles = StyleSheet.create({
         marginBottom: 15
     },
     noAccountLink: {
-        color: theme.colors.default100,
-        fontFamily: 'Barlow',
-        textAlign: 'center',
+        // color: theme.colors.default100,
+        // fontFamily: 'Barlow',
+        // textAlign: 'center',
+        fontSize: 14,
+        color: nbTheme.colors.light[500],
+        textAlign: 'left',
     }
 })
