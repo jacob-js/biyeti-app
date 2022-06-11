@@ -1,5 +1,5 @@
 import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Dimensions, SafeAreaView, RefreshControl } from 'react-native'
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { theme } from '../../assets/theme';
 import EntyIcon from 'react-native-vector-icons/Entypo';
 import FaIcon from 'react-native-vector-icons/FontAwesome5';
@@ -13,6 +13,7 @@ import { getTicketsAction, purchaseAction } from '../Redux/actions/tickets';
 import PurChasedTicket from '../Components/PurChasedTicket';
 import { LoadIndicator } from '../Commons/loaders';
 import { MessageAlert } from '../Utils/feedbacks';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function EventDetail({route, navigation}) {
     const eventId = route?.params?.eventId;
@@ -33,14 +34,25 @@ export default function EventDetail({route, navigation}) {
         refreshTickets();
     }, [eventId, navigation]);
 
-    useEffect(() =>{
-        (() =>{
-            if(purchaseError) {setIsError(true)}else{
-                setIsError(false);
-            }
-        })();
-        return () => setIsError(false);
-    }, [purchaseError, navigation])
+    useFocusEffect(
+        useCallback(() =>{
+            refreshTickets();
+
+            return () =>{}
+        }, [eventId, navigation])
+    );
+
+    useFocusEffect(
+        useCallback(() =>{
+            (() =>{
+                if(purchaseError) {setIsError(true)}else{
+                    setIsError(false);
+                }
+            })();
+
+            return () => setIsError(false);
+        }, [purchaseError, navigation])
+    );
 
     const onTicketClick = (ticket) =>{
         purchaseAction(ticket)(dispatch, cb =>{
