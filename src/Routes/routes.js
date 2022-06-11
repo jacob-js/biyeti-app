@@ -10,11 +10,18 @@ import Home from "../Screens/Home";
 import Login from "../Screens/Login";
 import Signup from "../Screens/Signup";
 import UserBookings from "../Screens/UserBookings";
+import VerificationCode from "../Screens/VerificationCode";
 
 export const routes = [
     {
         name: 'Login',
         component: Login,
+        withHeader: false,
+        secured: false
+    },
+    {
+        name: 'Verify',
+        component: VerificationCode,
         withHeader: false,
         secured: false
     },
@@ -29,8 +36,7 @@ export const routes = [
         component: EventDetail,
         title: 'Detail de l\'événement',
         secured: true,
-        headerOptions: {
-        }
+        headerOptions: {}
     },
     {
         name: 'Dashboard',

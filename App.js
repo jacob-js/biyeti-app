@@ -1,16 +1,16 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import Routes from './src/Routes';
 import { NativeBaseProvider } from 'native-base';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { useState } from 'react';
 import useFonts from './hooks/useFonts';
-import AppLoading from 'expo-app-loading';
 import { Provider } from 'react-redux';
 import store from './src/Redux/store';
 import axios from 'axios';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useEffect } from 'react';
 
 axios.defaults.baseURL = 'https://bookitbackend.herokuapp.com';
 
@@ -19,16 +19,24 @@ export default function App() {
 
   const loadFonts = async () => {
     await useFonts()
-  }
+  };
+
+  const prepare = async () => {
+    try {
+      await loadFonts();
+    } catch (error) {
+      console.warn(error);
+    } finally {
+      setIsReady(true);
+    }
+  };
+
+  useEffect(() =>{
+    prepare();
+  }, []);
 
   if (!isReady) {
-    return (
-      <AppLoading
-        startAsync={loadFonts}
-        onFinish={() => setIsReady(true)}
-        onError={() => {}}
-      />
-    );
+    return null;
   }
   const config = {
     dependencies: {
