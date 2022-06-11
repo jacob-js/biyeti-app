@@ -71,8 +71,9 @@ export default function Login({ navigation }) {
                             onPress={handleSubmit}>Connexion
                         </Button>
                     </View>
-                    <View>
-                        <Text style={styles.noAccountText}>N'avez-vous pas de compte? <Text style={styles.noAccountLink} onPress={() =>navigation.navigate('Verify')}>Inscrivez-vous</Text> </Text>
+                    <View style={styles.bottomLinks}>
+                        <Text style={styles.noAccountText}><Text style={styles.noAccountLink} onPress={() =>navigation.navigate('Signup')}>Créer un compte</Text> </Text>
+                        <Text style={styles.noAccountLink} onPress={() =>navigation.navigate('ResetPwdEmailForm')}>Mot de passe oublié ?</Text>
                     </View>
                 </>
             )}
@@ -102,11 +103,17 @@ const styles = StyleSheet.create({
         elevation: 15,
         borderRadius: 15
     },
+    bottomLinks: {
+        width: '100%',
+    },
     noAccountText: {
         fontWeight: '100',
-        fontFamily: 'Barlow'
+        fontFamily: 'Barlow',
+        marginBottom: 15
     },
     noAccountLink: {
         color: theme.colors.default100,
+        fontFamily: 'Barlow',
+        textAlign: 'center',
     }
 })

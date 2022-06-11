@@ -4,6 +4,7 @@ import AllEvents from "../Screens/AllEvents";
 import Dashboard from "../Screens/Dashboard";
 import DashboardEventDetail from "../Screens/DashboardEventDetail";
 import EditProfile from "../Screens/EditProfile";
+import EmailOrPhoneInput from "../Screens/EmailOrPhoneInput";
 import EventDetail from "../Screens/EventDetail";
 import EventsList from "../Screens/EventsList";
 import Home from "../Screens/Home";
@@ -22,6 +23,12 @@ export const routes = [
     {
         name: 'Verify',
         component: VerificationCode,
+        withHeader: false,
+        secured: false
+    },
+    {
+        name: 'ResetPwdEmailForm',
+        component: EmailOrPhoneInput,
         withHeader: false,
         secured: false
     },
