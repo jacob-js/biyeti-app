@@ -3,13 +3,50 @@ import React, { useState } from 'react'
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import { theme } from 'native-base';
 import {theme as ourTheme} from '../../assets/theme';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { validateAndCreateUser } from '../Redux/actions/auth';
+import axios from 'axios';
+import { MessageAlert } from '../Utils/feedbacks';
 
-const VerificationCode = () => {
+const VerificationCode = ({route}) => {
     const [code, setCode] = useState('');
+    const navigation = useNavigation();
+    const token = route.params?.token;
+    const callback = route.params?.callback;
+    const { loading, error } = useSelector(({ users: { createUser } }) => createUser);
+    const [loadingCheck, setLoadingCheck] = useState(false);
+    const [errorCheck, setErrorCheck] = useState();
+    const dispatch = useDispatch();
+
+    const onSubmit = async (code) =>{
+        if(callback === 'signup'){
+            validateAndCreateUser({token, code}, navigation)(dispatch);
+        }else{
+            setLoadingCheck(true);
+            setErrorCheck(null);
+            await axios.post('/api/v1/users/validate-code', {code}, {
+                headers: {
+                    'verificationtoken': token
+                }
+            }).then(res =>{
+                navigation.navigate('ResetPwdForm', { token });
+            }).catch(err =>{
+                const res = err.response;
+                setErrorCheck(res.data?.error || "Veuillez réessayer plutard");
+            });
+            setLoadingCheck(false);
+        }
+    }
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>Veuillez entrer le code de vérification réçu par mail</Text>
-        <Text style={styles.subtitle}>Le code est valide pendant 5 minutes</Text>
+        <Text style={styles.subtitle}>Le code est valide pendant 15 minutes</Text>
+        {
+          error || errorCheck &&
+          <MessageAlert msg={error || errorCheck} onClose={() =>setErrorCheck(null)} status='error' />
+        }
         <OTPInputView
             style={styles.input}
             pinCount={5}
@@ -18,13 +55,14 @@ const VerificationCode = () => {
             codeInputHighlightStyle={styles.codelineStyleHighLighted}
             code={code}
             onCodeChanged={code => setCode(code)}
-            onCodeFilled={(code) => {
-                console.log(`Code is ${code}`);
-            }}
+            onCodeFilled={(code) => onSubmit(code)}
         />
         <TouchableOpacity style={styles.button}>
-            <Text style={styles.resend}>Renvoyer le code</Text>
-            <ActivityIndicator size="small" />
+            {
+                !loading && !loadingCheck ?
+                <Text style={styles.resend}>Renvoyer le code</Text>:
+                <ActivityIndicator size="small" />
+            }
         </TouchableOpacity>
     </ScrollView>
   )

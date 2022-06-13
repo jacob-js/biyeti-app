@@ -19,6 +19,11 @@ const users = {
         loading: false,
         error: {},
         data: {}
+    },
+    createUser: {
+        loading: false,
+        error: null,
+        data: {}
     }
 };
 

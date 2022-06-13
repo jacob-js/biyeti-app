@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, StatusBar, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, StatusBar, TouchableOpacity, Platform } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AntIcon from 'react-native-vector-icons/AntDesign'
 import FIcon from 'react-native-vector-icons/Feather'
@@ -6,7 +6,7 @@ import SIcon from 'react-native-vector-icons/SimpleLineIcons'
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { theme } from '../../assets/theme'
 import { Formik } from 'formik'
-import { Avatar, Button, Select } from 'native-base'
+import { Avatar, Button, FormControl, Select } from 'native-base'
 import { CommonInput, CommonSelect } from '../Commons/commons'
 import moment from 'moment'
 import DatePicker from '@react-native-community/datetimepicker'
@@ -138,24 +138,42 @@ export default function EditProfile({navigation}) {
                 error={touched.city && errors.city || getError('city')}
                 onChangeText={handleChange('city')}
               />
-              <CommonInput
-                label="Date de naissance"
-                onPressIn={() =>setShownPicker(true)}
-                placeholder="Date de naissance" uiType='rounded'
-                leftIcon={<AntIcon name="calendar" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />}
-                value={moment(values.date_of_birth).format('DD-MM-YYYY')}
-                error={touched.date_of_birth && errors.date_of_birth || getError('date_of_birth')}
-              />
               {
-                  shownPicker === true &&
-                  <DatePicker
-                      value={new Date(values.date_of_birth) || new Date(new Date().getFullYear() - 18, 1, 1)}
-                      mode="datetime"
-                      format="YYYY-MM-DD"
-                      minDate={new Date()}
-                      is24Hour={true}
-                      onChange={(event, date) =>onDateChange(event, date, setFieldValue)}
+                Platform.OS !== 'ios' ?
+                <>
+                  <CommonInput
+                    label="Date de naissance"
+                    onPressIn={() =>setShownPicker(true)}
+                    placeholder="Date de naissance" uiType='rounded'
+                    leftIcon={<AntIcon name="calendar" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />}
+                    value={moment(values.date_of_birth).format('DD-MM-YYYY')}
+                    error={touched.date_of_birth && errors.date_of_birth || getError('date_of_birth')}
                   />
+                  {
+                      shownPicker === true &&
+                      <DatePicker
+                          value={new Date(values.date_of_birth) || new Date(new Date().getFullYear() - 18, 1, 1)}
+                          mode="date"
+                          format="YYYY-MM-DD"
+                          minDate={new Date()}
+                          is24Hour={true}
+                          onChange={(event, date) =>onDateChange(event, date, setFieldValue)}
+                      />
+                  }
+                </>:
+                <FormControl mt="2">
+                  <FormControl.Label>Date de naissance</FormControl.Label>
+                  <DatePicker
+                    value={new Date(values.date_of_birth) || new Date(new Date().getFullYear() - 18, 1, 1)}
+                    mode="date"
+                    format="YYYY-MM-DD"
+                    minDate={new Date()}
+                    is24Hour={true}
+                    onChange={(event, date) =>onDateChange(event, date, setFieldValue)}
+                    style={{ width: '100%', height: 100, borderWidth: 2, borderColor: 'white' }}
+                    display="spinner"
+                  />
+                </FormControl>
               }
 
               <View style={{

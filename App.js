@@ -12,7 +12,8 @@ import axios from 'axios';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect } from 'react';
 
-axios.defaults.baseURL = 'https://bookitbackend.herokuapp.com';
+// axios.defaults.baseURL = 'https://bookitbackend.herokuapp.com';
+axios.defaults.baseURL = 'http://192.168.1.171:8000';
 
 export default function App() {
   const [ isReady, setIsReady ] = useState();
