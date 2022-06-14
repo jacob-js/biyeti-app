@@ -1,19 +1,21 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import { theme } from 'native-base';
 import {theme as ourTheme} from '../../assets/theme';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { validateAndCreateUser } from '../Redux/actions/auth';
+import { signupAction, validateAndCreateUser } from '../Redux/actions/auth';
 import axios from 'axios';
-import { MessageAlert } from '../Utils/feedbacks';
+import { MessageAlert, showToast } from '../Utils/feedbacks';
 
 const VerificationCode = ({route}) => {
     const [code, setCode] = useState('');
     const navigation = useNavigation();
     const token = route.params?.token;
     const callback = route.params?.callback;
+    const email = route.params?.email;
+    const userData = route.params?.userData;
     const { loading, error } = useSelector(({ users: { createUser } }) => createUser);
     const [loadingCheck, setLoadingCheck] = useState(false);
     const [errorCheck, setErrorCheck] = useState();
@@ -37,7 +39,32 @@ const VerificationCode = ({route}) => {
             });
             setLoadingCheck(false);
         }
-    }
+    };
+
+    const retry = async () =>{
+        if(callback === 'signup'){
+            signupAction(JSON.parse(userData))(dispatch, navigation);
+        }else{
+            setLoadingCheck(true);
+            setErrorCheck(null);
+            await axios.get(`/api/v1/users/verification-code/${email}`).then(res => {
+                navigation.navigate('Verify', {
+                    token: res.data?.data.token,
+                    callback: 'reset_pwd',
+                    email: email
+                });
+                showToast("Un nouveau code de vérification vous a été envoyé", 'success');
+            }).catch(() => setErrorCheck("Veuillez reessayer plus tard"));
+            setLoadingCheck(false)
+        }
+    };
+
+    useFocusEffect(
+        useCallback(() =>{
+
+            return () =>{}
+        }, [])
+    )
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -60,7 +87,7 @@ const VerificationCode = ({route}) => {
         <TouchableOpacity style={styles.button}>
             {
                 !loading && !loadingCheck ?
-                <Text style={styles.resend}>Renvoyer le code</Text>:
+                <Text style={styles.resend} onPress={retry}>Renvoyer le code</Text>:
                 <ActivityIndicator size="small" />
             }
         </TouchableOpacity>

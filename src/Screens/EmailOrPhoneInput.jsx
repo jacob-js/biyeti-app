@@ -27,7 +27,8 @@ const EmailOrPhoneInput = () => {
             setError(null);
             await axios.get(`/api/v1/users/verification-code/${values.email}`).then(res => navigation.navigate('Verify', {
                 token: res.data.data.token,
-                callback: 'reset_pwd'
+                callback: 'reset_pwd',
+                email: values.email
             })).catch(() => setError("Veuillez reessayer plus tard"));
             setLoading(false)
         },

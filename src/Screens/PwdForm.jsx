@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions } from 'react-native'
-import { Formik } from 'formik'
+import { useFormik } from 'formik'
 import FIcon from 'react-native-vector-icons/Feather'
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { CommonInput } from '../Commons/commons'
@@ -8,11 +8,46 @@ import { Button, theme as nbTheme } from 'native-base'
 import { theme } from '../../assets/theme'
 import { useNavigation } from '@react-navigation/native'
 import Unorderedlist from 'react-native-unordered-list';
+import * as yup from 'yup';
+import axios from 'axios'
+import { MessageAlert, showToast } from '../Utils/feedbacks'
 
-const PwdForm = () => {
+const schema = yup.object({
+    password: yup.string().required('Ce champ est obligatoire')
+                .matches(new RegExp("^(?=.*[a-zA-Z])(?=.*[0-9])(?=.{8,})"), 'Le mot de passe doit contenir au moins 8 caractères comportant au moins une lettre et un chiffre')
+                .notOneOf(['1234', '01234'], 'le mot de passe doit être différent de 1234 ou 01234'),
+    confirmPwd: yup.string().when('password', {
+        is: (val) => (val && val.length >= 8),
+        then: yup.string().required('Ce champ est obligatoire').oneOf([yup.ref('password')], 'Ce champ doit être identique au mot de passe')
+    })
+})
+
+const PwdForm = ({route}) => {
     const navigation = useNavigation();
+    const token = route.params?.token;
     const [visible, setVisible] = useState(false)
     const [visibleConfirm, setVisibleConfirm] = useState(false);
+    const [ loading, setLoading ] = useState(false);
+    const [ apiError, setError ] = useState();
+    const formik = useFormik({
+        initialValues: { password: '', confirmPwd: '' },
+        validationSchema: schema,
+        onSubmit: async(values) => {
+            setLoading(true);
+            setError(null);
+            await axios.put(`/api/v1/users/reset-password`, { ...values, confirm_password: values.confirmPwd }, {
+                headers: {
+                    'verificationtoken': token
+                },
+                timeout: 60000
+            }).then(res => {
+                navigation.navigate('Login'); 
+                showToast("votre mot de passe a été modifié avec succès", "success");
+            }).catch(err => { setError("Quelque chose s'est mal passée, veuillez réessayer") });
+            setLoading(false);
+        }
+    });
+    const { handleChange, errors, touched, handleSubmit } = formik;
 
 
   return (
@@ -27,9 +62,13 @@ const PwdForm = () => {
                 <Text style={styles.listItem}>Au moins une lettre alphabétique</Text>
             </Unorderedlist>
         </View>
-        <CommonInput required maxLength={4}
-            // error={touched.password && errors.password || getError('password')} 
-            // onChangeText={handleChange('password')} placeholder='Mot de passe' 
+        {
+          apiError &&
+          <MessageAlert msg={apiError} onClose={() =>setError(null)} status='error' />
+        }
+        <CommonInput required
+            error={touched.password && errors.password} 
+            onChangeText={handleChange('password')} placeholder='Mot de passe' 
             leftIcon={<MIcon name="key-outline" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} 
             type={!visible && 'password'}
             label='Mot de passe'
@@ -37,8 +76,8 @@ const PwdForm = () => {
                 <FIcon style={{ fontSize: 15, marginRight: 15 }} name={visible ? 'eye': 'eye-off'} />
             </TouchableOpacity> } />
         <CommonInput required 
-            // error={touched.confirmPwd && errors.confirmPwd}
-            // onChangeText={handleChange('confirmPwd')} 
+            error={touched.confirmPwd && errors.confirmPwd}
+            onChangeText={handleChange('confirmPwd')} 
             label='Confirmer le mot de passe' 
             leftIcon={<MIcon name="key-outline" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />} 
             type={!visibleConfirm && 'password'}
@@ -51,10 +90,10 @@ const PwdForm = () => {
                         alignItems: 'center'
             }}
         >
-            <Button isLoading={false} 
+            <Button isLoading={loading} 
                 isLoadingText={<Text style={{ color: 'white' }}>Patientez...</Text>}
                 style={styles.submitBtn} _text={{ fontWeight: 'bold', textTransform: 'uppercase' }}
-                onPress={() =>navigation.navigate('ResetPwdForm')}
+                onPress={() =>handleSubmit()}
             >Soumettre
             </Button>
         </View>

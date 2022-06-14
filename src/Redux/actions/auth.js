@@ -47,7 +47,8 @@ export const signupAction = (data) => async (dispatch, navigation) => {
                 type: authActionsTypes.REGISTER_SUCCESS,
                 payload: res.data.data?.user
             })
-            navigation.navigate('Verify', { token: res.data?.data.token, callback: 'signup' })
+            navigation.navigate('Verify', { token: res.data?.data.token, callback: 'signup', userData: JSON.stringify(data) });
+            showToast("Un code de vérification vous a été envoyé par email")
         }
     } catch (error) {
         const res = error.response;

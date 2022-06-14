@@ -5,7 +5,7 @@ import FIcon from 'react-native-vector-icons/Feather'
 import SIcon from 'react-native-vector-icons/SimpleLineIcons'
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { CommonInput, CommonPhoneInput } from '../Commons/commons'
-import { Button, FormControl } from 'native-base'
+import { Button } from 'native-base'
 import { theme } from '../../assets/theme'
 import { Title } from 'react-native-paper'
 import * as yup from 'yup';
@@ -13,7 +13,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { signupAction } from '../Redux/actions/auth'
 import { MessageAlert } from '../Utils/feedbacks'
 import moment from 'moment';
-import useAxios from 'axios-hooks'
 import { useNavigation } from '@react-navigation/native'
 
 const schema = yup.object({
@@ -37,17 +36,11 @@ export default function Signup() {
     const [visibleConfirm, setVisibleConfirm] = useState(false);
     const [ apiError, setError ] = useState({});
     const { data, loading, error } = useSelector(({ users: { signup } }) => signup);
-    // const [{ res, loading, error }, sendRequest] = useAxios({}, {manual: true});
     const dispatch = useDispatch();
 
     const submit = (values) => {
         const date_of_birth = moment(values.date_of_birth).format('YYYY-MM-DD')
         signupAction({...values, date_of_birth})(dispatch, navigation)
-        // sendRequest({
-        //     url: `/api/v1/users/verification-code/${values.email}`
-        // }).then(() =>{
-        //     navigation.navigate('Verify', {data: JSON.stringify(values), next: 'signup'})
-        // })
     }
 
     useEffect(() =>{
@@ -64,10 +57,10 @@ export default function Signup() {
     <ScrollView style={{ backgroundColor: 'white' }}>
       <View style={styles.container}>
         <Title style={styles.title}>Inscription</Title>
-        {/* {
+        {
           typeof(apiError) === 'string' && typeof(error) === 'string' &&
           <MessageAlert msg={error.toString()} onClose={() =>setError({})} status='error' />
-        } */}
+        }
         <Formik
             initialValues={{ firstname: '', lastname: '', email: '', phone_number: '', password: '', confirmPwd: '' }}
             validationSchema={schema}
