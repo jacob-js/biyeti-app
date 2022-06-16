@@ -2,6 +2,7 @@ import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Dimensions
 import React, { useCallback, useEffect, useState } from 'react';
 import { theme } from '../../assets/theme';
 import EntyIcon from 'react-native-vector-icons/Entypo';
+import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FaIcon from 'react-native-vector-icons/FontAwesome5';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import { Divider } from 'native-base';
@@ -38,7 +39,7 @@ export default function EventDetail({route, navigation}) {
         useCallback(() =>{
             refreshTickets();
 
-            return () =>{}
+            return () => null;
         }, [eventId, navigation])
     );
 
@@ -70,6 +71,7 @@ export default function EventDetail({route, navigation}) {
                     onRefresh={refreshTickets}
                 />
             }
+            scrollEventThrottle={16}
         >
             {
                 loading ?
@@ -118,7 +120,12 @@ export default function EventDetail({route, navigation}) {
                             titleStyles={styles.skeleton}
                         />
                     </>:
-                    tickets.map((ticket, index) =>(
+                    !tickets || tickets?.length <= 0 ?
+                    <View style={styles.empty}>
+                        <MatIcon name='flask-empty-off-outline' style={styles.emptyIcon} />
+                        <Text style={styles.descript}>Aucun billet disponible pour le moment</Text>
+                    </View>:
+                    tickets?.map((ticket, index) =>(
                         <View key={index}>
                             <TouchableOpacity style={styles.ticket} key={index} onPress={() =>onTicketClick(ticket)}>
                                 <View style={styles.ticketAvatar}>
@@ -170,15 +177,20 @@ const styles = StyleSheet.create({
     },
     addressContainer: {
         flexDirection: 'row',
-        marginTop: 5,
+        marginTop: 10,
+        marginBottom: 10,
         alignItems: 'center',
         justifyContent: 'space-between'
     },
     eventDate: {
-        color: theme.colors.light
+        width: '40%',
+        color: theme.colors.light,
+        marginLeft: 10,
     },
     eventLocation: {
-        color: theme.colors.light
+        color: theme.colors.light,
+        width: '50%',
+        textAlign: 'center'
     },
     icon: {
         fontWeight: 'bold',
@@ -252,5 +264,19 @@ const styles = StyleSheet.create({
     },
     skeleton: {
         borderRadius: 15
+    },
+    empty: {
+        paddingBottom: 20,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    emptyIcon: {
+        fontSize: 30,
+        color: theme.colors.light
+    },
+    descript: {
+        fontFamily: 'Barlow',
+        fontSize: 12,
+        color: theme.colors.light
     }
 })

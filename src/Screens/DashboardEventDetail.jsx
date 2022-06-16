@@ -113,7 +113,7 @@ export default function DashboardEventDetail({route, navigation}) {
       >
           <TriggeringView onHide={() => {fixedContentView.current.fadeInUp(200); console.log('hidden')}}
             onDisplay={() => {fixedContentView.current.fadeOut(200); console.log('display')}}
-            onBeginHidden={() => {console.log('begin hidden')}}
+            style={Platform.OS === 'ios' && { paddingTop: 30 }}
           >
             <DashboardEventContext.Provider value={{
               event: event

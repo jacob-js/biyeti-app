@@ -1,13 +1,14 @@
-import { View, Text, StyleSheet, Dimensions , ToastAndroid } from 'react-native'
-import CameraRoll from '@react-native-community/cameraroll';
+import { View, Text, StyleSheet, Dimensions , ToastAndroid, Platform } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Button, Modal } from 'native-base'
 import logo from '../../assets/logo.png'
 import SvgQRCode from 'react-native-qrcode-svg';
-import { MessageAlert } from '../Utils/feedbacks';
+import { MessageAlert, showToast } from '../Utils/feedbacks';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import { theme } from '../../assets/theme';
 import { StorageAccessFramework } from 'expo-file-system';
+import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
 import { useSelector } from 'react-redux';
 
 export default function PurChasedTicket({ isShown, setIsShown }) {
@@ -17,16 +18,23 @@ export default function PurChasedTicket({ isShown, setIsShown }) {
 
     const saveQrToDisk = () => {
         svg.toDataURL(async(data) => {
-            const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
-            if(permissions.granted){
-                const dirUri = permissions.directoryUri;
-                let dir = StorageAccessFramework.getUriForDirectoryInRoot('Bookit');
-                if(!dir){
-                    dir = await StorageAccessFramework.makeDirectoryAsync(dirUri, 'Bookit');
+            if(Platform.OS === 'android'){
+                const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
+                if(permissions.granted){
+                    const dirUri = permissions.directoryUri;
+                    let dir = StorageAccessFramework.getUriForDirectoryInRoot('Bookit');
+                    if(!dir){
+                        dir = await StorageAccessFramework.makeDirectoryAsync(dirUri, 'Bookit');
+                    }
+                    const file = await StorageAccessFramework.createFileAsync(`${dirUri}/${dir}`, `${event.name.split(' ').join('-')}-${ticket.name}.png`, 'image/png');
+                    await StorageAccessFramework.writeAsStringAsync(file, data, { encoding: 'base64' });
+                    ToastAndroid.show('QR Code enregistré dans votre galerie', ToastAndroid.SHORT);
                 }
-                const file = await StorageAccessFramework.createFileAsync(`${dirUri}/${dir}`, `${event.name.split(' ').join('-')}-${ticket.name}.png`, 'image/png');
-                await StorageAccessFramework.writeAsStringAsync(file, data, { encoding: 'base64' });
-                ToastAndroid.show('QR Code enregistré dans votre galerie', ToastAndroid.SHORT);
+            }else{
+                const filename = FileSystem.documentDirectory + `${event.name.split(' ').join('-')}-${ticket.name}.png`;
+                await FileSystem.writeAsStringAsync(filename, data, { encoding: 'base64' });
+                await MediaLibrary.saveToLibraryAsync(filename);
+                showToast('QR Code enregistré dans votre librairie');
             }
         });
    }
@@ -38,7 +46,8 @@ export default function PurChasedTicket({ isShown, setIsShown }) {
             <Modal.Body style={styles.body}>
                 <MessageAlert status='success' msg='Votre avez reservé votre billet avec succès' />
                 <View style={styles.qrContainer}>
-                    <SvgQRCode value={purchased.id} 
+                    <SvgQRCode //value={purchased.id} 
+                        value='Jacob Developer'
                         size={232}
                         getRef={(c) => setSvg(c)}
                     />

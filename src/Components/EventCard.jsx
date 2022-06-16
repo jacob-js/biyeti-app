@@ -20,7 +20,9 @@ export default function EventCard({event}) {
             <Text style={styles.eventDescript}>{event.description.substring(0, 100)}{event.description.length > 100 && '...'}</Text>
             <Divider my={2} bg='white' />
             <View style={styles.addressContainer}>
-                <Text style={styles.eventLocation}><AntIcon name='enviromento' style={styles.icon} /> {event.location}</Text>
+                <Text style={styles.eventLocation} numberOfLines={1}>
+                    <AntIcon name='enviromento' style={styles.icon} /> {event.location?.substring(0, 15)}{event.location.length > 15 && '...'}
+                </Text>
                 <Text style={styles.eventDate}><AntIcon name='clockcircleo' style={styles.icon} /> {moment(event.event_date).format('HH:mm')}</Text>
             </View>
             </View>

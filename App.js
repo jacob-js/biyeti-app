@@ -11,6 +11,7 @@ import store from './src/Redux/store';
 import axios from 'axios';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect } from 'react';
+import { SSRProvider } from '@react-aria/ssr';
 
 // axios.defaults.baseURL = 'https://bookitbackend.herokuapp.com';
 axios.defaults.baseURL = 'http://192.168.1.171:8000';
@@ -46,14 +47,16 @@ export default function App() {
   };
 
   return (
-    <NativeBaseProvider config={config}>
-      <Provider store={store}>
-        <PaperProvider>
-          <StatusBar translucent />
-          <Routes />
-        </PaperProvider>
-      </Provider>
-    </NativeBaseProvider>
+    <SSRProvider>
+      <NativeBaseProvider config={config}>
+        <Provider store={store}>
+          <PaperProvider>
+            <StatusBar translucent />
+            <Routes />
+          </PaperProvider>
+        </Provider>
+      </NativeBaseProvider>
+    </SSRProvider>
   );
 }
 

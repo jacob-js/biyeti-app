@@ -43,7 +43,7 @@ export const createEventAction = (data) => async(dispatch, navigation) =>{
     });
     const token = await AsyncStorage.getItem('auth_token');
     try {
-        const res = await axios.post('https://bookitbackend.herokuapp.com/api/v1/events/', data, {
+        const res = await axios.post('/api/v1/events/', data, {
             headers: {
                 'authtoken': token,
             }

@@ -28,7 +28,7 @@ export default function Tickets() {
                     titleStyles={styles.skeleton}
                 />
             </>:
-            tickets.map((ticket, index) =>(
+            tickets?.map((ticket, index) =>(
                 <View key={index}>
                     <TouchableOpacity style={styles.ticket} key={index}>
                         <View style={styles.ticketAvatar}>
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
         shadowColor: theme.colors.default, 
         elevation: 15,
         borderRadius: 15,
-        marginTop: 10
+        marginTop: 20
     },
     skeleton: {
         borderRadius: 15

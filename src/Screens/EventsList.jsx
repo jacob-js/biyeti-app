@@ -70,7 +70,10 @@ export default function EventsList({navigation}) {
                                 <Text style={styles.name}>{event.name}</Text>
                                 <Text style={styles.descript}>{event.description.substring(0, 80)}{event.description.length > 100 ? '...': ''}</Text>
                                 <View style={styles.addressContainer}>
-                                    <Text style={styles.eventLocation}> <AntIcon name='enviromento' style={styles.icon} />{event.location}</Text>
+                                    <Text style={styles.eventLocation}> 
+                                        <AntIcon name='enviromento' style={styles.icon} />
+                                        {event.location?.substring(0, 15)}{event.location.length > 15 ? '...': ''}
+                                    </Text>
                                     <Divider orientation='vertical' marginX={1} bg={theme.colors.light100} />
                                     <Text style={styles.eventDate}><AntIcon name='calendar' style={styles.icon} /> {moment(event.event_date).format("DD-MM-YYYY")}</Text>
                                 </View>
