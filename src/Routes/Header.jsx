@@ -17,10 +17,10 @@ export default function Header({DrawerNavigation, options, drawerRoute: route}) 
             paddingLeft: 40,
             paddingTop: 15,
             backgroundColor: 'white',
-            borderBottomStartRadius: 30,
-            borderBottomEndRadius: 30,
+            borderBottomStartRadius: 20,
+            borderBottomEndRadius: 20,
             shadowColor: theme.colors.light,
-            elevation: 35,
+            elevation: 5,
             shadowOpacity: 1,
         }}
       >

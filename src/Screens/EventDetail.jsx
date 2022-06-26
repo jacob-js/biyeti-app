@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Dimensions, SafeAreaView, RefreshControl } from 'react-native'
+import { View, Image, ScrollView, StyleSheet, TouchableOpacity, Dimensions, SafeAreaView, RefreshControl, Text } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react';
 import { theme } from '../../assets/theme';
 import EntyIcon from 'react-native-vector-icons/Entypo';
@@ -216,13 +216,13 @@ const styles = StyleSheet.create({
         marginBottom: 5
     },
     tickets: {
-        paddingHorizontal: 10
+        width: '100%'
     },
     ticket: {
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
-        paddingHorizontal: 20
+        width: '100%'
     },
     ticketAvatar: {
         width: 50,
@@ -255,7 +255,8 @@ const styles = StyleSheet.create({
     ticketDesc: {
         fontFamily: 'Barlow',
         paddingRight: 20,
-        marginTop: 5
+        marginTop: 5,
+        width: Dimensions.get('window').width * 60 / 100
     },
     ticketPrice: {
         fontSize: 16,

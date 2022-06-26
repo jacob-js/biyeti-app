@@ -3,16 +3,17 @@ import React, { useCallback, useEffect, useState } from 'react'
 import SearchBar from '../Components/SearchBar'
 import { Divider } from 'native-base'
 import { useDispatch, useSelector } from 'react-redux';
-import { clearEventsState, getEvents } from '../Redux/actions/events';
+import { clearEventsState, getEvents, getUpcomingEvents } from '../Redux/actions/events';
 import ContentLoader from 'react-native-easy-content-loader';
-import EventCard from '../Components/EventCard';
+import EventCard from '../Commons/EventCard';
 import { theme } from '../../assets/theme';
 import { useFocusEffect } from '@react-navigation/native';
 
 export default function AllEvents({ route }) {
     const { data, count, rows, loading, error } = useSelector(({ events: { events } }) =>events);
+    const { rows: upcomingRows, count: upcomingCount, isLoading: loadingUpcoming } = useSelector(({ events: { upcomingEvents } }) =>upcomingEvents);
     const dispatch = useDispatch();
-    const { categId, title } = route.params;
+    const { categId, title, upcoming, order } = route.params;
     const [ offset, setOffet ] = useState(1);
     const limit = 2;
     const [ events, setEvents ] = useState([]);
@@ -20,8 +21,10 @@ export default function AllEvents({ route }) {
     const getData = () =>{
         if(categId){
             getEvents(categId, offset, limit)(dispatch);
+        }else if(upcoming){
+            getUpcomingEvents(offset, limit)(dispatch);
         }else{
-            getEvents(null, offset, limit)(dispatch);
+            getEvents(null, offset, limit, order)(dispatch);
         }
     }
 
@@ -35,24 +38,45 @@ export default function AllEvents({ route }) {
         }, [])
     );
 
-    useEffect(() =>{
-        getData();
-    }, [categId, offset, limit]);
+    useFocusEffect(
+        useCallback(() =>{
+            getData();
 
-    useEffect(() =>{
-        (() =>{
-            if(!loading){
-                setEvents(rows)
-            }
-        })()
-    }, [rows])
+            return () =>{}
+        }, [categId, offset, limit])
+    );
+
+    useFocusEffect(
+        useCallback(() =>{
+            (() =>{
+                if(!loading){
+                    if(upcoming){
+                        setEvents(upcomingRows);
+                    }else{
+                        setEvents(rows)
+                    }
+                }
+            })();
+
+            return () =>{}
+        }, [rows])
+    );
 
     const onEndReached = () =>{
         const activeSize = offset * limit;
-        if(activeSize < count){
-            if(!loading){
-                setOffet(offset + 1);
-                setEvents([...events, ...rows]);
+        if(upcoming){
+            if(activeSize < upcomingCount){
+                if(!loading){
+                    setOffet(offset + 1);
+                    setEvents([...events, ...upcomingRows]);
+                }
+            }
+        }else{
+            if(activeSize < count){
+                if(!loading){
+                    setOffet(offset + 1);
+                    setEvents([...events, ...rows]);
+                }
             }
         }
     }
@@ -72,7 +96,7 @@ export default function AllEvents({ route }) {
                 </>
             }
             onRefresh={getData}
-            refreshing={loading}
+            refreshing={upcoming ? loadingUpcoming: loading}
             data={events}
             renderItem={({ item }) => <EventCard event={item} />}
             onEndReached={onEndReached}
@@ -97,15 +121,13 @@ const styles = StyleSheet.create({
         padding: 20
     },
     header: {
-        paddingHorizontal: 20,
-        marginBottom: 10
+        marginBottom: 15
     },
     title: {
-        fontFamily: 'Barlow',
-        fontWeight: 'bold',
         fontSize: 16,
+        fontFamily: 'Barlow-Bold',
         textTransform: 'uppercase',
-        color: theme.colors.light
+        color: theme.colors.light,
     },
     skeleton: {
         borderRadius: 15

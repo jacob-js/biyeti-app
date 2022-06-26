@@ -30,6 +30,12 @@ const events = {
         error: null,
         msg: null,
         id: null
+    },
+    upcomingEvents: {
+        isLoading: false,
+        data: {},
+        rows: [],
+        count: 0
     }
 };
 

@@ -3,13 +3,14 @@ import { eventsActionsTypes } from "../actionsTypes/events"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { showToast } from "../../Utils/feedbacks";
 
-export const getEvents = (categId, offset=1, limit=5) => async(dispatch) =>{
+export const getEvents = (categId, offset=1, limit=4, orderBy='-created_at') => async(dispatch) =>{
     dispatch({
         type: eventsActionsTypes.GET_EVENTS_REQUEST
     });
     try {
-        const url = categId ? `/api/v1/events/?category_id=${categId}&p=${offset}&p_size=${limit}`:
-        `/api/v1/events?p=${offset}&p_size=${limit}`;
+        const url = categId ? 
+        `/api/v1/events/?category_id=${categId}&p=${offset}&p_size=${limit}&order_by=${orderBy}` :
+        `/api/v1/events?p=${offset}&p_size=${limit}&order_by=${orderBy}`;
         const res = await axios.get(url);
         if(res.status === 200){
             dispatch({
@@ -32,6 +33,35 @@ export const getEvents = (categId, offset=1, limit=5) => async(dispatch) =>{
         }
     }
 };
+
+export const getUpcomingEvents = (offset=1, limit=5) => async(dispatch) =>{
+    dispatch({
+        type: eventsActionsTypes.GET_UPCOMING_EVENTS_REQUEST
+    });
+    try {
+        const url = `/api/v1/events?p=${offset}&p_size=${limit}&coming=${true}&order_by=event_date`;
+        const res = await axios.get(url);
+        if(res.status === 200){
+            dispatch({
+                type: eventsActionsTypes.GET_UPCOMING_EVENTS_SUCCESS,
+                payload: res.data.data
+            });
+        }
+    } catch (error) {
+        const res = error.response;
+        if(res){
+            dispatch({
+                type: eventsActionsTypes.GET_UPCOMING_EVENTS_ERROR,
+                payload: res.data?.error || res.data
+            })
+        }else{
+            dispatch({
+                type: eventsActionsTypes.GET_UPCOMING_EVENTS_ERROR,
+                payload: 'Echec de chargement'
+            })
+        }
+    }
+}
 
 export const clearEventsState = (dispatch) =>{
     dispatch({ type: eventsActionsTypes.DESTROY_EVENTS_STATE });

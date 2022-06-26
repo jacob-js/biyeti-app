@@ -7,7 +7,7 @@ import IoIcon from 'react-native-vector-icons/Ionicons';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import { Divider } from 'native-base';
 import moment from 'moment';
-import EventCard from '../Components/EventCard';
+import EventCard from './EventCard';
 
 export default function EventsCarousel({events, navigation}) {
     const ref = useRef();
@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     arrow: {
         fontSize: 15,
         color: 'white',
+        fontWeight: 'bold'
     },
     arrowBtn: {
         width: 30,
@@ -98,10 +99,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'black',
-        shadowColor: 'black',
-        shadowOpacity: 1,
-        elevation: 10
+        backgroundColor: 'black'
     },
     disabledArrow: {
         backgroundColor: '#ccc',

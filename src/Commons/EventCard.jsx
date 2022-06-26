@@ -4,7 +4,9 @@ import { Divider } from 'native-base'
 import { useNavigation } from '@react-navigation/native'
 import moment from 'moment'
 import AntIcon from 'react-native-vector-icons/AntDesign';
+import EntyIcon from 'react-native-vector-icons/Entypo';
 import { theme } from '../../assets/theme'
+import { theme as nbTheme } from 'native-base'
 
 export default function EventCard({event}) {
     const navigation = useNavigation();
@@ -17,13 +19,17 @@ export default function EventCard({event}) {
             </TouchableOpacity>
             <View style={styles.eventDetail}>
             <Text style={styles.eventName}>{event.name}</Text>
-            <Text style={styles.eventDescript}>{event.description.substring(0, 100)}{event.description.length > 100 && '...'}</Text>
             <Divider my={2} bg='white' />
             <View style={styles.addressContainer}>
                 <Text style={styles.eventLocation} numberOfLines={1}>
-                    <AntIcon name='enviromento' style={styles.icon} /> {event.location?.substring(0, 15)}{event.location.length > 15 && '...'}
+                    <EntyIcon 
+                        name='location-pin' 
+                        style={styles.icon}
+                        color={nbTheme.colors.red[600]}
+                    />
+                    {event.location?.substring(0, 15)}{event.location.length > 15 && '...'}
                 </Text>
-                <Text style={styles.eventDate}><AntIcon name='clockcircleo' style={styles.icon} /> {moment(event.event_date).format('HH:mm')}</Text>
+                <Text style={styles.eventDate}><AntIcon name='clockcircleo' style={styles.icon} /> {moment(event.event_date).fromNow()}</Text>
             </View>
             </View>
         </View>
@@ -41,19 +47,17 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 1,
-        borderColor: theme.colors.light100,
-        borderRadius: 20,
+        borderRadius: 10,
         paddingHorizontal: 20,
         paddingVertical: 20,
-        width: '90%',
+        width: '100%',
         marginBottom: 20
     },
     touchableCover: {
         width: '100%'
     },
     eventCover: {
-        height: 200,
+        height: 150,
         width: '100%',
         borderRadius: 10
     },
@@ -78,12 +82,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
     },
     icon: {
-    fontSize: 18
+    fontSize: 12
     },
     eventDate: {
-    color: theme.colors.light,
+        color: theme.colors.light,
+        fontSize: 12
     },
     eventLocation: {
-    color: theme.colors.light
+        color: theme.colors.light,
+        fontSize: 12
     },
 })

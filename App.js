@@ -12,12 +12,16 @@ import axios from 'axios';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect } from 'react';
 import { SSRProvider } from '@react-aria/ssr';
+import fr from 'moment/locale/fr';
+import moment from 'moment';
 
-// axios.defaults.baseURL = 'https://bookitbackend.herokuapp.com';
-axios.defaults.baseURL = 'http://192.168.1.171:8000';
+axios.defaults.baseURL = 'https://bookit10.herokuapp.com';
+// axios.defaults.baseURL = 'http://192.168.1.171:8000';
 
 export default function App() {
   const [ isReady, setIsReady ] = useState();
+
+  moment.updateLocale('fr', fr);
 
   const loadFonts = async () => {
     await useFonts()
