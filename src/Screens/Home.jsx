@@ -20,6 +20,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import GridEvents from '../Components/GridEvents';
 import Category from '../Components/Category';
 import axios from 'axios';
+import Empty from '../Commons/Empty';
 
 const Home = ({stackProps, navigation: drawerNav}) => {
   const { data, count, rows, loading, error } = useSelector(({ events: { events } }) =>events);
@@ -89,6 +90,8 @@ const Home = ({stackProps, navigation: drawerNav}) => {
               tHeight={250}
               titleStyles={styles.skeleton}
             />:
+            upcomingCount <= 0 ?
+            <Empty />:
             <EventsCarousel events={upcomingRows} navigation={navigation} />
           }
         </View>
@@ -121,6 +124,8 @@ const Home = ({stackProps, navigation: drawerNav}) => {
                 titleStyles={styles.skeleton}
               />
             </View>:
+            count <= 0 ?
+            <Empty />:
             <GridEvents events={rows} />
           }
         </View>
@@ -142,6 +147,8 @@ const Home = ({stackProps, navigation: drawerNav}) => {
               }}
             />
           </>:
+          categorys?.length <= 0 ?
+          <Empty />:
           
           <View style={styles.categs}>
              {
@@ -186,6 +193,8 @@ const Home = ({stackProps, navigation: drawerNav}) => {
                 titleStyles={styles.skeleton}
               />
             </View>:
+            others?.length <= 0 ?
+            <Empty />:
             <GridEvents events={others} />
           }
         </View>

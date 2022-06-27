@@ -8,6 +8,7 @@ import ContentLoader from 'react-native-easy-content-loader';
 import EventCard from '../Commons/EventCard';
 import { theme } from '../../assets/theme';
 import { useFocusEffect } from '@react-navigation/native';
+import Empty from '../Commons/Empty';
 
 export default function AllEvents({ route }) {
     const { data, count, rows, loading, error } = useSelector(({ events: { events } }) =>events);
@@ -79,7 +80,7 @@ export default function AllEvents({ route }) {
                 }
             }
         }
-    }
+    };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -100,6 +101,7 @@ export default function AllEvents({ route }) {
             data={events}
             renderItem={({ item }) => <EventCard event={item} />}
             onEndReached={onEndReached}
+            ListEmptyComponent={<Empty />}
             onEndReachedThreshold={0}
             keyExtractor={(item) => item.id}
         />
