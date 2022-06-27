@@ -13,6 +13,7 @@ import DatePicker from '@react-native-community/datetimepicker'
 import { useDispatch, useSelector } from 'react-redux';
 import { createEventAction, getCategorys } from '../Redux/actions/events';
 import moment from 'moment';
+import IosDateInput, { IosTimeInput } from '../Commons/IosDateTimeInput';
 // import FormData from 'form-data';
 
 const fields = [
@@ -89,7 +90,10 @@ export default function AddEventForm({navigation}) {
         setField('event_date', date)
     };
     const submitForm = (values) =>{
-        createEventAction(values)(dispatch, navigation);
+        createEventAction({
+            ...values,
+            event_date: moment(values.event_date).format('YYYY-MM-DD HH:mm:ss')
+        })(dispatch, navigation);
     }
   return (
     <SafeAreaView style={styles.container}>
@@ -172,7 +176,7 @@ export default function AddEventForm({navigation}) {
                                         leftIcon={<AntIcon name="clockcircleo" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />}
                                         value={moment(values.event_date).format('HH:mm')}
                                         style={{
-                                            width: '30%'
+                                            width: '40%'
                                         }}
                                     />
                                     {
@@ -187,31 +191,30 @@ export default function AddEventForm({navigation}) {
                                         />
                                     }
                                 </View>:
-                                <View style={[styles.date, { marginTop: 20 }]}>
-                                    <FormControl isRequired>
-                                        <FormControl.Label>{field.placeholder}</FormControl.Label>
-                                        <DatePicker
-                                            value={new Date(values.event_date) || new Date(new Date().getFullYear() - 18, 1, 1)}
-                                            mode="datetime"
-                                            format="YYYY-MM-DD"
-                                            minDate={new Date()}
-                                            is24Hour={true}
-                                            onChange={(event, date) =>onDateChange(event, date, setFieldValue)}
-                                            // style={{ width: '50%', height: 100, borderWidth: 2, borderColor: 'white' }}
-                                            display="inline"
+                                <View style={styles.date}>
+                                    <View
+                                        style={{
+                                            width: '50%'
+                                        }}
+                                    >
+                                        <IosDateInput
+                                            date={new Date(values.event_date) || new Date(new Date().getFullYear() - 18, 1, 1)}
+                                            setDate={(date) => setFieldValue('event_date', date)}
+                                            error={errors.event_date}
+                                            label={field.label}
                                         />
-                                    </FormControl>
-                                    {/* <FormControl>
-                                        <FormControl.Label>Heure</FormControl.Label>
-                                        <DatePicker
-                                            value={values.event_date}
-                                            mode="time"
-                                            format="HH:mm"
-                                            minDate={new Date()}
-                                            is24Hour={true}
-                                            onChange={(event, date) =>onTimeChange(event, date, setFieldValue)}
+                                    </View>
+                                    <View
+                                        style={{
+                                            width: '40%'
+                                        }}
+                                    >
+                                        <IosTimeInput
+                                            date={new Date(values.event_date) || new Date(new Date().getFullYear() - 18, 1, 1)}
+                                            setDate={(date) => setFieldValue('event_date', date)}
+                                            error={errors.event_date}
                                         />
-                                    </FormControl> */}
+                                    </View>
                                 </View>
                             }
                         </>
@@ -286,5 +289,6 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        marginBottom: 10
     }
 })

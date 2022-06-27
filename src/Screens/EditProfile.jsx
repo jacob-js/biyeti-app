@@ -15,6 +15,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as yup from 'yup';
 import { updateProfileAction } from '../Redux/actions/auth'
 import { MessageAlert } from '../Utils/feedbacks'
+import IosDateTimeInput from '../Commons/IosDateTimeInput'
 
 const schema = yup.object({
   firstname: yup.string().required('Ce champ est obligatoire'),
@@ -81,7 +82,10 @@ export default function EditProfile({navigation}) {
           date_of_birth: user.date_of_birth, avatar: user.avatar, gender: user.gender, city: user.city
         }}
         validationSchema={schema}
-        onSubmit={values => updateProfileAction(values)(dispatch, navigation)}
+        onSubmit={values => updateProfileAction({
+          ...values,
+          date_of_birth: moment(values.date_of_birth).format('YYYY-MM-DD')
+        })(dispatch, navigation)}
       >
         {
           ({handleSubmit, errors, handleChange, touched, setFieldValue, values}) =>(
@@ -161,19 +165,11 @@ export default function EditProfile({navigation}) {
                       />
                   }
                 </>:
-                <FormControl mt="2">
-                  <FormControl.Label>Date de naissance</FormControl.Label>
-                  <DatePicker
-                    value={new Date(values.date_of_birth) || new Date(new Date().getFullYear() - 18, 1, 1)}
-                    mode="date"
-                    format="YYYY-MM-DD"
-                    minDate={new Date()}
-                    is24Hour={true}
-                    onChange={(event, date) =>onDateChange(event, date, setFieldValue)}
-                    style={{ width: '100%', height: 100, borderWidth: 2, borderColor: 'white' }}
-                    display="spinner"
-                  />
-                </FormControl>
+                <IosDateTimeInput
+                  error={touched.date_of_birth && errors.date_of_birth || getError('date_of_birth')}
+                  setDate={(date) => setFieldValue('date_of_birth', date)}
+                  date={new Date(values.date_of_birth) || new Date(new Date().getFullYear() - 18, 1, 1)}
+                />
               }
 
               <View style={{

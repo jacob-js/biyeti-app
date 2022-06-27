@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image, Platform } from 'react-native'
 import React, { useContext, useEffect } from 'react'
 import { useFormik } from 'formik';
 import { CommonInput, CommonSelect, CommonTextArea } from '../Commons/commons';
@@ -19,6 +19,7 @@ import AlertModal from './AlertModal';
 import { useNavigation } from '@react-navigation/native';
 import { getAgentsAction } from '../Redux/actions/agents';
 import { isEventAdmin } from '../Utils/helpers';
+import IosDateInput, { IosTimeInput } from '../Commons/IosDateTimeInput';
 
 const fields = [
     {
@@ -71,7 +72,10 @@ const EditEvent = () => {
     const dispatch = useDispatch();
     const formik = useFormik({
         initialValues: fields?.reduce((acc, field) => ({ ...acc, [field.name]: event[field.name] }), { image: event.cover }),
-        onSubmit: values => updateEventAction(event.id, values)(dispatch),
+        onSubmit: values => updateEventAction(event.id, {
+            ...values,
+            event_date: moment(values.event_date).format('YYYY-MM-DD HH:mm:ss')
+        })(dispatch),
         validationSchema: schema,
         validateOnBlur: true
     });
@@ -177,48 +181,78 @@ const EditEvent = () => {
                     value={values[field.name]}
                 />:
                 field.type === 'date' ?
-                <View style={styles.date}>
-                    <CommonInput 
-                        onPressIn={setShownPicker} label={field.label} 
-                        placeholder={field.placeholder} uiType='rounded'
-                        leftIcon={<AntIcon name="calendar" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />}
-                        value={moment(values.event_date).format('DD/MM/YYYY')}
-                        style={{
-                            width: '50%'
-                        }}
-                    />
+                <>
                     {
-                        shownPicker &&
-                        <DatePicker
-                            value={moment(values.event_date).toDate()}
-                            mode="datetime"
-                            format="YYYY-MM-DD"
-                            minDate={new Date()}
-                            is24Hour={true}
-                            onChange={(event, date) =>onDateChange(event, date, setFieldValue)}
-                        />
+                        Platform.OS !== 'ios' ?
+                        <View style={styles.date}>
+                            <CommonInput 
+                                onPressIn={setShownPicker} label={field.label} 
+                                placeholder={field.placeholder} uiType='rounded'
+                                leftIcon={<AntIcon name="calendar" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />}
+                                value={moment(values.event_date).format('DD/MM/YYYY')}
+                                style={{
+                                    width: '50%'
+                                }}
+                            />
+                            {
+                                shownPicker &&
+                                <DatePicker
+                                    value={moment(values.event_date).toDate()}
+                                    mode="datetime"
+                                    format="YYYY-MM-DD"
+                                    minDate={new Date()}
+                                    is24Hour={true}
+                                    onChange={(event, date) =>onDateChange(event, date, setFieldValue)}
+                                />
+                            }
+                            <CommonInput 
+                                onPressIn={setShownPickerTime} label='Heure' 
+                                placeholder={field.placeholder} uiType='rounded'
+                                leftIcon={<AntIcon name="clockcircleo" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />}
+                                value={moment(values.event_date).format('HH:mm')}
+                                style={{
+                                    width: '40%'
+                                }}
+                            />
+                            {
+                                shownPickerTime &&
+                                <DatePicker
+                                    value={moment(values.event_date).toDate()}
+                                    mode="time"
+                                    format="HH:mm"
+                                    minDate={new Date()}
+                                    is24Hour={true}
+                                    onChange={(event, date) =>onTimeChange(event, date, setFieldValue)}
+                                />
+                            }
+                        </View>:
+                        <View style={styles.date}>
+                            <View
+                                style={{
+                                    width: '50%'
+                                }}
+                            >
+                                <IosDateInput
+                                    date={moment(values.event_date).toDate()}
+                                    setDate={(date) => setFieldValue('event_date', date)}
+                                    error={errors.event_date}
+                                    label={field.label}
+                                />
+                            </View>
+                            <View
+                                style={{
+                                    width: '40%'
+                                }}
+                            >
+                                <IosTimeInput
+                                    date={moment(values.event_date).toDate()}
+                                    setDate={(date) => setFieldValue('event_date', date)}
+                                    error={errors.event_date}
+                                />
+                            </View>
+                        </View>
                     }
-                    <CommonInput 
-                        onPressIn={setShownPickerTime} label='Heure' 
-                        placeholder={field.placeholder} uiType='rounded'
-                        leftIcon={<AntIcon name="clockcircleo" size={15} color='rgba(0, 0, 0, 0.6)' style={{ marginLeft: 15 }} />}
-                        value={moment(values.event_date).format('HH:mm')}
-                        style={{
-                            width: '30%'
-                        }}
-                    />
-                    {
-                        shownPickerTime &&
-                        <DatePicker
-                            value={moment(values.event_date).toDate()}
-                            mode="time"
-                            format="HH:mm"
-                            minDate={new Date()}
-                            is24Hour={true}
-                            onChange={(event, date) =>onTimeChange(event, date, setFieldValue)}
-                        />
-                    }
-                </View>
+                </>
                 :
                 <CommonInput key={index} required 
                     error={errors[field.name]} onChangeText={handleChange(field.name)} 

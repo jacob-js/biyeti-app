@@ -14,7 +14,9 @@ import { useEffect } from 'react';
 import { SSRProvider } from '@react-aria/ssr';
 import fr from 'moment/locale/fr';
 import moment from 'moment';
+import { en, registerTranslation } from 'react-native-paper-dates';
 
+registerTranslation('en', en);
 axios.defaults.baseURL = 'https://bookit10.herokuapp.com';
 // axios.defaults.baseURL = 'http://192.168.1.171:8000';
 
