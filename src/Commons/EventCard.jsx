@@ -13,8 +13,8 @@ export default function EventCard({event}) {
 
   return (
     <View style={styles.eventContainer}>
-        <View style={styles.event}>
-            <TouchableOpacity style={styles.touchableCover} onPress={() =>navigation.navigate('EventDetail', { eventId: event.id })}>
+        <TouchableOpacity style={styles.event} onPress={() =>navigation.navigate('EventDetail', { eventId: event.id })}>
+            <TouchableOpacity style={styles.touchableCover}>
             <Image source={{ uri: event.cover }} style={styles.eventCover} />
             </TouchableOpacity>
             <View style={styles.eventDetail}>
@@ -32,7 +32,7 @@ export default function EventCard({event}) {
                 <Text style={styles.eventDate}><AntIcon name='clockcircleo' style={styles.icon} /> {moment(event.event_date).fromNow()}</Text>
             </View>
             </View>
-        </View>
+        </TouchableOpacity>
     </View>
   )
 };
