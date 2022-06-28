@@ -7,10 +7,11 @@ const getEvents = (state, {type, payload}) =>{
                 ...state,
                 events: {
                     ...state.events,
-                    loading: true,
+                    loading: !payload.isMore,
+                    isLoadingMore: payload.isMore,
                     error: null,
-                    rows: [],
-                    count: 0
+                    rows: payload.isMore ? state.events.rows : [],
+                    count: payload.isMore ? state.events.count : 0
                 }
             }
             
@@ -22,8 +23,9 @@ const getEvents = (state, {type, payload}) =>{
                     loading: false,
                     error: null,
                     data: payload,
-                    rows: payload.rows,
-                    count: payload.count
+                    isLoadingMore: false,
+                    rows: [...state.events.rows, ...payload.data.rows],
+                    count: payload.data.count,
                 }
             }
 
@@ -33,7 +35,8 @@ const getEvents = (state, {type, payload}) =>{
                 events: {
                     ...state.events,
                     loading: false,
-                    error: payload
+                    error: payload,
+                    isLoadingMore: false
                 }
             }
 

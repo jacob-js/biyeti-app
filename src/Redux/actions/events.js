@@ -5,7 +5,10 @@ import { showToast } from "../../Utils/feedbacks";
 
 export const getEvents = (categId, offset=1, limit=4, orderBy='-created_at') => async(dispatch) =>{
     dispatch({
-        type: eventsActionsTypes.GET_EVENTS_REQUEST
+        type: eventsActionsTypes.GET_EVENTS_REQUEST,
+        payload: {
+            isMore: offset > 1 ? true : false,
+        }
     });
     try {
         const url = categId ? 
@@ -15,7 +18,10 @@ export const getEvents = (categId, offset=1, limit=4, orderBy='-created_at') => 
         if(res.status === 200){
             dispatch({
                 type: eventsActionsTypes.GET_EVENTS_SUCCESS,
-                payload: res.data.data
+                payload: {
+                    data: res.data.data,
+                    isMore: offset > 1 ? true : false,
+                }
             });
         }
     } catch (error) {
@@ -36,7 +42,10 @@ export const getEvents = (categId, offset=1, limit=4, orderBy='-created_at') => 
 
 export const getUpcomingEvents = (offset=1, limit=5) => async(dispatch) =>{
     dispatch({
-        type: eventsActionsTypes.GET_UPCOMING_EVENTS_REQUEST
+        type: eventsActionsTypes.GET_UPCOMING_EVENTS_REQUEST,
+        payload: {
+            isMore: offset > 1 ? true : false,
+        }
     });
     try {
         const url = `/api/v1/events?p=${offset}&p_size=${limit}&coming=${true}&order_by=event_date`;
@@ -44,7 +53,10 @@ export const getUpcomingEvents = (offset=1, limit=5) => async(dispatch) =>{
         if(res.status === 200){
             dispatch({
                 type: eventsActionsTypes.GET_UPCOMING_EVENTS_SUCCESS,
-                payload: res.data.data
+                payload: {
+                    data: res.data.data,
+                    isMore: offset > 1 ? true : false,
+                }
             });
         }
     } catch (error) {

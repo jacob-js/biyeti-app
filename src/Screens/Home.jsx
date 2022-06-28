@@ -86,7 +86,7 @@ const Home = ({stackProps, navigation: drawerNav}) => {
             loadingUpcoming ?
             <ContentLoader pRows={0} pWidth={320} pHeight={200} 
               active
-              tWidth={Dimensions.get('window').width - 80}
+              tWidth={Dimensions.get('window').width - 50}
               tHeight={250}
               titleStyles={styles.skeleton}
             />:

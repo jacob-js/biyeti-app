@@ -7,8 +7,11 @@ const getUpcomingEvents = (state, {type, payload}) => {
                 ...state,
                 upcomingEvents: {
                     ...state.upcomingEvents,
-                    isLoading: true,
-                    error: null
+                    isLoading: !payload.isMore ? true : false,
+                    isLoadingMore: payload.isMore,
+                    error: null,
+                    rows: payload.isMore ? state.upcomingEvents.rows : [],
+                    count: payload.isMore ? state.upcomingEvents.count : 0
                 }
             };
         case eventsActionsTypes.GET_UPCOMING_EVENTS_SUCCESS:
@@ -17,8 +20,9 @@ const getUpcomingEvents = (state, {type, payload}) => {
                 upcomingEvents: {
                     ...state.upcomingEvents,
                     isLoading: false,
-                    rows: payload.rows,
-                    count: payload.count,
+                    isLoadingMore: false,
+                    rows: [...state.upcomingEvents.rows, ...payload.data.rows],
+                    count: payload.data.count,
                     error: null
                 }
             };
@@ -28,9 +32,20 @@ const getUpcomingEvents = (state, {type, payload}) => {
                 upcomingEvents: {
                     ...state.upcomingEvents,
                     isLoading: false,
-                    error: payload
+                    error: payload,
+                    isLoadingMore: false
                 }
             };
+
+        case eventsActionsTypes.DESTROY_EVENTS_STATE:
+            return{
+                ...state,
+                upcomingEvents: {
+                    ...state.upcomingEvents,
+                    rows: [],
+                    count: 0
+                }
+            }
         default:
             break;
     }

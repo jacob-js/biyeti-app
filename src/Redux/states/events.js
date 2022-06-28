@@ -3,7 +3,10 @@ const events = {
         loading: true,
         data: {},
         rows: [],
-        count: 0
+        count: 0,
+        isLoadingMore: false,
+        loadingMoreError: null,
+        isListEnd: false
     },
     createEvent: {
         loading: false,
@@ -35,7 +38,10 @@ const events = {
         isLoading: false,
         data: {},
         rows: [],
-        count: 0
+        count: 0,
+        isLoadingMore: false,
+        loadingMoreError: null,
+        isListEnd: false
     }
 };
 

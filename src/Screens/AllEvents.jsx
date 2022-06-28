@@ -1,5 +1,5 @@
-import { ScrollView, View, Text, SafeAreaView, StyleSheet, Dimensions, RefreshControl, FlatList } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
+import { View, Text, SafeAreaView, StyleSheet, Dimensions, FlatList } from 'react-native'
+import React, { useCallback, useState } from 'react'
 import SearchBar from '../Components/SearchBar'
 import { Divider } from 'native-base'
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,13 +11,15 @@ import { useFocusEffect } from '@react-navigation/native';
 import Empty from '../Commons/Empty';
 
 export default function AllEvents({ route }) {
-    const { data, count, rows, loading, error } = useSelector(({ events: { events } }) =>events);
-    const { rows: upcomingRows, count: upcomingCount, isLoading: loadingUpcoming } = useSelector(({ events: { upcomingEvents } }) =>upcomingEvents);
+    const { count, rows, loading: loadingEvents, isLoadingMore: loadingMoreEvents } = useSelector(({ events: { events } }) =>events);
+    const { rows: upcomingRows, count: upcomingCount, isLoading: loadingUpcoming, isLoadingMore: loadingMoreUpcom } = useSelector(({ events: { upcomingEvents } }) =>upcomingEvents);
     const dispatch = useDispatch();
     const { categId, title, upcoming, order } = route.params;
     const [ offset, setOffet ] = useState(1);
     const limit = 2;
     const [ events, setEvents ] = useState([]);
+    const loading = loadingEvents || loadingUpcoming;
+    const isLoadingMore = loadingMoreEvents || loadingMoreUpcom;
 
     const getData = () =>{
         if(categId){
@@ -42,8 +44,6 @@ export default function AllEvents({ route }) {
     useFocusEffect(
         useCallback(() =>{
             getData();
-
-            return () =>{}
         }, [categId, offset, limit])
     );
 
@@ -59,28 +59,36 @@ export default function AllEvents({ route }) {
                 }
             })();
 
-            return () =>{}
-        }, [rows])
+            return () => setEvents([]);
+        }, [rows, upcomingRows])
     );
 
     const onEndReached = () =>{
         const activeSize = offset * limit;
         if(upcoming){
             if(activeSize < upcomingCount){
-                if(!loading){
+                if(!loadingUpcoming){
                     setOffet(offset + 1);
-                    setEvents([...events, ...upcomingRows]);
                 }
             }
         }else{
             if(activeSize < count){
                 if(!loading){
                     setOffet(offset + 1);
-                    setEvents([...events, ...rows]);
                 }
             }
         }
     };
+
+    const onRefresh = () =>{
+        setEvents([]);
+        clearEventsState(dispatch);
+        if(offset > 1){
+            setOffet(1);
+        }else{
+            getData();
+        }
+    }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -96,13 +104,22 @@ export default function AllEvents({ route }) {
                     </View>
                 </>
             }
-            onRefresh={getData}
-            refreshing={upcoming ? loadingUpcoming: loading}
+            ListFooterComponent={
+                isLoadingMore &&
+                <ContentLoader pRows={0} pWidth={320} pHeight={200} 
+                    active
+                    tWidth={Dimensions.get('window').width - 40}
+                    tHeight={250}
+                    titleStyles={styles.skeleton}
+                />  
+            }
+            onRefresh={onRefresh}
+            refreshing={loading}
             data={events}
             renderItem={({ item }) => <EventCard event={item} />}
             onEndReached={onEndReached}
             ListEmptyComponent={<Empty />}
-            onEndReachedThreshold={0}
+            onEndReachedThreshold={0.2}
             keyExtractor={(item) => item.id}
         />
     </SafeAreaView>
@@ -132,6 +149,7 @@ const styles = StyleSheet.create({
         color: theme.colors.light,
     },
     skeleton: {
-        borderRadius: 15
+        borderRadius: 15,
+        marginLeft: -10
     }
 })
