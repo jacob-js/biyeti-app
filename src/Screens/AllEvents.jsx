@@ -9,6 +9,7 @@ import EventCard from '../Commons/EventCard';
 import { theme } from '../../assets/theme';
 import { useFocusEffect } from '@react-navigation/native';
 import Empty from '../Commons/Empty';
+import MiniEventCard from '../Commons/MiniEventCard';
 
 export default function AllEvents({ route }) {
     const { count, rows, loading: loadingEvents, isLoadingMore: loadingMoreEvents } = useSelector(({ events: { events } }) =>events);
@@ -16,7 +17,7 @@ export default function AllEvents({ route }) {
     const dispatch = useDispatch();
     const { categId, title, upcoming, order } = route.params;
     const [ offset, setOffet ] = useState(1);
-    const limit = 2;
+    const limit = 10;
     const [ events, setEvents ] = useState([]);
     const loading = loadingEvents || loadingUpcoming;
     const isLoadingMore = loadingMoreEvents || loadingMoreUpcom;
@@ -108,7 +109,7 @@ export default function AllEvents({ route }) {
                 isLoadingMore &&
                 <ContentLoader pRows={0} pWidth={320} pHeight={200} 
                     active
-                    tWidth={Dimensions.get('window').width - 40}
+                    tWidth={Dimensions.get('window').width - 30}
                     tHeight={250}
                     titleStyles={styles.skeleton}
                 />  
@@ -116,11 +117,13 @@ export default function AllEvents({ route }) {
             onRefresh={onRefresh}
             refreshing={loading}
             data={events}
-            renderItem={({ item }) => <EventCard event={item} />}
+            renderItem={({ item }) => <MiniEventCard event={item} />}
             onEndReached={onEndReached}
             ListEmptyComponent={<Empty />}
             onEndReachedThreshold={0.2}
             keyExtractor={(item) => item.id}
+            numColumns={2}
+            columnWrapperStyle={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}
         />
     </SafeAreaView>
   )

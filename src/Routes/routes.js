@@ -10,6 +10,7 @@ import EventsList from "../Screens/EventsList";
 import Home from "../Screens/Home";
 import Login from "../Screens/Login";
 import PwdForm from "../Screens/PwdForm";
+import SearchResult from "../Screens/SearchResult";
 import Signup from "../Screens/Signup";
 import UserBookings from "../Screens/UserBookings";
 import VerificationCode from "../Screens/VerificationCode";
@@ -86,7 +87,6 @@ export const routes = [
         withHeader: true,
         secured: true,
         headerOptions: {
-            // header: props => <DashboardEventHeader {...props} />,
             headerBackTitleVisible: false,
             headerTitle: false,
             headerTransparent: true,
@@ -101,6 +101,12 @@ export const routes = [
         secured: true,
         title: 'Mes réservations',
         headerOptions: {}
+    },
+    {
+        name: 'Search',
+        component: SearchResult,
+        withHeader: false,
+        secured: true
     }
 ]
 

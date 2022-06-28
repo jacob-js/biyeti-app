@@ -231,8 +231,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Barlow-Bold',
     textTransform: 'uppercase',
-    color: theme.colors.light,
-    marginLeft: 10
+    color: theme.colors.light
   },
   showAll: {
     color: theme.colors.default100,
