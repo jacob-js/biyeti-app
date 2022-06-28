@@ -16,6 +16,7 @@ import * as yup from 'yup';
 import { updateProfileAction } from '../Redux/actions/auth'
 import { MessageAlert } from '../Utils/feedbacks'
 import IosDateTimeInput from '../Commons/IosDateTimeInput'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const schema = yup.object({
   firstname: yup.string().required('Ce champ est obligatoire'),
@@ -71,7 +72,7 @@ export default function EditProfile({navigation}) {
           </View>
       </View>
 
-      <ScrollView contentContainerStyle={styles.form}>
+      <KeyboardAwareScrollView contentContainerStyle={styles.form}>
         {
           typeof(apiError) === 'string' && typeof(error) === 'string' &&
           <MessageAlert msg={error.toString()} onClose={() =>setError({})} status='error' />
@@ -189,7 +190,7 @@ export default function EditProfile({navigation}) {
           )
         }
       </Formik>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   )
 };

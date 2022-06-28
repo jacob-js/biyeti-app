@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { loginAction } from '../Redux/actions/auth'
 import * as yup from 'yup';
 import { MessageAlert } from '../Utils/feedbacks'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const validationSchema = yup.object({
     identifier: yup.string().required('Ce champs est obligatoire'),
@@ -35,7 +36,12 @@ export default function Login({ navigation }) {
     }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAwareScrollView 
+        style={{
+            flex: 1,
+            backgroundColor: 'white'
+        }}
+        contentContainerStyle={styles.container}>
       <Image source={logo} style={styles.logo} />
       {
           typeof(apiError) === 'string' && typeof(error) === 'string'
@@ -78,7 +84,7 @@ export default function Login({ navigation }) {
                 </>
             )}
         </Formik>
-    </View>
+    </KeyboardAwareScrollView>
   )
 }
 

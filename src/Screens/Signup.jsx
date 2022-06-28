@@ -14,6 +14,7 @@ import { signupAction } from '../Redux/actions/auth'
 import { MessageAlert } from '../Utils/feedbacks'
 import moment from 'moment';
 import { useNavigation } from '@react-navigation/native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const schema = yup.object({
     firstname: yup.string().required('Ce champ est obligatoire'),
@@ -54,7 +55,7 @@ export default function Signup() {
     }
 
   return (
-    <ScrollView style={{ backgroundColor: 'white' }}>
+    <KeyboardAwareScrollView style={{ backgroundColor: 'white' }}>
       <View style={styles.container}>
         <Title style={styles.title}>Inscription</Title>
         {
@@ -109,7 +110,7 @@ export default function Signup() {
             )}
         </Formik>
       </View>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   )
 };
 

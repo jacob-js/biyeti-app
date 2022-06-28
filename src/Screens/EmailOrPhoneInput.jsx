@@ -10,6 +10,7 @@ import * as Yup from 'yup';
 import useAxios from 'axios-hooks'
 import axios from 'axios'
 import { MessageAlert } from '../Utils/feedbacks'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const schema = Yup.object({
     email: Yup.string().email('Email invalide').required('Email requis'),
@@ -37,7 +38,7 @@ const EmailOrPhoneInput = () => {
     const { touched, errors, values, handleChange, handleBlur } = form;
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <KeyboardAwareScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>Veuillez entrer votre adresse mail</Text>
         <Text style={styles.subtitle}>Un code de vérification vous sera envoyé à cet email</Text>
         {
@@ -65,7 +66,7 @@ const EmailOrPhoneInput = () => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
             <Text style={styles.loginLink}><FIcon name='arrow-left' /> Retour à la connexion</Text>
         </TouchableOpacity>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   )
 }
 

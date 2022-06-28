@@ -14,7 +14,9 @@ const IosDateInput = ({setDate, date, error, label}) => {
     })
 
   return (
-    <View>
+    <View style={{
+        width: '100%',
+    }}>
       <CommonInput
         label={label || "Date de naissance"}
         onPressIn={() =>setShownPicker(true)}

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Image, Platform } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Image, Platform, KeyboardAvoidingView } from 'react-native'
 import React, { useEffect } from 'react'
 import { Form, Formik } from 'formik';
 import { CommonInput, CommonSelect, CommonTextArea } from '../Commons/commons';
@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createEventAction, getCategorys } from '../Redux/actions/events';
 import moment from 'moment';
 import IosDateInput, { IosTimeInput } from '../Commons/IosDateTimeInput';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 // import FormData from 'form-data';
 
 const fields = [
@@ -96,8 +97,10 @@ export default function AddEventForm({navigation}) {
         })(dispatch, navigation);
     }
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={{ padding: 20 }}>
+    <KeyboardAwareScrollView behavior='padding' style={styles.container}>
+      <ScrollView contentContainerStyle={{ padding: 20 }}
+        automaticallyAdjustContentInsets={true}
+      >
           <Formik
             initialValues={fields?.reduce((acc, field) => ({ ...acc, [field.name]: field.value }), { image: '' })}
             onSubmit={submitForm}
@@ -235,7 +238,7 @@ export default function AddEventForm({navigation}) {
               )}
           </Formik>
       </ScrollView>
-    </SafeAreaView>
+    </KeyboardAwareScrollView>
   )
 };
 
