@@ -1,13 +1,15 @@
 import { View, Text, Dimensions, StyleSheet } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { showToast } from '../Utils/feedbacks';
+import axios from 'axios';
+import { LoadIndicator } from './loaders';
+import { DashboardEventContext } from '../Utils/contexts';
 
-export default function ScanQr({setViewScan}) {
+export default function ScanQr() {
     const [hasPermission, setHasPermission] = useState(null);
-    const [success, setSuccess] = useState(false);
-    const [scanned, setScanned] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [ user, setUser ] = useState({});
+    const {setViewScan, setScanned, setShowScanned, event} = useContext(DashboardEventContext);
 
     const requestCameraPermission = async() =>{
         const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -18,14 +20,34 @@ export default function ScanQr({setViewScan}) {
         requestCameraPermission()
     });
 
+    const handleBarCodeScanned = async({ type, data }) => {
+      setLoading(true);
+      try {
+        const res = await axios.get(`/api/v1/tickets/status/${data}?event_id=${event.id}`);
+        if(res.status === 200){
+            setScanned(res.data.data);
+            setViewScan(false);
+            setShowScanned(true);
+        }
+      } catch (error) {
+        setViewScan(false);
+        showToast("Une erreur est survenue", "error");
+      };
+      setLoading(false);
+    };
+
   return (
     <View style={styles.container}>
-      <View style={styles.scannerContainer}>
-        <BarCodeScanner
-            style={styles.scanner}
-            onBarCodeScanned={() =>setViewScan(false)}
-        />
-      </View>
+      {
+        loading ?
+        <LoadIndicator />:
+        <View style={styles.scannerContainer}>
+          <BarCodeScanner
+              style={styles.scanner}
+              onBarCodeScanned={handleBarCodeScanned}
+          />
+        </View>
+      }
     </View>
   )
 };

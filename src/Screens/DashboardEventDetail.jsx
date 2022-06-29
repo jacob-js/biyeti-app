@@ -13,6 +13,7 @@ import { getAgentsAction } from '../Redux/actions/agents';
 import EventBookings from '../Components/EventBookings';
 import { DashboardEventContext } from '../Utils/contexts';
 import EditEvent from '../Components/EditEvent';
+import ScannedTicketModal from '../Components/ScannedTicket';
 
 const links = [
   {
@@ -24,8 +25,8 @@ const links = [
     icon: 'people-outline' 
   },
   {
-    name: 'Réservations',
-    icon: 'calendar-outline' 
+    name: 'Participants',
+    icon: 'person-outline' 
   },
   {
     name: 'Paramètres',
@@ -42,6 +43,8 @@ export default function DashboardEventDetail({route, navigation}) {
     const MIN_HEIGHT = Platform.OS === 'ios' ? 90 : 70;
     const fixedContentView = useRef(null);
     const [fixedVisible, setFixedVsisble] = useState();
+    const [showScanned, setShowScanned] = useState(false);
+    const [scanned, setScanned] = useState({ user: {}, ticket: {}});
 
     const getData = () =>{
         getEvent(eventId)(dispatch);
@@ -67,7 +70,7 @@ export default function DashboardEventDetail({route, navigation}) {
     <View style={{ flex: 1 }}>
       <StatusBar barStyle="light-content" />
       <ImageHeaderScrollView
-        maxHeight={250}
+        maxHeight={280}
         minHeight={MIN_HEIGHT}
         headerImage={{ uri: event.cover }}
         style={styles.container}
@@ -116,7 +119,9 @@ export default function DashboardEventDetail({route, navigation}) {
             style={Platform.OS === 'ios' && { paddingTop: 30 }}
           >
             <DashboardEventContext.Provider value={{
-              event: event
+              event: event,
+              viewScan: viewScan,
+              setViewScan: setViewScan
             }}>
               {
                 activeLink === 'Billets' ? <Tickets navigation={navigation} route={route} />:null
@@ -124,15 +129,26 @@ export default function DashboardEventDetail({route, navigation}) {
               {
           
                 activeLink === 'Membres' ? <EventAgents navigation={navigation} eventId={eventId} route={route} />:
-                activeLink === 'Réservations' ? <EventBookings route={route} />:
+                activeLink === 'Participants' ? <EventBookings route={route} />:
                 activeLink === 'Paramètres' ? <EditEvent />:null
-              }
-              {
-                viewScan && <ScanQr setViewScan={setViewScan} />
               }
             </DashboardEventContext.Provider>
           </TriggeringView>
       </ImageHeaderScrollView>
+        <DashboardEventContext.Provider value={{
+          event: event,
+          viewScan: viewScan,
+          setViewScan: setViewScan,
+          showScanned: showScanned,
+          setShowScanned: setShowScanned,
+          scanned: scanned,
+          setScanned: setScanned
+        }}>
+          {
+            viewScan && <ScanQr />
+          }
+          <ScannedTicketModal />
+        </DashboardEventContext.Provider>
      </View> 
   )
 };
@@ -168,7 +184,7 @@ const styles = StyleSheet.create({
     },
     links: {
       flexDirection: 'row',
-      marginTop: 20,
+      marginTop: 10,
       flexWrap: 'wrap'
     },
     link: {

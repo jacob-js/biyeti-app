@@ -81,10 +81,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20
     },
     ticket: {
+        width: '100%',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 20
     },
     ticketAvatar: {
         width: 50,
@@ -117,7 +117,8 @@ const styles = StyleSheet.create({
     ticketDesc: {
         fontFamily: 'Barlow',
         paddingRight: 20,
-        marginTop: 5
+        marginTop: 5,
+        width: Dimensions.get('window').width * 70 / 100
     },
     ticketPrice: {
         fontSize: 16,
