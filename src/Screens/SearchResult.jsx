@@ -9,6 +9,7 @@ import MiniEventCard from '../Commons/MiniEventCard';
 import Empty from '../Commons/Empty';
 import ContentLoader from 'react-native-easy-content-loader';
 import axios from 'axios';
+import EventListItem from '../Commons/EventListItem';
 
 const SearchResult = ({route}) => {
     const navigation = useNavigation();
@@ -100,15 +101,23 @@ const SearchResult = ({route}) => {
             ListHeaderComponent={() => <Text style={styles.title}>Resultats de la recherche</Text>}
             ListFooterComponent={
                 loading &&
-                <ContentLoader pRows={0} pWidth={320} pHeight={200} 
-                    active
-                    tWidth={Dimensions.get('window').width - 30}
-                    tHeight={250}
-                    titleStyles={styles.skeleton}
-                />  
+                <>
+                    <ContentLoader pRows={0} pWidth={320} pHeight={200} 
+                        active
+                        tWidth={Dimensions.get('window').width - 30}
+                        tHeight={60}
+                        titleStyles={styles.skeleton}
+                    /> 
+                    <ContentLoader pRows={0} pWidth={320} pHeight={200} 
+                        active
+                        tWidth={Dimensions.get('window').width - 30}
+                        tHeight={60}
+                        titleStyles={styles.skeleton}
+                    />  
+                </>
             }
             data={rows}
-            renderItem={({ item }) => <MiniEventCard event={item} />}
+            renderItem={({ item }) => <EventListItem event={item} />}
             onEndReached={onEndReached}
             ListEmptyComponent={!loading && <Empty />}
             onEndReachedThreshold={0.2}
