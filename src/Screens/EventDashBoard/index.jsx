@@ -14,6 +14,7 @@ import { DashboardEventContext } from '../../Utils/contexts';
 import EditEvent from '../../Components/EditEvent';
 import ScannedTicketModal from '../../Components/ScannedTicket';
 import Tickets from './Components/Tickets';
+import Settings from './Components/Settings';
 
 const links = [
   {
@@ -130,7 +131,7 @@ export default function EventDashboard({route, navigation}) {
           
                 activeLink === 'Membres' ? <EventAgents navigation={navigation} eventId={eventId} route={route} />:
                 activeLink === 'Participants' ? <EventBookings route={route} />:
-                activeLink === 'Paramètres' ? <EditEvent />:null
+                activeLink === 'Paramètres' ? <Settings />:null
               }
             </DashboardEventContext.Provider>
           </TriggeringView>
