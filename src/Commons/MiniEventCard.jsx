@@ -14,9 +14,9 @@ export default function MiniEventCard({event}) {
   return (
     <View style={styles.eventContainer}>
         <TouchableOpacity style={styles.event} onPress={() =>navigation.navigate('EventDetail', { eventId: event.id })}>
-            <TouchableOpacity style={styles.touchableCover}>
-            <Image source={{ uri: event.cover }} style={styles.eventCover} />
-            </TouchableOpacity>
+            <View style={styles.touchableCover}>
+                <Image source={{ uri: event.cover }} style={styles.eventCover} />
+            </View>
             <View style={styles.eventDetail}>
             <Text style={styles.eventName}>{event.name}</Text>
             <Divider my={2} bg='white' />
