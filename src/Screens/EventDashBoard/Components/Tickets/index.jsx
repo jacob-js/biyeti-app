@@ -39,12 +39,24 @@ export default function Tickets() {
                         </View>
                         <View style={styles.ticketInfo}>
                             <Text style={styles.ticketName}>{ticket.name}</Text>
-                            <Text style={styles.ticketDesc}>{ticket.caption}</Text>
-                            <Text style={styles.ticketPrice}>{ticket.price} {ticket.currency.toLowerCase() === 'usd' ? '$': 'Fc'}</Text>
+                            {
+                                ticket.caption &&
+                                <Text style={styles.ticketDesc}>{ticket.caption}</Text>
+                            }
+                            {
+                                ticket.price <= 0 &&
+                                <Text style={styles.ticketPrice}>GRATUIT</Text>
+                            }
+                            {
+                                ticket.price > 0 &&
+                                <Text style={styles.ticketPrice}>
+                                    {ticket.price} {ticket.currency.toLowerCase() === 'usd' ? '$': 'Fc'}
+                                </Text>
+                            }
                         </View>
                     </TouchableOpacity>
                     {
-                        index + 1 !== tickets.length && <Divider my={2} mb={0} />
+                        index + 1 !== tickets.length && <Divider my={3} mb={3} />
                     }
                 </View>
             ))
@@ -82,8 +94,7 @@ const styles = StyleSheet.create({
     ticket: {
         width: '100%',
         flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     ticketAvatar: {
         width: 50,

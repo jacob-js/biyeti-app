@@ -8,6 +8,7 @@ import { createTicketAction } from '../../../../Redux/actions/tickets';
 import * as yup from 'yup';
 import { MessageAlert } from '../../../../Utils/feedbacks';
 import { theme } from '../../../../../assets/theme';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const fields = [
     {
@@ -19,7 +20,8 @@ const fields = [
     {
         name: 'price',
         label: 'Prix',  
-        required: true
+        required: true,
+        value: "0"
     },
     {
         name: 'caption',
@@ -57,88 +59,95 @@ export default function AddTicketModal({setShowModal, showModal, eventId}) {
     };
     const getError = (field) =>{
         return apiError[field]
-    }
+    };
+
   return (
     <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
         <Modal.Content w="full">
           <Modal.CloseButton />
           <Modal.Header>Ajouter un billet</Modal.Header>
-        <Formik
-            initialValues={fields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), { currency: '' })}
-            onSubmit={onSubmit}
-            validationSchema={validationSchema}
-        >
-            {({ handleSubmit, handleChange, values, errors, touched }) => (
-                <>
-                <Modal.Body>
-                    {
-                        typeof(apiError) === 'string' && typeof(error) === 'string'
-                        && <MessageAlert msg={error.toString()} onClose={() =>setError({})} status='error' />
-                    }
-                    {
-                        fields.map((field, index) => (
-                            field.name === 'price' ?
-                            <View style={styles.flexFields} key={field.name}>
-                                <CommonInput required={field.required} 
-                                    label={field.label} name={field.name} 
-                                    placeholder={field.placeholder} 
+            <KeyboardAwareScrollView>
+            <Formik
+                initialValues={fields.reduce((acc, field) => ({ ...acc, [field.name]: field.value }), { currency: 'fc' })}
+                onSubmit={onSubmit}
+                validationSchema={validationSchema}
+            >
+                {({ handleSubmit, handleChange, values, errors, touched }) => (
+                    <>
+                    <Modal.Body>
+                        {
+                            typeof(apiError) === 'string' && typeof(error) === 'string'
+                            && <MessageAlert msg={error.toString()} onClose={() =>setError({})} status='error' />
+                        }
+                        {
+                            fields.map((field, index) => (
+                                field.name === 'price' ?
+                                <View style={styles.flexFields} key={field.name}>
+                                    <CommonInput required={field.required} 
+                                        label={field.label} name={field.name} 
+                                        placeholder={field.placeholder} 
+                                        onChangeText={handleChange(field.name)} 
+                                        kType='numeric'
+                                        error={touched[field.name] && errors[field.name] || getError(field.name)}
+                                        style={{
+                                            width: '50%'
+                                        }}
+                                        value={values[field.name]}
+                                        editable={false}
+                                    />
+                                    <CommonSelect label="Devise" 
+                                        required name={field.name}
+                                        uiType="rounded"
+                                        error={touched['currency'] && errors['currency'] || getError('currency')}
+                                        onValueChange={handleChange('currency')}
+                                        style={{
+                                            width: '40%'
+                                        }}
+                                        value={values['currency']}
+                                        isDisabled={true}
+                                    >
+                                        <Select.Item label='$' value='usd' />
+                                        <Select.Item label='FC' value='fc' />
+                                    </CommonSelect>
+                                </View>:
+                                field.name === 'caption' ?
+                                <CommonTextArea
+                                    key={field.name} 
+                                    error={errors[field.name] || getError(field.name)}
                                     onChangeText={handleChange(field.name)} 
-                                    kType='numeric'
+                                    placeholder={field.placeholder}
+                                    label={field.label}
+                                    uiType='rounded'
+                                />:
+                                <CommonInput required={field.required} label={field.label}
+                                    name={field.name} placeholder={field.placeholder}
                                     error={touched[field.name] && errors[field.name] || getError(field.name)}
-                                    style={{
-                                        width: '50%'
-                                    }}
+                                    key={index}
+                                    kType={field.kType}
+                                    onChangeText={handleChange(field.name)} 
                                 />
-                                <CommonSelect label="Devise" 
-                                    required name={field.name}
-                                    uiType="rounded"
-                                    error={touched['currency'] && errors['currency'] || getError('currency')}
-                                    onValueChange={handleChange('currency')}
-                                    style={{
-                                        width: '40%'
-                                    }}
-                                >
-                                    <Select.Item label='$' value='usd' />
-                                    <Select.Item label='Fc' value='fc' />
-                                </CommonSelect>
-                            </View>:
-                            field.name === 'caption' ?
-                            <CommonTextArea
-                                key={field.name} required 
-                                error={touched[field.name] && errors[field.name] || getError(field.name)}
-                                onChangeText={handleChange(field.name)} 
-                                placeholder={field.placeholder}
-                                label={field.label}
-                                uiType='rounded'
-                            />:
-                            <CommonInput required={field.required} label={field.label}
-                                name={field.name} placeholder={field.placeholder}
-                                error={touched[field.name] && errors[field.name] || getError(field.name)}
-                                key={index}
-                                kType={field.kType}
-                                onChangeText={handleChange(field.name)} 
-                            />
-                        ))
-                    }
-                </Modal.Body>
-                <Modal.Footer>
-                <Button.Group space={2}>
-                  <Button variant="ghost" colorScheme="blueGray" onPress={() => {
-                  setShowModal(false);
-                }}>
-                    Annuler
-                  </Button>
-                  <Button onPress={handleSubmit} isLoading={loading}
-                    isLoadingText="Enregistrement..."
-                    style={styles.addBtn}
-                >
-                    Enregistrer
-                  </Button>
-                </Button.Group>
-              </Modal.Footer>
-              </>
-            )}
-        </Formik>
+                            ))
+                        }
+                    </Modal.Body>
+                    <Modal.Footer>
+                    <Button.Group space={2}>
+                    <Button variant="ghost" colorScheme="blueGray" onPress={() => {
+                    setShowModal(false);
+                    }}>
+                        Annuler
+                    </Button>
+                    <Button onPress={handleSubmit} isLoading={loading}
+                        isLoadingText="Enregistrement..."
+                        style={styles.addBtn}
+                    >
+                        Enregistrer
+                    </Button>
+                    </Button.Group>
+                </Modal.Footer>
+                </>
+                )}
+            </Formik>
+            </KeyboardAwareScrollView>
         </Modal.Content>
       </Modal>
   )

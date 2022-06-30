@@ -51,6 +51,7 @@ export function CommonSelect(props) {
                 borderBottomWidth={2}
                 borderRadius={15}
                 height="45px"
+                {...props}
             >
                 {props.children}
             </Select>
