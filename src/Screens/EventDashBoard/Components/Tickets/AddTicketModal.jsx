@@ -2,12 +2,12 @@ import { View, Text, StyleSheet } from 'react-native'
 import React, {useState} from 'react'
 import { Button, Modal, Select } from 'native-base';
 import { Formik } from 'formik';
-import { CommonInput, CommonSelect, CommonTextArea } from '../Commons/commons';
-import { theme } from '../../assets/theme';
+import { CommonInput, CommonSelect, CommonTextArea } from '../../../../Commons/commons';
 import { useDispatch, useSelector } from 'react-redux';
-import { createTicketAction } from '../Redux/actions/tickets';
+import { createTicketAction } from '../../../../Redux/actions/tickets';
 import * as yup from 'yup';
-import { MessageAlert } from '../Utils/feedbacks'
+import { MessageAlert } from '../../../../Utils/feedbacks';
+import { theme } from '../../../../../assets/theme';
 
 const fields = [
     {

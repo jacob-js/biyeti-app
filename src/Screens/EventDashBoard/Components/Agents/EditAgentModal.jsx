@@ -1,15 +1,14 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Button, Modal } from 'native-base';
-import FIcon from 'react-native-vector-icons/Feather'
-import { theme } from '../../assets/theme';
+import { theme } from '../../../../../assets/theme';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
-import { MessageAlert, showToast } from '../Utils/feedbacks'
+import { MessageAlert, showToast } from '../../../../Utils/feedbacks'
 import { Formik } from 'formik';
-import { CommonInput } from '../Commons/commons';
+import { CommonInput } from '../../../../Commons/commons';
 import useAxios from 'axios-hooks';
-import { getAgentsAction } from '../Redux/actions/agents';
+import { getAgentsAction } from '../../../../Redux/actions/agents';
 import { useNavigation } from '@react-navigation/native';
 
 const validationSchema = yup.object({

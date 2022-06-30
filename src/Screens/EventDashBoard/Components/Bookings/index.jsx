@@ -6,8 +6,8 @@ import AntIcon from 'react-native-vector-icons/AntDesign'
 import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useDispatch, useSelector } from 'react-redux'
 import { useFocusEffect } from '@react-navigation/native'
-import { getPurchasesAction } from '../Redux/actions/tickets'
-import { DashboardEventContext } from '../Utils/contexts'
+import { getPurchasesAction } from '../../../../Redux/actions/tickets'
+import { DashboardEventContext } from '../../../../Utils/contexts'
 import useAxios from 'axios-hooks'
 
 function EventBookings() {
@@ -116,11 +116,8 @@ const styles = StyleSheet.create({
     btn: {
         height: 50,
         backgroundColor: theme.colors.yellow[600],
-        // shadowOpacity: 0.4,
-        // elevation: 15,
         borderRadius: 15,
-        marginTop: 20,
-        // marginBottom: 20,
+        marginTop: 20
     }
 })
 

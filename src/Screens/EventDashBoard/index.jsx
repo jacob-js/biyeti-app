@@ -1,19 +1,19 @@
 import { View, Text, StyleSheet, StatusBar, Platform, RefreshControl, Dimensions, TouchableOpacity } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { getEvent } from '../Redux/actions/events';
+import { getEvent } from '../../Redux/actions/events';
 import IoIcon from 'react-native-vector-icons/Ionicons';
-import Tickets from './Tickets';
-import { getTicketsAction } from '../Redux/actions/tickets';
-import ScanQr from '../Commons/ScanQr';
-import EventAgents from './EventAgents';
+import { getTicketsAction } from '../../Redux/actions/tickets';
+import ScanQr from '../../Commons/ScanQr';
+import EventAgents from './Components/Agents';
 import { ImageHeaderScrollView, TriggeringView } from 'react-native-image-header-scroll-view';
 import * as Animatable from 'react-native-animatable';
-import { getAgentsAction } from '../Redux/actions/agents';
-import EventBookings from '../Components/EventBookings';
-import { DashboardEventContext } from '../Utils/contexts';
-import EditEvent from '../Components/EditEvent';
-import ScannedTicketModal from '../Components/ScannedTicket';
+import { getAgentsAction } from '../../Redux/actions/agents';
+import EventBookings from './Components/Bookings';
+import { DashboardEventContext } from '../../Utils/contexts';
+import EditEvent from '../../Components/EditEvent';
+import ScannedTicketModal from '../../Components/ScannedTicket';
+import Tickets from './Components/Tickets';
 
 const links = [
   {
@@ -34,7 +34,7 @@ const links = [
   }
 ];
 
-export default function DashboardEventDetail({route, navigation}) {
+export default function EventDashboard({route, navigation}) {
     const eventId = route?.params?.eventId;
     const { data: event, loading } = useSelector(({ events: { event } }) => event);
     const dispatch = useDispatch();

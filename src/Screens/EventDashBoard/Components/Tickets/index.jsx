@@ -1,12 +1,11 @@
 import { View, Text, TouchableOpacity, StyleSheet, Image, Dimensions } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Button, Divider } from 'native-base'
 import FaIcon from 'react-native-vector-icons/FontAwesome5';
-import { theme } from '../../assets/theme';
 import AddTicketModal from './AddTicketModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTicketsAction } from '../Redux/actions/tickets';
 import ContentLoader from 'react-native-easy-content-loader';
+import { theme } from '../../../../../assets/theme';
 
 export default function Tickets() {
     const [showModal, setShowModal] = useState(false);

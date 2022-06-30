@@ -2,14 +2,13 @@ import { View, Text, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Button, Modal } from 'native-base';
 import FIcon from 'react-native-vector-icons/Feather'
-import { theme } from '../../assets/theme';
+import { theme } from '../../../../../assets/theme';
 import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
-import { MessageAlert } from '../Utils/feedbacks'
+import { MessageAlert } from '../../../../Utils/feedbacks'
 import { Formik } from 'formik';
-import { CommonInput } from '../Commons/commons';
-import useAxios from 'axios-hooks';
-import { createAgentAction } from '../Redux/actions/agents';
+import { CommonInput } from '../../../../Commons/commons';
+import { createAgentAction } from '../../../../Redux/actions/agents';
 
 const validationSchema = yup.object({
     user_id: yup.string().required('Ce champs est obligatoire'),
