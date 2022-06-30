@@ -16,9 +16,7 @@ function EventBookings() {
     const dispatch = useDispatch();
     const { event, setViewScan } = useContext(DashboardEventContext);
     const { data, rows, count, loading, error } = useSelector(({ tickets: { purchases } }) => purchases);
-    const [{data: sumData, loading: loaingSum}, getSum] = useAxios({ url: `/api/v1/tickets/sum?event_id=${event.id}` });
-    const [ totalCdf, setTotalCdf ] = useState(0);
-    const [ totalUsd, setTotalUsd ] = useState(0);
+    const [{data: scannedData, loading: loadingScanned}, getScanned] = useAxios({ url: `/api/v1/tickets/scanned/${event.id}?p=1&p_size=2` });
 
     useFocusEffect(
         useCallback(() =>{
@@ -28,16 +26,9 @@ function EventBookings() {
 
     useFocusEffect(
         useCallback(() =>{
-            getSum()
+            getScanned()
         }, [])
     );
-
-    useEffect(() =>{
-        (() =>{
-            setTotalCdf(sumData?.data?.cdf);
-            setTotalUsd(sumData?.data?.usd);
-        })()
-    }, [sumData]);
 
   return (
     <View style={styles.container}>
@@ -52,7 +43,7 @@ function EventBookings() {
                 <SIcon name='user' size={50} color="white" />
                 <Divider my={2} bg="white" />
                 <View>
-                    <Text style={styles.count}>{count} Participant{count > 1 ? 's': ''}</Text>
+                    <Text style={styles.count}>{scannedData?.data.count} qui paricipe{scannedData?.data.count > 1 ? 'nt': ''}</Text>
                 </View>
             </Center>
             <Center h="130px" w="45%" bg={{
@@ -65,8 +56,7 @@ function EventBookings() {
                 <SIcon name='wallet' size={50} color="white" />
                 <Divider my={2} bg="white" />
                 <View>
-                    { totalUsd ? <Text style={styles.count}>{totalUsd}$</Text>: null}
-                    { totalCdf ? <Text style={styles.count}>{totalCdf}FC</Text>: null}
+                    <Text style={styles.count}>{count} {`Réservation${count > 1 ? 's': ''}`}</Text>
                 </View>
             </Center>
         </HStack>
