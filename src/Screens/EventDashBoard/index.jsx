@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, StatusBar, Platform, RefreshControl, Dimensions, TouchableOpacity } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getEvent } from '../../Redux/actions/events';
 import IoIcon from 'react-native-vector-icons/Ionicons';
@@ -11,10 +11,10 @@ import * as Animatable from 'react-native-animatable';
 import { getAgentsAction } from '../../Redux/actions/agents';
 import EventBookings from './Components/Bookings';
 import { DashboardEventContext } from '../../Utils/contexts';
-import EditEvent from '../../Components/EditEvent';
 import ScannedTicketModal from '../../Components/ScannedTicket';
 import Tickets from './Components/Tickets';
 import Settings from './Components/Settings';
+import { useFocusEffect } from '@react-navigation/native';
 
 const links = [
   {
@@ -53,9 +53,16 @@ export default function EventDashboard({route, navigation}) {
         getAgentsAction(null, eventId)(dispatch, navigation);
     };
 
-    useEffect(() =>{
-        getData();
-    }, [eventId, navigation]);
+
+    useFocusEffect(
+        useCallback(() =>{
+            getData();
+
+            return () => {
+                setActiveLink(links[0].name);
+            }
+        }, [eventId, navigation])
+    )
 
     useEffect(() =>{
       (() =>{

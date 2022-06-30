@@ -35,7 +35,9 @@ const Settings = () => {
         <View style={styles.menus}>
             {
                 menus.map(menu => (
-                    <TouchableOpacity style={styles.menu} disabled={menu.disabled}>
+                    <TouchableOpacity style={styles.menu} disabled={menu.disabled} onPress={() =>navigation.navigate(menu.key, {
+                        event: event
+                    })}>
                         <View style={[styles.icon, menu.disabled && styles.disabled]}>
                             <FeatIcon name={menu.icon} size={20} style={[ menu.disabled && styles.disabled ]} />
                         </View>

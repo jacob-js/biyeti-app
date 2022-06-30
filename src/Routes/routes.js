@@ -4,6 +4,7 @@ import Dashboard from "../Screens/Dashboard";
 import EditProfile from "../Screens/EditProfile";
 import EmailOrPhoneInput from "../Screens/EmailOrPhoneInput";
 import EventDashboard from "../Screens/EventDashBoard";
+import EditEvent from "../Screens/EventDashBoard/Components/EditEvent";
 import EventDetail from "../Screens/EventDetail";
 import EventsList from "../Screens/EventsList";
 import Home from "../Screens/Home";
@@ -77,6 +78,14 @@ export const routes = [
         component: AddEventForm,
         withHeader: true,
         title: 'Ajouter un événement',
+        secured: true,
+        headerOptions: {}
+    },
+    {
+        name: 'EditEvent',
+        component: EditEvent,
+        withHeader: true,
+        title: "Modifier l'événement",
         secured: true,
         headerOptions: {}
     },

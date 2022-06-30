@@ -170,7 +170,7 @@ export const getEvent = (id) => async(dispatch) =>{
     }
 }
 
-export const updateEventAction = (id, data) => async(dispatch) =>{
+export const updateEventAction = (id, data) => async(dispatch, navigation) =>{
     dispatch({
         type: eventsActionsTypes.UPDATE_EVENT_REQUEST
     });
@@ -181,6 +181,7 @@ export const updateEventAction = (id, data) => async(dispatch) =>{
                 type: eventsActionsTypes.UPDATE_EVENT_SUCCESS,
                 payload: res.data.data
             });
+            navigation.navigate('DashboardEventDetail', { eventId: id });
             showToast("Modifications enregistrées", 'success')
         }
     } catch (error) {

@@ -1,25 +1,25 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image, Platform } from 'react-native'
 import React, { useContext, useEffect } from 'react'
 import { useFormik } from 'formik';
-import { CommonInput, CommonSelect, CommonTextArea } from '../Commons/commons';
+import { CommonInput, CommonSelect, CommonTextArea } from '../../../../Commons/commons';
 import { Button, FormControl, Select, WarningOutlineIcon } from 'native-base';
 import { useState } from 'react';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import * as ImagePicker from 'expo-image-picker';
-import {theme} from '../../assets/theme';
+import {theme} from '../../../../../assets/theme';
 import * as yup from 'yup';
 import DatePicker from '@react-native-community/datetimepicker'
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteEventAction, getCategorys, updateEventAction } from '../Redux/actions/events';
+import { getCategorys, updateEventAction } from '../../../../Redux/actions/events';
 import moment from 'moment';
-import { DashboardEventContext } from '../Utils/contexts';
-import { MessageAlert } from '../Utils/feedbacks';
-import AlertModal from './AlertModal';
+import { MessageAlert } from '../../../../Utils/feedbacks';
 import { useNavigation } from '@react-navigation/native';
-import { getAgentsAction } from '../Redux/actions/agents';
-import { isEventAdmin } from '../Utils/helpers';
-import IosDateInput, { IosTimeInput } from '../Commons/IosDateTimeInput';
+import { getAgentsAction } from '../../../../Redux/actions/agents';
+import { isEventAdmin } from '../../../../Utils/helpers';
+import IosDateInput, { IosTimeInput } from '../../../../Commons/IosDateTimeInput';
+import { DashboardEventContext } from '../../../../Utils/contexts';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const fields = [
     {
@@ -60,9 +60,9 @@ const schema = yup.object({
     event_date: yup.date().required('La date est obligatoire')
 })
 
-const EditEvent = () => {
-    const { event } = useContext(DashboardEventContext);
-    const [deleteAlertVisible, setDeleteAlertVisible] = useState(false);
+const EditEvent = ({route}) => {
+    const { event } = route.params;
+    const navigation = useNavigation();
     const [image, setImage] = useState(event.cover);
     const [shownPicker, setShownPicker] = useState(false);
     const [shownPickerTime, setShownPickerTime] = useState(false);
@@ -75,13 +75,11 @@ const EditEvent = () => {
         onSubmit: values => updateEventAction(event.id, {
             ...values,
             event_date: moment(values.event_date).format('YYYY-MM-DD HH:mm:ss')
-        })(dispatch),
+        })(dispatch, navigation),
         validationSchema: schema,
         validateOnBlur: true
     });
     const { values, handleChange, touched, errors, setFieldValue, handleSubmit } = formik;
-    const navigation = useNavigation();
-    const { loading: loadingDelete } = useSelector(({ events: { deleteEvent } }) =>deleteEvent);
     const { rows: eventMembers } = useSelector(({ agents: { agents }}) => agents);
     const { data: user } = useSelector(({ users: {currentUser} }) =>currentUser); 
 
@@ -134,7 +132,9 @@ const EditEvent = () => {
     };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAwareScrollView style={styles.container} contentContainerStyle={{
+        paddingBottom: 50
+    }}>
         <>
             {
             typeof(apiError) === 'string' && typeof(error) === 'string' &&
@@ -271,25 +271,10 @@ const EditEvent = () => {
                         onPress={handleSubmit}
                         disabled={!availableChange()}
                     >Enregistrer les modifications</Button>
-                    <Button isLoading={false} 
-                        isLoadingText={<Text>Suppression...</Text>} 
-                        style={styles.deleteBtn} _text={{ fontWeight: 'bold', textTransform: 'uppercase', color: "danger.700" }} 
-                        borderColor="danger.700" bgColor="white" borderWidth={1}
-                        onPress={() => setDeleteAlertVisible(true)}
-                    >Supprimer cet evenement</Button>
                 </>
             }
         </>
-        
-        <AlertModal
-            title="Attention"
-            alertBody="Vous êtes sur le point de supprimer cet événement. Cette action est irréversible."
-            setIsOpen={setDeleteAlertVisible}
-            isOpen={deleteAlertVisible}
-            onDelete={() => deleteEventAction(event.id)(dispatch, navigation)}
-            loading={loadingDelete}
-        />
-    </View>
+    </KeyboardAwareScrollView>
   )
 };
 
@@ -297,7 +282,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white',
-        padding: 20
+        padding: 20,
+        paddingBottom: 40
     },
     imageBox: {
         width: '100%',
