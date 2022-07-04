@@ -30,7 +30,7 @@ const fields = [
         required: false
     },
     {
-        name: 'place_number',
+        name: 'number_of_place',
         label: 'Nombre de places',
         kType: 'numeric',
     }

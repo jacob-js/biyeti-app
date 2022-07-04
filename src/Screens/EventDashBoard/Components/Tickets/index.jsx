@@ -2,14 +2,23 @@ import { View, Text, TouchableOpacity, StyleSheet, Image, Dimensions } from 'rea
 import React, { useState } from 'react'
 import { Button, Divider } from 'native-base'
 import FaIcon from 'react-native-vector-icons/FontAwesome5';
+import AntIcon from 'react-native-vector-icons/AntDesign';
 import AddTicketModal from './AddTicketModal';
 import { useDispatch, useSelector } from 'react-redux';
 import ContentLoader from 'react-native-easy-content-loader';
 import { theme } from '../../../../../assets/theme';
+import EditTicketModal from './EditModal';
 
 export default function Tickets() {
     const [showModal, setShowModal] = useState(false);
     const { data: tickets, loading } = useSelector(({ tickets: { tickets } }) => tickets);
+    const [toEdit, setToEdit] = useState({});
+    const [showEdit, setShowEdit] = useState(false);
+
+    const onEdit = (ticket) => {
+        setToEdit(ticket);
+        setShowEdit(true);
+    };
 
   return (
     <View style={styles.tickets}>
@@ -29,7 +38,10 @@ export default function Tickets() {
             </>:
             tickets?.map((ticket, index) =>(
                 <View key={index}>
-                    <TouchableOpacity style={styles.ticket} key={index}>
+                    <TouchableOpacity style={styles.ticket}
+                        key={index}
+                        onPress={() =>onEdit(ticket)}
+                    >
                         <View style={styles.ticketAvatar}>
                             {ticket.name.toLowerCase() === 'vip' ? <Image source={{
                                 uri: "https://img.icons8.com/external-flaticons-flat-flat-icons/64/000000/external-vip-music-festival-flaticons-flat-flat-icons.png"
@@ -43,16 +55,19 @@ export default function Tickets() {
                                 ticket.caption &&
                                 <Text style={styles.ticketDesc}>{ticket.caption}</Text>
                             }
-                            {
-                                ticket.price <= 0 &&
-                                <Text style={styles.ticketPrice}>GRATUIT</Text>
-                            }
-                            {
-                                ticket.price > 0 &&
-                                <Text style={styles.ticketPrice}>
-                                    {ticket.price} {ticket.currency.toLowerCase() === 'usd' ? '$': 'Fc'}
-                                </Text>
-                            }
+                            <View style={styles.bottom}>
+                                {
+                                    ticket.price <= 0 &&
+                                    <Text style={styles.ticketPrice}>GRATUIT</Text>
+                                }
+                                {
+                                    ticket.price > 0 &&
+                                    <Text style={styles.ticketPrice}>
+                                        {ticket.price} {ticket.currency.toLowerCase() === 'usd' ? '$': 'Fc'}
+                                    </Text>
+                                }
+                                <Text style={styles.edit}><AntIcon name='edit' /> Modifier</Text>
+                            </View>
                         </View>
                     </TouchableOpacity>
                     {
@@ -68,6 +83,7 @@ export default function Tickets() {
             onPress={() =>setShowModal(true)}
         >Ajouter</Button>
         <AddTicketModal showModal={showModal} setShowModal={setShowModal} />
+        <EditTicketModal showModal={showEdit} setShowModal={setShowEdit} ticket={toEdit} />
     </View>
   )
 };
@@ -146,5 +162,15 @@ const styles = StyleSheet.create({
     },
     skeleton: {
         borderRadius: 15
+    },
+    bottom: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 10
+    },
+    edit: {
+        fontFamily: 'Barlow-Italic',
+        color: theme.colors.light
     }
 })
