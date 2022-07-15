@@ -149,8 +149,10 @@ export const updateProfileAction = (data) => async (dispatch, navigation) => {
                 type: authActionsTypes.UPDATE_PROFILE_SUCCESS,
                 payload: res.data.data
             });
-            showToast('Profil mis à jour avec succès', 'success')
-            navigation.goBack();
+            if(navigation !== null){
+                showToast('Profil mis à jour avec succès', 'success');
+                navigation.navigate("Dashboard")
+            }
         }
     } catch (error) {
         const res = error.response;

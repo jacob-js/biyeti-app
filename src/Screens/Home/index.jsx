@@ -15,6 +15,7 @@ import axios from 'axios';
 import Empty from '../../Commons/Empty';
 import styles from './styles';
 import * as Notifications from 'expo-notifications';
+import { updateProfileAction } from '../../Redux/actions/auth';
 
 const Home = ({stackProps, navigation: drawerNav}) => {
   const { data, count, rows, loading, error } = useSelector(({ events: { events } }) =>events);
@@ -52,19 +53,11 @@ const Home = ({stackProps, navigation: drawerNav}) => {
 
   useEffect(() =>{
     getPushToken().then(token =>{
-      // if(token){
-      //   axios.post('/api/push-token', {token})
-      //   .then(res =>{
-      //     console.log(res.data);
-      //   })
-      //   .catch(err =>{
-      //     console.log(err);
-      //   }
-      //   )
-      // }
-      console.log('token', token);
-    }).catch(err =>{
-      console.log(err);
+      if(token){
+        updateProfileAction({
+          notif_token: token
+        })(dispatch, null);
+      }
     }
     )
   }, []);
