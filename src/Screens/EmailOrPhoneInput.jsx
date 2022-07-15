@@ -81,7 +81,8 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         fontFamily: 'Barlow-Bold',
-        textAlign: 'center'
+        textAlign: 'left',
+        width: '100%'
     },
     subtitle: {
         fontSize: 14,

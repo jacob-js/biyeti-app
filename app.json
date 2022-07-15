@@ -30,6 +30,7 @@
       "buildNumber": "1.0.0"
     },
     "android": {
+      "useNextNotificationsApi": true,
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo.png",

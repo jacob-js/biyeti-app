@@ -14,6 +14,7 @@ import Category from '../../Components/Category';
 import axios from 'axios';
 import Empty from '../../Commons/Empty';
 import styles from './styles';
+import * as Notifications from 'expo-notifications';
 
 const Home = ({stackProps, navigation: drawerNav}) => {
   const { data, count, rows, loading, error } = useSelector(({ events: { events } }) =>events);
@@ -23,6 +24,50 @@ const Home = ({stackProps, navigation: drawerNav}) => {
   const navigation = stackProps?.navigation;
   const [ others, setOthers ] = useState([]);
   const [ loadingOthers, setLoadingOthers ] = useState(true);
+
+  Notifications.setNotificationHandler({
+    handleNotification: async () =>({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false
+    })
+  });
+
+  const getPushToken = async () =>{
+      try {
+          const statusResult =  await Notifications.getPermissionsAsync()
+          if (statusResult.granted) {
+              const token = (await Notifications.getExpoPushTokenAsync()).data;
+              return token
+          }
+          const permissionsResult = await Notifications.requestPermissionsAsync()
+          if (permissionsResult.granted) {
+              return (await Notifications.getExpoPushTokenAsync()).data;
+          }
+          return null;
+      } catch (error) {
+          return null
+      }
+  };
+
+  useEffect(() =>{
+    getPushToken().then(token =>{
+      // if(token){
+      //   axios.post('/api/push-token', {token})
+      //   .then(res =>{
+      //     console.log(res.data);
+      //   })
+      //   .catch(err =>{
+      //     console.log(err);
+      //   }
+      //   )
+      // }
+      console.log('token', token);
+    }).catch(err =>{
+      console.log(err);
+    }
+    )
+  }, []);
 
   const getOthers = async() =>{
     setLoadingOthers(true)

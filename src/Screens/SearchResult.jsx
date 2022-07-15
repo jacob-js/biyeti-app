@@ -19,10 +19,10 @@ const SearchResult = ({route}) => {
     const [rows, setRows] = useState([]);
     const [count, setCount] = useState(0);
 
-    const getData = async() => {
+    const getData = async(text) => {
         setLoading(true);
         try {
-            const res = await axios.get(`/api/v1/events/search?query=${query}&p_size=${10}&p=${page}`);
+            const res = await axios.get(`/api/v1/events/search?query=${text}&p_size=${10}&p=${page}`);
             if(page === 1) {
                 setRows(res.data.data.rows);
             }else{
@@ -32,15 +32,6 @@ const SearchResult = ({route}) => {
         } catch (error) {
         }
         setLoading(false);
-    };
-
-    const onSearch = () => {
-        setPage(1);
-        setRows([]);
-        setCount(0);
-        if(query.length > 0){
-            getData();
-        }
     };
 
     const onClear = () =>{
@@ -62,7 +53,27 @@ const SearchResult = ({route}) => {
 
             return () => {}
         }, [])
-    )
+    );
+
+    const debounce = (cb) =>{
+        let timeout;
+        return (...args) => {
+            if (timeout) clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                cb(...args);
+            }, 1000);
+        }
+    };
+
+    const onChangeText = debounce(text =>{
+        setQuery(text);
+        setPage(1);
+        setRows([]);
+        setCount(0);
+        if(text.length > 0){
+            getData(text);
+        }
+    })
 
   return (
     <View style={styles.container}>
@@ -77,9 +88,7 @@ const SearchResult = ({route}) => {
             collapsable
             clearButtonMode='while-editing'
             inputStyle={styles.inputStyle}
-            onChangeText={text => setQuery(text)}
-            onSubmitEditing={onSearch}
-            value={query}
+            onChangeText={text => onChangeText(text)}
             autoFocus
             icon={() => <EvilIcon name="search" size={20} color={theme.colors.light} />}
             clearIcon={() => 
