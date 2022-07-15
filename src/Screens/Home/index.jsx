@@ -1,26 +1,19 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Dimensions, SafeAreaView, RefreshControl } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity, Image, Dimensions, SafeAreaView, RefreshControl } from 'react-native'
 import React, { useCallback } from 'react'
-import { Divider, Icon, Input } from 'native-base';
 import AntIcon from 'react-native-vector-icons/AntDesign';
-import EvilIcon from 'react-native-vector-icons/EvilIcons';
-import EntyIcon from 'react-native-vector-icons/Entypo';
-import FaIcon from 'react-native-vector-icons/FontAwesome5';
-import IoIcon from 'react-native-vector-icons/Ionicons';
-import { theme } from '../../assets/theme';
-import { useRef } from 'react';
 import { useState } from 'react';
-import EventsCarousel from '../Commons/EventsCarousel';
+import EventsCarousel from '../../Commons/EventsCarousel';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { clearEventsState, getCategorys, getEvents, getUpcomingEvents } from '../Redux/actions/events';
+import { clearEventsState, getCategorys, getEvents, getUpcomingEvents } from '../../Redux/actions/events';
 import ContentLoader from 'react-native-easy-content-loader';
-import CategEventCarousel from '../Components/CategEventCarousel';
-import SearchBar from '../Components/SearchBar';
+import SearchBar from '../../Components/SearchBar';
 import { useFocusEffect } from '@react-navigation/native';
-import GridEvents from '../Components/GridEvents';
-import Category from '../Components/Category';
+import GridEvents from '../../Components/GridEvents';
+import Category from '../../Components/Category';
 import axios from 'axios';
-import Empty from '../Commons/Empty';
+import Empty from '../../Commons/Empty';
+import styles from './styles';
 
 const Home = ({stackProps, navigation: drawerNav}) => {
   const { data, count, rows, loading, error } = useSelector(({ events: { events } }) =>events);
@@ -203,65 +196,5 @@ const Home = ({stackProps, navigation: drawerNav}) => {
     </SafeAreaView>
   )
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    paddingVertical: 20
-  },
-  searchView: {
-    marginBottom: 20
-  },
-  search: {
-    color: 'black',
-  },
-  section: {
-    marginBottom: 20,
-    paddingHorizontal: 20
-  },
-  sectionHeader: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontFamily: 'Barlow-Bold',
-    textTransform: 'uppercase',
-    color: theme.colors.light
-  },
-  showAll: {
-    color: theme.colors.default100,
-    fontFamily: 'Barlow',
-    fontWeight: 'bold',
-  },
-  dot: {
-    fontSize: 15,
-    marginTop: 3,
-    color: theme.colors.light
-  },
-  eventButtonText: {
-    color: theme.colors.default,
-    fontFamily: 'Barlow-Bold',
-    fontSize: 16,
-  },
-  skeleton: {
-    borderRadius: 15
-  },
-  categs: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  loaders: {
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  loader: {
-    width: (Dimensions.get('window').width - 50) / 2
-  }
-});
 
 export default Home

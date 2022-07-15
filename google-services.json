@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "871491301305",
+    "project_id": "biyeti",
+    "storage_bucket": "biyeti.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:871491301305:android:7de39a887edd3d86195068",
+        "android_client_info": {
+          "package_name": "com.jacobdev.biyeti"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "871491301305-g9gsgqbln6r99at2hru35moqif4jfc9a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAk9ZZA5MBRIhbG30WXkHAHWonZ-7Ibfs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "871491301305-g9gsgqbln6r99at2hru35moqif4jfc9a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

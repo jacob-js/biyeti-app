@@ -26,15 +26,16 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.jacobdev.bookit",
+      "bundleIdentifier": "com.jacobdev.biyeti",
       "buildNumber": "1.0.0"
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.jacobdev.bookit",
+      "package": "com.jacobdev.biyeti",
       "versionCode": 1
     },
     "web": {
