@@ -4,10 +4,12 @@ import { Avatar } from 'native-base'
 import succesIcon from '../../icons/succes.png';
 import styles from './styles';
 import moment from 'moment';
+import { useNavigation } from '@react-navigation/native';
 
 const NotificationItem = ({item}) => {
+    const navigation = useNavigation();
   return (
-    <TouchableOpacity style={[styles.container, item.status === 'unread' && styles.unread]}>
+    <TouchableOpacity style={[styles.container, item.status === 'unread' && styles.unread]} onPress={() =>navigation.navigate('NotificationDetail', { id: item.id })}>
       {
         item.notification_type === 'new_purchase' ?
         <Avatar

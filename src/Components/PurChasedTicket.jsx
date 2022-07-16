@@ -46,8 +46,8 @@ export default function PurChasedTicket({ isShown, setIsShown }) {
             <Modal.Body style={styles.body}>
                 <MessageAlert status='success' msg='Votre avez reservé votre billet avec succès' />
                 <View style={styles.qrContainer}>
-                    <SvgQRCode //value={purchased.id} 
-                        value='Jacob Developer'
+                    <SvgQRCode 
+                        value={purchased.id}
                         size={232}
                         getRef={(c) => setSvg(c)}
                     />

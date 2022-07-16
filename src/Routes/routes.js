@@ -9,6 +9,7 @@ import EventDetail from "../Screens/EventDetail";
 import EventsList from "../Screens/EventsList";
 import Home from "../Screens/Home";
 import Login from "../Screens/Login";
+import NotificationDetails from "../Screens/NotificationDetails";
 import Notifications from "../Screens/Notifications";
 import PwdForm from "../Screens/PwdForm";
 import SearchResult from "../Screens/SearchResult";
@@ -58,6 +59,13 @@ export const routes = [
         name: 'Notifications',
         component: Notifications,
         title: 'Notifications',
+        secured: true,
+        headerOptions: {}
+    },
+    {
+        name: 'NotificationDetail',
+        component: NotificationDetails,
+        title: 'Details',
         secured: true,
         headerOptions: {}
     },
