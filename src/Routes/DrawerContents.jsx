@@ -20,7 +20,7 @@ const menus = [
     },
     {
         name: 'Notifications',
-        path: 'notifications',
+        path: 'Notifications',
         icon: 'bells'
     },
     {
