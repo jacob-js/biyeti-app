@@ -65,7 +65,9 @@ export default function Notifications() {
     }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{
+        flex: 1
+    }}>
         <FlatList
             renderItem={({ item }) => <NotificationItem item={item} />}
             data={data}
