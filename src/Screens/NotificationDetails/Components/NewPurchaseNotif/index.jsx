@@ -9,7 +9,7 @@ import { saveQrToDisk } from '../../../../Utils/helpers';
 const NewPurchaseNotif = ({notif}) => {
     const [svg, setSvg] = useState();
   return (
-    <View>
+    <View style={styles.container}>
         <View style={styles.qrContainer}>
             <SvgQRCode
                 value={notif.data?.purchase?.id}

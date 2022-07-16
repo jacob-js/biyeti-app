@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from 'react-native'
+import { View, Text, ScrollView, SafeAreaView } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
@@ -29,12 +29,17 @@ const NotificationDetails = ({route}) => {
     );
 
   return (
-    <ScrollView style={{flex: 1}} contentContainerStyle={styles.container}>
-        {
-            data.notification_type === 'new_purchase' ?
-            <NewPurchaseNotif notif={data} /> :null
-        }
-    </ScrollView>
+    <SafeAreaView style={{
+        flex: 1,
+        backgroundColor: 'white'
+    }}>
+        <ScrollView contentContainerStyle={styles.container}>
+            {
+                data.notification_type === 'new_purchase' ?
+                <NewPurchaseNotif notif={data} /> :null
+            }
+        </ScrollView>
+    </SafeAreaView>
   )
 }
 
