@@ -49,7 +49,6 @@ export default function Header({DrawerNavigation, options, drawerRoute: route}) 
                     alignSelf: 'flex-end'
                   }}
                 >
-                  <Text style={{ color: 'white', fontSize: 9 }}>{notifCount}</Text>
                 </View>
                 <AntIcon name='appstore-o' size={18} />
               </VStack>:
