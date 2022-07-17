@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
     Drawer,
     Text,
@@ -9,8 +9,9 @@ import AntdIcon from 'react-native-vector-icons/AntDesign';
 import {theme} from "../../assets/theme";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutAction } from "../Redux/actions/auth";
-import { Avatar } from "native-base";
+import { Avatar, Badge, VStack } from "native-base";
 import SIcon from 'react-native-vector-icons/SimpleLineIcons'
+import context from "./context";
 
 const menus = [
     {
@@ -21,7 +22,8 @@ const menus = [
     {
         name: 'Notifications',
         path: 'Notifications',
-        icon: 'bells'
+        icon: 'bells',
+        key: 'notif'
     },
     {
         name: 'A propos',
@@ -39,6 +41,7 @@ export function DrawerContents({drawer, stack}){
     const { navigation: stackNavigation } = stack;
     const { navigation: drawerNavigation } = drawer;
     const dispatch = useDispatch();
+    const { notifCount } = useContext(context);
     const { data: user } = useSelector(({ users: {currentUser} }) =>currentUser); 
     const userAcronym = user.firstname.charAt(0) + user.lastname.charAt(0);
 
@@ -71,7 +74,23 @@ export function DrawerContents({drawer, stack}){
                         {
                             menus.map(menu =>(
                                 <TouchableOpacity onPress={() => {stackNavigation.navigate(menu.path); drawerNavigation.closeDrawer()}} key={menu.name} style={style.menu}>
-                                    <AntdIcon name={menu.icon} size={16} />
+                                    {
+                                        menu.key === 'notif' ?
+                                        <VStack>
+                                            {
+                                                notifCount > 0 &&
+                                                <Badge colorScheme="danger"
+                                                rounded="full" mb={-2} mr={-4} zIndex={1} variant="solid" alignSelf="flex-end" _text={{
+                                                    fontSize: 12
+                                                }}    
+                                            > 
+                                            <Text>{notifCount} </Text>
+                                            </Badge>}
+                                            <AntdIcon name={menu.icon} size={16} />
+                                        </VStack>
+                                        :
+                                        <AntdIcon name={menu.icon} size={16} />
+                                    }
                                     <Text style={style.menuName}> {menu.name}</Text>
                                 </TouchableOpacity>
                             ))

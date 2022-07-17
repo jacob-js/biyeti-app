@@ -2,9 +2,11 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { Avatar } from 'native-base'
 import succesIcon from '../../icons/succes.png';
+import errorIcon from '../../icons/error.png';
 import styles from './styles';
 import moment from 'moment';
 import { useNavigation } from '@react-navigation/native';
+import EntyIcon from 'react-native-vector-icons/Entypo';
 
 const NotificationItem = ({item}) => {
     const navigation = useNavigation();
@@ -15,9 +17,13 @@ const NotificationItem = ({item}) => {
         <Avatar
             source={succesIcon}
         />:
-        item.notif_type === 'faillure' ?
-        <Avatar></Avatar>:
-        <Avatar></Avatar>
+        item.notif_type === 'faillure' || item.notif_type === 'purchase_error' ?
+        <Avatar
+            source={errorIcon}
+        />:
+        <Avatar>
+          <EntyIcon name="bell" size={20} color="white" />
+        </Avatar>
       }
       <View style={styles.details}>
         <Text style={styles.title}>{item.title}</Text>

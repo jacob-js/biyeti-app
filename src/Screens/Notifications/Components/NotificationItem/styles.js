@@ -29,7 +29,6 @@ export default StyleSheet.create({
         fontSize: 10
     },
     unread: {
-        borderRightWidth: 5,
-        borderRightColor: theme.colors.default
+        backgroundColor: theme.colors.light100
     }
 })

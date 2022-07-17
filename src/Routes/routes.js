@@ -65,7 +65,7 @@ export const routes = [
     {
         name: 'NotificationDetail',
         component: NotificationDetails,
-        title: 'Details',
+        title: 'Notification',
         secured: true,
         headerOptions: {}
     },
