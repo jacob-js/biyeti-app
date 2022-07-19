@@ -107,7 +107,7 @@ export default function AddTicketModal({setShowModal, showModal, eventId}) {
                                         isDisabled={true}
                                     >
                                         <Select.Item label='$' value='usd' />
-                                        <Select.Item label='FC' value='fc' />
+                                        <Select.Item label='FC' value='cdf' />
                                     </CommonSelect>
                                 </View>:
                                 field.name === 'caption' ?

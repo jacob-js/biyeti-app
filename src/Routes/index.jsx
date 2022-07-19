@@ -57,7 +57,7 @@ export default function Routes() {
                                 securedRoutes.map((route, index) => (
                                     <Stack.Screen name={route.name} component={route.component} options={{
                                         headerShown: route.withHeader, title: route.title, unmountOnBlur: true,
-                                        ...route.headerOptions
+                                        ...route.headerOptions, headerBackButtonMenuEnabled: true
                                     }} key={index} />
                                 ))
                             }

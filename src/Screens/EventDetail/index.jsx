@@ -1,20 +1,20 @@
-import { View, Image, ScrollView, StyleSheet, TouchableOpacity, Dimensions, SafeAreaView, RefreshControl, Text } from 'react-native'
+import { View, Image, ScrollView, StyleSheet, Dimensions, SafeAreaView, RefreshControl, Text } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react';
-import { theme } from '../../assets/theme';
-import EntyIcon from 'react-native-vector-icons/Entypo';
+import { theme } from '../../../assets/theme';
 import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import FaIcon from 'react-native-vector-icons/FontAwesome5';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import { Divider } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';
-import { getEvent } from '../Redux/actions/events';
+import { getEvent } from '../../Redux/actions/events';
 import ContentLoader from 'react-native-easy-content-loader';
 import moment from 'moment';
-import { getTicketsAction, purchaseAction } from '../Redux/actions/tickets';
-import PurChasedTicket from '../Components/PurChasedTicket';
-import { LoadIndicator } from '../Commons/loaders';
-import { MessageAlert } from '../Utils/feedbacks';
+import { getTicketsAction } from '../../Redux/actions/tickets';
+import PurChasedTicket from '../../Components/PurChasedTicket';
+import { LoadIndicator } from '../../Commons/loaders';
+import { MessageAlert } from '../../Utils/feedbacks';
 import { useFocusEffect } from '@react-navigation/native';
+import Tickets from './components/Tickets';
+import Context from './context';
 
 export default function EventDetail({route, navigation}) {
     const eventId = route?.params?.eventId;
@@ -55,14 +55,14 @@ export default function EventDetail({route, navigation}) {
         }, [purchaseError, navigation])
     );
 
-    const onTicketClick = (ticket) =>{
-        purchaseAction(ticket)(dispatch, cb =>{
-            if(cb){ setShowPurchased(true) }
-        })
-    };
-
   return (
     <SafeAreaView style={styles.container}>
+        <Context.Provider
+            value={{
+                showPurchased,
+                setShowPurchased
+            }}
+        >
         <ScrollView 
             contentContainerStyle={styles.scrollContainer}
             refreshControl={
@@ -125,39 +125,13 @@ export default function EventDetail({route, navigation}) {
                         <MatIcon name='flask-empty-off-outline' style={styles.emptyIcon} />
                         <Text style={styles.descript}>Aucun billet disponible pour le moment</Text>
                     </View>:
-                    tickets?.map((ticket, index) =>(
-                        <View key={index}>
-                            <TouchableOpacity style={styles.ticket} key={index} onPress={() =>onTicketClick(ticket)}>
-                                <View style={styles.ticketAvatar}>
-                                    {ticket.name.toLowerCase() === 'vip' ? <Image source={{
-                                        uri: "https://img.icons8.com/external-flaticons-flat-flat-icons/64/000000/external-vip-music-festival-flaticons-flat-flat-icons.png"
-                                    }} style={styles.vipIcon} /> :
-                                        <FaIcon name='ticket-alt' style={styles.ticketIcon} />
-                                    }
-                                </View>
-                                <View style={styles.ticketInfo}>
-                                    <Text style={styles.ticketName}>{ticket.name}</Text>
-                                    {
-                                        ticket.caption &&
-                                        <Text style={styles.ticketDesc}>{ticket.caption}</Text>
-                                    }
-                                    {
-                                        ticket.price > 0 ?
-                                        <Text style={styles.ticketPrice}>{ticket.price} {ticket.currency.toLowerCase() === 'usd' ? '$': 'Fc'}</Text>:
-                                        <Text style={styles.ticketPrice}>GRATUIT</Text>
-                                    }
-                                </View>
-                            </TouchableOpacity>
-                            {
-                                index + 1 !== tickets.length && <Divider my={3} mb={3} />
-                            }
-                        </View>
-                    ))
+                    <Tickets tickets={tickets} />
                 }
             </View>
         </ScrollView>
         {loadingPurchase ? <LoadIndicator />: null}
         <PurChasedTicket isShown={showPurchased} setIsShown={setShowPurchased} />
+        </Context.Provider>
     </SafeAreaView>
   )
 }
@@ -207,12 +181,8 @@ const styles = StyleSheet.create({
         fontFamily: 'Barlow',
         textAlign: 'center'
     },
-    ticketsTitle: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: 10,
-        paddingHorizontal: 40,
-        marginTop: 20
+    skeleton: {
+        borderRadius: 15
     },
     title: {
         marginRight: 10,
@@ -225,53 +195,12 @@ const styles = StyleSheet.create({
     tickets: {
         width: '100%'
     },
-    ticket: {
+    ticketsTitle: {
         flexDirection: 'row',
-        justifyContent: 'flex-start',
         alignItems: 'center',
-        width: '100%'
-    },
-    ticketAvatar: {
-        width: 50,
-        height: 50,
-        backgroundColor: theme.colors.light100,
-        borderRadius: 100,
-        overflow: 'hidden',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    vipIcon: {
-        width: 30,
-        height: 30
-    },
-    ticketIcon: {
-        fontSize: 25,
-        color: theme.colors.light
-    },
-    ticketInfo: {
-        marginLeft: 10,
-        paddingTop: 10
-    },
-    ticketName: {
-        color: theme.colors.light,
-        fontFamily: 'Barlow-Bold',
-        fontWeight: 'bold',
-        fontSize: 15,
-        textTransform: 'uppercase'
-    },
-    ticketDesc: {
-        fontFamily: 'Barlow',
-        paddingRight: 20,
-        marginTop: 5,
-        width: Dimensions.get('window').width * 60 / 100
-    },
-    ticketPrice: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: theme.colors.gold
-    },
-    skeleton: {
-        borderRadius: 15
+        paddingVertical: 10,
+        paddingHorizontal: 40,
+        marginTop: 20
     },
     empty: {
         paddingBottom: 20,

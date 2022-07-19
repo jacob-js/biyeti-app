@@ -131,7 +131,7 @@ export default function EditTicketModal({setShowModal, showModal, ticket}) {
                                     value={values.currency?.toLowerCase()}
                                 >
                                     <Select.Item label='$' value='usd' />
-                                    <Select.Item label='FC' value='fc' />
+                                    <Select.Item label='FC' value='cdf' />
                                 </CommonSelect>
                             </View>:
                             field.name === 'caption' ?

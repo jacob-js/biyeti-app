@@ -3,6 +3,7 @@ import React, { useCallback, useState } from 'react'
 import { useFocusEffect } from '@react-navigation/native';
 import axios from 'axios';
 import NotificationItem from './Components/NotificationItem';
+import Empty from '../../Commons/Empty';
 
 export default function Notifications() {
     const [data, setData] = useState([]);
@@ -74,6 +75,7 @@ export default function Notifications() {
             refreshing={loadingMore}
             onRefresh={onRefresh}
             onEndReached={onEndReached}
+            ListEmptyComponent={<Empty />}
         />
     </SafeAreaView>
   )
