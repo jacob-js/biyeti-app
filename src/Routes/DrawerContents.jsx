@@ -84,7 +84,7 @@ export function DrawerContents({drawer, stack}){
                                                     fontSize: 12
                                                 }}    
                                             > 
-                                            <Text>{notifCount} </Text>
+                                            <Text style={{ color: 'white' }}>{notifCount} </Text>
                                             </Badge>}
                                             <AntdIcon name={menu.icon} size={16} />
                                         </VStack>

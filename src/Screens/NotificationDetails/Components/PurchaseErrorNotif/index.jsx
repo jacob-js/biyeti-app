@@ -25,7 +25,7 @@ const PurchaseErrorNotif = ({notif}) => {
             isLoadingText={<Text style={{ color: 'white' }}>Patientez...</Text>} 
             style={notifStyle.outlineBtn} _text={{ fontWeight: 'bold', textTransform: 'uppercase', color: theme.colors.default }}
             rightIcon={<MatIcon name='arrow-expand' size={18} />}
-            onPress={() => navigation.navigate('EventDetail', { eventId: notif.data?.purchase?.ticket?.event.id })}
+            onPress={() => navigation.navigate('EventDetail', { eventId: notif.data?.ticket?.event.id })}
         >Aller réessayer</Button>
     </View>
   )

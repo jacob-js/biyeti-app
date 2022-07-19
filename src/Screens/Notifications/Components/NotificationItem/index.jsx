@@ -17,7 +17,7 @@ const NotificationItem = ({item}) => {
         <Avatar
             source={succesIcon}
         />:
-        item.notif_type === 'faillure' || item.notif_type === 'purchase_error' ?
+        item.notification_type === 'faillure' || item.notification_type === 'purchase_error' ?
         <Avatar
             source={errorIcon}
         />:

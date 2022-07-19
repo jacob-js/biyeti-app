@@ -59,7 +59,7 @@ const Checkout = ({isOpen, setIsOpen, ticket}) => {
   return (
     <>
         <SuccessModal showModal={showSucces} onClose={() =>{ setShowSucess(false); setIsOpen(false) }} />
-        <Actionsheet isOpen={isOpen} onClose={() =>setIsOpen(false)}>
+        <Actionsheet isOpen={isOpen} onClose={() => !loading && setIsOpen(false)}>
             <Actionsheet.Content p={5} bg="white">
             <KeyboardAwareScrollView>
             <View style={styles.flexFields}>
