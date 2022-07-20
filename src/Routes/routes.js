@@ -5,6 +5,7 @@ import EditProfile from "../Screens/EditProfile";
 import EmailOrPhoneInput from "../Screens/EmailOrPhoneInput";
 import EventDashboard from "../Screens/EventDashBoard";
 import EditEvent from "../Screens/EventDashBoard/Components/EditEvent";
+import Wallet from "../Screens/EventDashBoard/Components/Wallet";
 import EventDetail from "../Screens/EventDetail";
 import EventsList from "../Screens/EventsList";
 import Home from "../Screens/Home";
@@ -117,6 +118,14 @@ export const routes = [
             headerTintColor: 'white',
             title: ""
         }
+    },
+    {
+        name: 'EventWallet',
+        component: Wallet,
+        withHeader: true,
+        title: "Portefeuille",
+        secured: true,
+        headerOptions: {}
     },
     {
         name: 'UserBookings',

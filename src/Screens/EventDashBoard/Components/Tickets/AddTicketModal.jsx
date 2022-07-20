@@ -93,7 +93,6 @@ export default function AddTicketModal({setShowModal, showModal, eventId}) {
                                             width: '50%'
                                         }}
                                         value={values[field.name]}
-                                        editable={false}
                                     />
                                     <CommonSelect label="Devise" 
                                         required name={field.name}
@@ -104,7 +103,6 @@ export default function AddTicketModal({setShowModal, showModal, eventId}) {
                                             width: '40%'
                                         }}
                                         value={values['currency']}
-                                        isDisabled={true}
                                     >
                                         <Select.Item label='$' value='usd' />
                                         <Select.Item label='FC' value='cdf' />

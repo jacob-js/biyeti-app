@@ -8,6 +8,7 @@ import { deleteEventAction } from '../../../../Redux/actions/events';
 import { DashboardEventContext } from '../../../../Utils/contexts';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { isEventAdmin } from '../../../../Utils/helpers';
 
 const Settings = () => {
     const { event } = useContext(DashboardEventContext);
@@ -15,6 +16,8 @@ const Settings = () => {
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const { loading: loadingDelete } = useSelector(({ events: { deleteEvent } }) =>deleteEvent);
+    const { rows: agents } = useSelector(({ agents: { agents }}) => agents);
+    const { data: user } = useSelector(({ users: {currentUser} }) =>currentUser); 
 
     const menus = [
         {
@@ -25,28 +28,30 @@ const Settings = () => {
         {
             label: "Options de payement",
             icon: "credit-card",
-            key: "PaymentOptions",
+            key: "EventWallet",
             disabled: true
         }
     ];
+
+    const isItemsDisabled = () => !isEventAdmin(user, agents);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.menus}>
             {
                 menus.map(menu => (
-                    <TouchableOpacity style={styles.menu} disabled={menu.disabled} onPress={() =>navigation.navigate(menu.key, {
+                    <TouchableOpacity style={styles.menu} disabled={isItemsDisabled()} onPress={() =>navigation.navigate(menu.key, {
                         event: event
                     })}>
-                        <View style={[styles.icon, menu.disabled && styles.disabled]}>
-                            <FeatIcon name={menu.icon} size={20} style={[ menu.disabled && styles.disabled ]} />
+                        <View style={[styles.icon, isItemsDisabled() && styles.disabled]}>
+                            <FeatIcon name={menu.icon} size={20} style={[ isItemsDisabled() && styles.disabled ]} />
                         </View>
-                        <Text style={[styles.label, menu.disabled && styles.disabled]}>{menu.label}</Text>
+                        <Text style={[styles.label, isItemsDisabled() && styles.disabled]}>{menu.label}</Text>
                     </TouchableOpacity>
                 ))
             }
         </View>
-        <TouchableOpacity onPress={() => setDeleteAlertVisible(true)}>
+        <TouchableOpacity onPress={() => setDeleteAlertVisible(true)} disabled={isItemsDisabled()}>
             <View style={styles.menu}>
                 <View style={styles.icon}>
                     <FeatIcon name="trash" size={20} color={nbTheme.colors.danger[700]} />

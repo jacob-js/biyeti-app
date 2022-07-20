@@ -43,7 +43,7 @@ function EventBookings() {
                 <SIcon name='user' size={50} color="white" />
                 <Divider my={2} bg="white" />
                 <View>
-                    <Text style={styles.count}>{scannedData?.data.count} qui paricipe{scannedData?.data.count > 1 ? 'nt': ''}</Text>
+                    <Text style={styles.count}>{scannedData?.data.count} qui participe{scannedData?.data.count > 1 ? 'nt': ''}</Text>
                 </View>
             </Center>
             <Center h="130px" w="45%" bg={{
