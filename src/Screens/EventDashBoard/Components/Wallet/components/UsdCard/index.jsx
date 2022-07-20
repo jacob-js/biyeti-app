@@ -1,10 +1,13 @@
 import { View, Text } from 'react-native'
-import React from 'react';
+import React, { useContext } from 'react';
 import EntyIcon from 'react-native-vector-icons/Entypo'
 import { Avatar, Divider } from 'native-base';
 import styles from './styles';
+import context from '../../context';
 
 const UsdCard = () => {
+    const { wallet } = useContext(context);
+
   return (
     <View style={styles.container}>
         <Avatar bg="blue.600">
@@ -16,7 +19,7 @@ const UsdCard = () => {
                 <Text style={styles.currency}>USD</Text>
             </View>
             <View style={styles.balanceBox}>
-                <Text style={styles.balance}>300$</Text>
+                <Text style={styles.balance}>{Number(wallet.usd_balance || 0).toFixed(1)}$</Text>
             </View>
         </View>
     </View>
