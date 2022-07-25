@@ -95,10 +95,11 @@ export const CommonPhoneInput = ({ value, setFieldValue, error, required }) => {
             <PhoneInput
                 ref={phoneInput}
                 value={value}
+                defaultValue={value}
                 defaultCode="CD"
                 onChangeFormattedText={(phone_number) => setFieldValue('phone_number', phone_number)}
                 containerStyle={{
-                    borderWidth: 1, borderRadius: 15, borderColor: nbTheme.colors.gray[300],
+                    borderWidth: 1, borderRadius: 15, borderColor: error ? nbTheme.colors.danger[600] : nbTheme.colors.gray[300],
                     height: 45,
                     width: '100%',
                     borderBottomWidth: 2
@@ -115,6 +116,7 @@ export const CommonPhoneInput = ({ value, setFieldValue, error, required }) => {
                 codeTextStyle={{ marginBottom: -3, fontFamily: 'Barlow' }}
                 placeholder="Numéro de téléphone"
             />
+            <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}> {error} </FormControl.ErrorMessage>
         </FormControl>
     )
 }

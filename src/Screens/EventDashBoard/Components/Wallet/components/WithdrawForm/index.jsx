@@ -1,16 +1,17 @@
 import { View, Text } from 'react-native'
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useCallback, useContext, useState, useEffect } from 'react'
 import { Actionsheet, Button, FormControl, Select } from 'native-base'
 import { CommonInput, CommonPhoneInput, CommonSelect } from '../../../../../../Commons/commons'
 import styles from './styles'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useFormik } from 'formik'
 import axios from 'axios'
-import { showToast } from '../../../../../../Utils/feedbacks';
+import { MessageAlert, showToast } from '../../../../../../Utils/feedbacks';
 import * as yup from 'yup';
 import { useFocusEffect } from '@react-navigation/native'
 import SuccessModal from './components/SuccessModal'
 import context from '../../context'
+import ConfirmPwdModal from '../../../../../../Components/ConfirmPwdModal'
 
 const validationSchema = yup.object({
     phone_number: yup.string().required('Ce champs est obligatoire'),
@@ -23,15 +24,19 @@ const WithdrawForm = ({isOpen, setIsOpen}) => {
     const [loading, setLoading] = useState(false);
     const [showSucces, setShowSucess] = useState(false);
     const [apiErrors, setErrors] = useState({});
-    const { setFieldValue, values, handleSubmit, errors, setFieldError } = useFormik({
+    const [stringError, setStringError] = useState('');
+    const [viewPwdPrompt, setViewPwdPrompt] = useState(false);
+    const { setFieldValue, values, handleSubmit, errors, setFieldError, isValid, validateForm } = useFormik({
         initialValues: {
             phone_number: '',
             amount: '',
-            currency: ''
+            currency: '',
+            password: ''
         },
         onSubmit: async values =>{
             setLoading(true);
             setErrors({});
+            setStringError('');
             const phone = values.phone_number.replace(/\D/g, '');
             try {
                 const res = await axios.post(`/api/v1/wallets/request-transfer/${event.id}`, { ...values, phone_number: phone });
@@ -42,16 +47,16 @@ const WithdrawForm = ({isOpen, setIsOpen}) => {
                 if(response){
                     if(typeof(response.data.error?.error) === 'object'){
                         const err = response.data?.error?.error[0] || 'Une erreur est survenue';
-                        showToast(err, 'danger');
+                        setStringError(err);
                     }else if(typeof(response.data.error) === 'object'){
                         setErrors(response.data.error);
                     }else if(typeof(response.data.error) === 'string'){
-                        showToast(response.data.error, 'danger');
+                        setStringError(response.data.error);
                     }else{
-                        showToast('Une erreur est survenue', 'danger');
+                        setStringError('Une erreur est survenue');
                     }
                 }else{
-                    showToast('Une erreur est survenue', "error");
+                    setStringError('Une erreur est survenue');
                 }
             }
             setLoading(false)
@@ -65,9 +70,24 @@ const WithdrawForm = ({isOpen, setIsOpen}) => {
                 setFieldValue('amount', Number(wallet.usd_balance).toFixed(0));
                 setFieldValue('currency', 'usd');
             })();
-            return () => {}
+            return () => {
+                setFieldValue('phone_number', '');
+            }
         }, [wallet])
-    )
+    );
+
+    useEffect(() =>{
+        (() =>{
+            if(!isOpen){
+                setFieldValue('phone_number', '');
+                setFieldValue('password', '');
+            }
+        })
+
+        return () =>{
+            setFieldValue('phone_number', '');
+        }
+    }, [isOpen]);
 
     const getMaxAmount = () => {
         if(values.currency === 'usd'){
@@ -97,9 +117,13 @@ const WithdrawForm = ({isOpen, setIsOpen}) => {
   return (
     <>
         <SuccessModal showModal={showSucces} onClose={() =>{ setShowSucess(false); setIsOpen(false) }} />
-        <Actionsheet isOpen={isOpen} onClose={() => !loading && setIsOpen(false)}>
-            <Actionsheet.Content p={5} bg="white">
+        <Actionsheet zIndex={1} isOpen={isOpen} onClose={() => !loading && setIsOpen(false)}>
+            <Actionsheet.Content p={5} bg="white" zIndex={2}>
             <KeyboardAwareScrollView>
+                {
+                    stringError ?
+                    <MessageAlert status='danger' msg={stringError} onClose={() =>setStringError('')} />: null
+                }
             <View style={styles.flexFields}>
                 <CommonInput 
                     label="Montant"
@@ -134,13 +158,23 @@ const WithdrawForm = ({isOpen, setIsOpen}) => {
                 isLoadingText="Patientez..."
                 style={styles.btn}
                 isLoading={loading}
-                onPress={handleSubmit}
+                onPress={() =>{
+                    if(isValid){
+                        setViewPwdPrompt(true);
+                    }else{
+                        validateForm(values);
+                    }
+                }}
             >
                 Valider
             </Button>
             </KeyboardAwareScrollView>
             </Actionsheet.Content>
         </Actionsheet>
+        <ConfirmPwdModal isOpen={viewPwdPrompt} setIsOpen={setViewPwdPrompt} cb={handleSubmit} onClose={() =>{
+            setViewPwdPrompt(false);
+            setIsOpen(false);
+        }} handleChange={(value) =>setFieldValue('password', value)} />
     </>
   )
 }
