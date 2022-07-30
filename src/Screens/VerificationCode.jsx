@@ -35,6 +35,7 @@ const VerificationCode = ({route}) => {
                 navigation.navigate('ResetPwdForm', { token });
             }).catch(err =>{
                 const res = err.response;
+                setCode("");
                 setErrorCheck(res.data?.error || "Veuillez réessayer plutard");
             });
             setLoadingCheck(false);
@@ -88,7 +89,7 @@ const VerificationCode = ({route}) => {
             {
                 !loading && !loadingCheck ?
                 <Text style={styles.resend} onPress={retry}>Renvoyer le code</Text>:
-                <ActivityIndicator size="small" />
+                <ActivityIndicator size="small" color={theme.colors.green[700]} />
             }
         </TouchableOpacity>
     </ScrollView>
@@ -104,6 +105,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     title: {
+        width: "70%",
         fontSize: 20,
         fontFamily: 'Barlow-Bold',
         textAlign: 'center'

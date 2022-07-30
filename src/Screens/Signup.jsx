@@ -5,7 +5,7 @@ import FIcon from 'react-native-vector-icons/Feather'
 import SIcon from 'react-native-vector-icons/SimpleLineIcons'
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { CommonInput, CommonPhoneInput } from '../Commons/commons'
-import { Button } from 'native-base'
+import { Button, theme as nbTheme } from 'native-base'
 import { theme } from '../../assets/theme'
 import { Title } from 'react-native-paper'
 import * as yup from 'yup';
@@ -55,8 +55,8 @@ export default function Signup() {
     }
 
   return (
-    <KeyboardAwareScrollView style={{ backgroundColor: 'white' }}>
-      <View style={styles.container}>
+    <KeyboardAwareScrollView style={{ backgroundColor: 'white' }} contentContainerStyle={styles.container}>
+      <View>
         <Title style={styles.title}>Inscription</Title>
         {
           typeof(apiError) === 'string' && typeof(error) === 'string' &&
@@ -104,7 +104,7 @@ export default function Signup() {
                         <Button isLoading={loading} isLoadingText={<Text style={{ color: 'white' }}>Patientez...</Text>} style={styles.loginBtn} _text={{ fontWeight: 'bold', textTransform: 'uppercase' }} onPress={() =>handleSubmit()}>M'inscrire</Button>
                     </View>
                     <View>
-                        <Text style={styles.noAccountText}>Avez-vous un compte? <Text style={styles.noAccountLink} onPress={() =>navigation.navigate('Login')}>Connectez-vous</Text> </Text>
+                        <Text style={styles.noAccountText} onPress={() =>navigation.navigate('Login')}>J'ai déjà un compte</Text>
                     </View>
                 </>
             )}
@@ -117,7 +117,7 @@ export default function Signup() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        height: '100%',
         justifyContent: 'center',
         padding: 40
     },
@@ -146,9 +146,7 @@ const styles = StyleSheet.create({
     noAccountText: {
         fontWeight: '100',
         fontFamily: 'Barlow',
-        textAlign: 'center',
-    },
-    noAccountLink: {
-        color: theme.colors.default100,
+        marginBottom: 15,
+        color: nbTheme.colors.light[500]
     }
 })

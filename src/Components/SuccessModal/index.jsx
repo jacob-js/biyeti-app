@@ -1,19 +1,20 @@
 import { View, Text, StyleSheet, Image } from 'react-native'
 import React from 'react'
 import { Modal } from 'native-base';
-import vector from '../../../../../../../../Assets/vectors/checked.png';
 
 const SuccessModal = ({showModal, onClose}) => {
   return (
     <Modal isOpen={showModal} onClose={onClose}>
         <Modal.Content w="full" h="full">
           <Modal.CloseButton />
-            <Modal.Body style={styles.container}>
-                <Image source={vector} alt="sucess" style={{width: 200, height: 200}} />
+            <View style={styles.container}>
+                <Image source={{
+                    uri: "https://cdn-icons-png.flaticon.com/512/8022/8022590.png"
+                }} alt="sucess" style={{width: 200, height: 200}} />
                 <Text style={styles.msg}>
                     Votre demande a été traitée avec succès. Vous allez recevoir une notification avec le résultat.
                 </Text>
-            </Modal.Body>
+            </View>
         </Modal.Content>
       </Modal>
   )

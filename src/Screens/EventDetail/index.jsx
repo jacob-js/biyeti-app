@@ -22,7 +22,7 @@ export default function EventDetail({route, navigation}) {
     const { data: tickets, loading: loadingTickets } = useSelector(({ tickets: { tickets } }) => tickets);
     const { loading: loadingPurchase, error: purchaseError } = useSelector(({ tickets: { purchase } }) => purchase);
     const dispatch = useDispatch();
-    const [ showPurchased, setShowPurchased ] = useState(false);
+    const [ showPurchased, setShowPurchased ] = useState(true);
     const [ isError, setIsError ] = useState(false);
 
     const refreshTickets = () =>{

@@ -27,7 +27,7 @@ export function CommonInput(props) {
                 height="45px"
                 {...props}
             />
-            <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}> {error} </FormControl.ErrorMessage>
+            <FormControl.ErrorMessage my="0px" marginTop={-3} leftIcon={<WarningOutlineIcon size="xs" />}> {error} </FormControl.ErrorMessage>
         </FormControl>
     )
 };
@@ -56,7 +56,7 @@ export function CommonSelect(props) {
             >
                 {props.children}
             </Select>
-            <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}> {error} </FormControl.ErrorMessage>
+            <FormControl.ErrorMessage my="0px" marginTop={-3} leftIcon={<WarningOutlineIcon size="xs" />}> {error} </FormControl.ErrorMessage>
         </FormControl>
     )
 };
@@ -83,7 +83,7 @@ export const CommonTextArea = (props) => {
                 borderBottomWidth={2}
                 borderRadius={15}
             />
-            <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}> {error} </FormControl.ErrorMessage>
+            <FormControl.ErrorMessage my="0px" marginTop={-3} leftIcon={<WarningOutlineIcon size="xs" />}> {error} </FormControl.ErrorMessage>
         </FormControl>
     )
 }
@@ -116,7 +116,7 @@ export const CommonPhoneInput = ({ value, setFieldValue, error, required }) => {
                 codeTextStyle={{ marginBottom: -3, fontFamily: 'Barlow' }}
                 placeholder="Numéro de téléphone"
             />
-            <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}> {error} </FormControl.ErrorMessage>
+            <FormControl.ErrorMessage my="0px" marginTop={-3} leftIcon={<WarningOutlineIcon size="xs" />}> {error} </FormControl.ErrorMessage>
         </FormControl>
     )
 }

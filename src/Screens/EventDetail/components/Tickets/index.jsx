@@ -1,14 +1,15 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import styles from './styles'
 import { Divider } from 'native-base'
 import FaIcon from 'react-native-vector-icons/FontAwesome5';
 import { purchaseAction } from '../../../../Redux/actions/tickets';
 import { useDispatch } from 'react-redux';
 import Checkout from '../Checkout';
+import context from '../../context';
 
 const Tickets = ({tickets}) => {
-    const [ showPurchased, setShowPurchased ] = useState(false);
+    const { setShowPurchased } = useContext(context);
     const dispatch = useDispatch();
     const [showCheckout, setShowCheckout] = useState(false);
     const [ticketToBuy, setTicketToBuy] = useState({});

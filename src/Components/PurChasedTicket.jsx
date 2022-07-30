@@ -28,7 +28,7 @@ export default function PurChasedTicket({ isShown, setIsShown }) {
                     }
                     const file = await StorageAccessFramework.createFileAsync(`${dirUri}/${dir}`, `${event.name.split(' ').join('-')}-${ticket.name}.png`, 'image/png');
                     await StorageAccessFramework.writeAsStringAsync(file, data, { encoding: 'base64' });
-                    ToastAndroid.show('QR Code enregistré dans votre galerie', ToastAndroid.SHORT);
+                    showToast('QR Code enregistré dans votre galerie');
                 }
             }else{
                 const filename = FileSystem.documentDirectory + `${event.name.split(' ').join('-')}-${ticket.name}.png`;
@@ -54,10 +54,10 @@ export default function PurChasedTicket({ isShown, setIsShown }) {
                 </View>
                 <Button isLoading={false} 
                     isLoadingText={<Text style={{ color: 'white' }}>Patientez...</Text>} 
-                    style={styles.btn} _text={{ fontWeight: 'bold', textTransform: 'uppercase' }}
-                    leftIcon={<AntIcon name='download' style={{ color: 'white' }} />}
+                    style={styles.btn} _text={{ fontWeight: 'bold', textTransform: 'uppercase', color: theme.colors.default }}
+                    leftIcon={<AntIcon name='download' size={16} />}
                     onPress={saveQrToDisk}
-                >Télécharger le code qr</Button>
+                >Sauvegarder</Button>
             </Modal.Body>
         </Modal.Content>
     </Modal>
@@ -68,18 +68,19 @@ const styles = StyleSheet.create({
     body: {
         padding: 20,
         marginTop: 30,
-        paddingBottom: 20
+        paddingBottom: 20,
+        alignItems: 'center'
     },
     qrContainer: {
         alignItems: 'center',
         justifyContent: 'center',
     },
     btn: {
+        width: 170,
         height: 50,
-        backgroundColor: theme.colors.default100,
-        shadowOpacity: 0.4,
-        shadowColor: theme.colors.default, 
-        elevation: 15,
+        backgroundColor: 'white',
+        borderColor: theme.colors.default100,
+        borderWidth: 1,
         borderRadius: 15,
         marginTop: 10
     }

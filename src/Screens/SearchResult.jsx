@@ -89,6 +89,7 @@ const SearchResult = ({route}) => {
             clearButtonMode='while-editing'
             inputStyle={styles.inputStyle}
             onChangeText={text => onChangeText(text)}
+            value={query}
             autoFocus
             icon={() => <EvilIcon name="search" size={20} color={theme.colors.light} />}
             clearIcon={() => 

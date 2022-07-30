@@ -9,7 +9,7 @@ import axios from 'axios'
 import { MessageAlert, showToast } from '../../../../../../Utils/feedbacks';
 import * as yup from 'yup';
 import { useFocusEffect } from '@react-navigation/native'
-import SuccessModal from './components/SuccessModal'
+import SuccessModal from '../../../../../../Components/SuccessModal'
 import context from '../../context'
 import ConfirmPwdModal from '../../../../../../Components/ConfirmPwdModal'
 
@@ -67,7 +67,7 @@ const WithdrawForm = ({isOpen, setIsOpen}) => {
     useFocusEffect(
         useCallback(() =>{
             (() =>{
-                setFieldValue('amount', Number(wallet.usd_balance).toFixed(0));
+                setFieldValue('amount', Number(wallet.usd_balance).toFixed(0) || 0);
                 setFieldValue('currency', 'usd');
             })();
             return () => {

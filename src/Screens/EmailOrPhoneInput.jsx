@@ -30,7 +30,7 @@ const EmailOrPhoneInput = () => {
                 token: res.data.data.token,
                 callback: 'reset_pwd',
                 email: values.email
-            })).catch(() => setError("Veuillez reessayer plus tard"));
+            })).catch((err) => setError("Veuillez reessayer plus tard"));
             setLoading(false)
         },
     });
