@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "bookit_app",
-    "slug": "bookit_app",
+    "name": "biyeti",
+    "slug": "biyeti",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo.png",
+    "icon": "./assets/biyeti1024.png",
     "plugins": [
       [
         "expo-image-picker",
@@ -14,7 +14,7 @@
       ]
     ],
     "splash": {
-      "image": "./assets/logo.png",
+      "image": "./assets/splash-screen.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -33,7 +33,7 @@
       "useNextNotificationsApi": true,
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo.png",
+        "foregroundImage": "./assets/biyeti512.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.jacobdev.biyeti",

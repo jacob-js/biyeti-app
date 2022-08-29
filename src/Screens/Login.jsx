@@ -1,6 +1,6 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import logo from '../../assets/logo.png'
+import logo from '../../assets/biyeti512.png'
 import { Formik } from 'formik'
 import FIcon from 'react-native-vector-icons/Feather'
 import SIcon from 'react-native-vector-icons/SimpleLineIcons'

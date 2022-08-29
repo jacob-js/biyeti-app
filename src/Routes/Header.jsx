@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React, { useContext } from 'react'
 import AntIcon from 'react-native-vector-icons/AntDesign'
-import logo from '../../assets/logo.png'
+import logo from '../../assets/biyeti512.png'
 import { theme } from '../../assets/theme'
 import { theme as nbTheme} from 'native-base'
 import context from './context'

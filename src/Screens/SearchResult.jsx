@@ -57,23 +57,25 @@ const SearchResult = ({route}) => {
 
     const debounce = (cb) =>{
         let timeout;
-        return (...args) => {
+        return ((...args) => {
             if (timeout) clearTimeout(timeout);
             timeout = setTimeout(() => {
                 cb(...args);
             }, 1000);
-        }
+        })();
     };
 
-    const onChangeText = debounce(text =>{
+    const onChangeText = text =>{
         setQuery(text);
-        setPage(1);
-        setRows([]);
-        setCount(0);
-        if(text.length > 0){
-            getData(text);
-        }
-    })
+        debounce(() =>{
+            setPage(1);
+            setRows([]);
+            setCount(0);
+            if(text.length > 0){
+                getData(text);
+            }
+        })
+    }
 
   return (
     <View style={styles.container}>
