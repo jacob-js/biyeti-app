@@ -9,7 +9,7 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Autoriser l'application à accéder à vos photos"
+          "photosPermission": "Autoriser l'application à accéder à votre galerie"
         }
       ]
     ],
