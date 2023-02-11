@@ -27,7 +27,7 @@ export function CommonInput(props) {
                 height="45px"
                 {...props}
             />
-            <FormControl.ErrorMessage my="0px" marginTop={-3} leftIcon={<WarningOutlineIcon size="xs" />}> {error} </FormControl.ErrorMessage>
+            <FormControl.ErrorMessage my="0px" leftIcon={<WarningOutlineIcon size="xs" />}> {error} </FormControl.ErrorMessage>
         </FormControl>
     )
 };
@@ -45,7 +45,7 @@ export function CommonSelect(props) {
             <Select _focus={{
                 borderBottomColor: theme.colors.default,
                 borderColor: theme.colors.default
-            }} value={value} defaultValue={value} onValueChange={onValueChange} style={{ paddingLeft: 20, borderWidth: 5 }} 
+            }} value={value} defaultValue={value} onValueChange={onValueChange} style={{ paddingLeft: 20 }} 
                 placeholder={placeholder || label}
                 variant={uiType || 'underlined'}
                 borderBottomWidth={2}
@@ -56,7 +56,7 @@ export function CommonSelect(props) {
             >
                 {props.children}
             </Select>
-            <FormControl.ErrorMessage my="0px" marginTop={-3} leftIcon={<WarningOutlineIcon size="xs" />}> {error} </FormControl.ErrorMessage>
+            <FormControl.ErrorMessage my="0px" marginTop={0} leftIcon={<WarningOutlineIcon size="xs" />}> {error} </FormControl.ErrorMessage>
         </FormControl>
     )
 };
@@ -77,13 +77,13 @@ export const CommonTextArea = (props) => {
                 borderColor: theme.colors.default
                 }}
                 value={value} defaultValue={value} 
-                onChangeText={onChangeText} style={{ paddingLeft: 20, borderWidth: 5 }} 
+                onChangeText={onChangeText} style={{ paddingLeft: 20 }} 
                 placeholder={placeholder || label}
                 variant={uiType || 'underlined'}
                 borderBottomWidth={2}
                 borderRadius={15}
             />
-            <FormControl.ErrorMessage my="0px" marginTop={-3} leftIcon={<WarningOutlineIcon size="xs" />}> {error} </FormControl.ErrorMessage>
+            <FormControl.ErrorMessage my="0px" leftIcon={<WarningOutlineIcon size="xs" />}> {error} </FormControl.ErrorMessage>
         </FormControl>
     )
 }

@@ -17,7 +17,7 @@ import moment from 'moment';
 import { en, registerTranslation } from 'react-native-paper-dates';
 
 registerTranslation('en', en);
-axios.defaults.baseURL = 'https://bookitapi.up.railway.app';
+axios.defaults.baseURL = 'https://bookit10.herokuapp.com';
 axios.defaults.timeout = 60000;
 
 export default function App() {

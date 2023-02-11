@@ -51,8 +51,8 @@ export default function EditProfile({navigation}) {
         quality: 1,
         base64: true
     });
-    if (!res.cancelled) {
-        setField('avatar', `data:image/jpeg;base64,${res.base64}`);
+    if (!res.canceled) {
+        setField('avatar', `data:image/jpeg;base64,${res.assets[0]?.base64}`);
     }
   }
 

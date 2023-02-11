@@ -111,9 +111,9 @@ const EditEvent = ({route}) => {
             quality: 1,
             base64: true
         });
-        if (!res.cancelled) {
-            setImage(res);
-            setFieldValue('image', `data:image/jpeg;base64,${res.base64}`);
+        if (!res.canceled) {
+            setImage(res.assets[0]);
+            setFieldValue('image', `data:image/jpeg;base64,${res.assets[0]?.base64}`);
         }
     }
 
