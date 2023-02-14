@@ -37,10 +37,18 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.jacobdev.biyeti",
-      "versionCode": 1
+      "versionCode": 1,
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "51673362-ba50-49d5-abde-f811a578c8ee"
+      }
     }
   }
 }

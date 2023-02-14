@@ -23,7 +23,7 @@ The steps above resume how an event's owner can have his event ready to be booke
 
 ## Try it
 
-[Download the APK](https://expo.dev/artifacts/eas/8SQ1mJ1vJUBrtNWujKPyk.apk)
+[Download the APK](https://expo.dev/artifacts/eas/fSJ8Vcf6YtqBoPAwLW8AHR.apk)
 
 ## Built With
 
